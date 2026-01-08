@@ -35,14 +35,6 @@
                     Technicians dispatched from throughout Texas
                 </h5>
 
-                @foreach ($area_names as $item)
-                    <div class="contact-info">
-                        <i class="bi bi-check-lg contact-icon"></i>
-                        <span class="contact-textt">
-                            {{ $item->area_name ?? '' }}
-                        </span>
-                    </div>
-                @endforeach
             </div>
 
             <!-- Right Column -->

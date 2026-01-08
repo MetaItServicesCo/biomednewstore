@@ -500,28 +500,20 @@ class RepairServiceController extends Controller
         $dbCategory = $categoryMap[$category] ?? $category;
 
         // Fetch the sub-page using DB category and slug
-        $data = RepairServiceSubPage::where('page_category', $dbCategory)
-            ->where('slug', $slug)
-            ->where('is_active', true)
-            ->first();
+        // $data = RepairServiceSubPage::where('page_category', $dbCategory)
+        //     ->where('slug', $slug)
+        //     ->where('is_active', true)
+        //     ->first() ?? [];
 
         // Merge images
-        merge_images(
-            $data,
-            'content_thumbnail',
-            'gallery_images',
-            'all_images',
-            'storage/repair-pages',          // thumbnail path
-            'storage/repair-pages/gallery'   // gallery path
-        );
-
+        
         // If page not found → 404
-        if (!$data) {
-            abort(404, 'The requested service page was not found.');
-        }
+        // if (!$data) {
+        //     abort(404, 'The requested service page was not found.');
+        // }
 
         $faqs = getFaqs('repair');
 
-        return view('frontend.pages.repair-service-detail', compact('data', 'faqs'));
+        // return view('frontend.pages.repair-service-detail', compact( 'faqs'));
     }
 }

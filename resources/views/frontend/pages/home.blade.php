@@ -92,6 +92,8 @@
 
     <x-best-selling-products-section />    
     
+    {{-- ================= contact us section ================== --}}
+    <x-contact-us-section :footer-states="$footerStates" />
     
     {{-- ================= pruduct sectiion ============= --}}
     <x-our-latest-products />

@@ -105,52 +105,6 @@
                 </div>
             </div>
 
-            <!-- SMTP Settings -->
-            <div class="card mb-4">
-                <div class="card-header p-5 rounded-top">
-                    <div class="d-flex w-100 justify-content-between align-items-center">
-                        <h3 class="fw-bolder mb-0 text-danger">{{ __('SMTP Configuration') }}</h3>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>SMTP Host</label>
-                            <input type="text" name="smtp_host" class="form-control"
-                                value="{{ setting('smtp_host') }}">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>SMTP Port</label>
-                            <input type="text" name="smtp_port" class="form-control"
-                                value="{{ setting('smtp_port') }}">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Username</label>
-                            <input type="text" name="smtp_username" class="form-control"
-                                value="{{ setting('smtp_username') }}">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Password <small>(leave blank to keep current)</small></label>
-                            <input type="password" name="smtp_password" class="form-control" placeholder="••••••••">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Encryption</label>
-                            <select name="smtp_encryption" class="form-control form-select">
-                                <option value="tls" {{ setting('smtp_encryption') == 'tls' ? 'selected' : '' }}>TLS
-                                </option>
-                                <option value="ssl" {{ setting('smtp_encryption') == 'ssl' ? 'selected' : '' }}>SSL
-                                </option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>From Email</label>
-                            <input type="email" name="smtp_from_email" class="form-control"
-                                value="{{ setting('smtp_from_email') }}">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="d-flex justify-content-end mt-4">
                 @php

@@ -39,8 +39,8 @@ Route::post('/feedback', [ReviewsController::class, 'store'])->name('post.feedba
 // web.php
 Route::get('/rentals/filter', [AjaxController::class, 'filterRentalProducts'])->name('rentals.filter');
 
-Route::get('/medical-equipment-repair', [RepairServiceController::class, 'landingPage'])->name('repair');
-Route::get('/{category}/{slug}', [RepairServiceController::class, 'repairServiceDetail'])->name('repair.service.detail');
+// Route::get('/medical-equipment-repair', [RepairServiceController::class, 'landingPage'])->name('repair');
+// Route::get('/{category}/{slug}', [RepairServiceController::class, 'repairServiceDetail'])->name('repair.service.detail');
 
 // ===========================
 // Inquiry Form

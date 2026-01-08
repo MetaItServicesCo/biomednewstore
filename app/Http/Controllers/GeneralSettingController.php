@@ -58,8 +58,6 @@ class GeneralSettingController extends Controller
             'favicon'   => 'nullable|image|mimes:ico,png,jpg|max:512',
             'phone'     => 'nullable|string',
             'email'     => 'nullable|email',
-            'smtp_host' => 'nullable|string',
-            'smtp_port' => 'nullable|numeric',
         ]);
 
         DB::beginTransaction();

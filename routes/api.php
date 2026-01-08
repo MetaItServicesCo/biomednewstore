@@ -3,6 +3,7 @@
 use App\Actions\SamplePermissionApi;
 use App\Actions\SampleRoleApi;
 use App\Actions\SampleUserApi;
+use App\Http\Controllers\Api\ProductApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -108,3 +109,20 @@ Route::prefix('v1')->group(function () {
         return app(SamplePermissionApi::class)->delete($id);
     });
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Product & Category APIs
+|--------------------------------------------------------------------------
+*/
+
+// Categories (slider)
+Route::get('/categories', [ProductApiController::class, 'categories']);
+
+// Products
+// 1) All products (default 16)
+// 2) Category wise (?category_id=)
+// 3) Search (?search=)
+// 4) Category + Search (?category_id=&search=)
+Route::get('/products', [ProductApiController::class, 'products']);

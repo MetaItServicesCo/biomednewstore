@@ -554,82 +554,82 @@ if (!function_exists('plainBracketText')) {
 
 
 
-if (!function_exists('merge_images')) {
+// if (!function_exists('merge_images')) {
 
-    /**
-     * Merge thumbnail + gallery images into a single array (with paths).
-     *
-     * @param  \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model  $items
-     * @param  string  $thumbnailColumn
-     * @param  string  $galleryColumn
-     * @param  string  $finalKey
-     * @param  string  $thumbnailPath
-     * @param  string  $galleryPath
-     * @return mixed
-     */
-    function merge_images($items, $thumbnailColumn, $galleryColumn, $finalKey = 'all_images', $thumbnailPath = '', $galleryPath = '')
-    {
-        /**
-         * SMALL INTERNAL FUNCTION TO BUILD IMAGE PATHS
-         */
-        $buildPath = function ($path, $filename) {
-            return rtrim($path, '/') . '/' . ltrim($filename, '/');
-        };
+//     /**
+//      * Merge thumbnail + gallery images into a single array (with paths).
+//      *
+//      * @param  \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model  $items
+//      * @param  string  $thumbnailColumn
+//      * @param  string  $galleryColumn
+//      * @param  string  $finalKey
+//      * @param  string  $thumbnailPath
+//      * @param  string  $galleryPath
+//      * @return mixed
+//      */
+//     function merge_images($items, $thumbnailColumn, $galleryColumn, $finalKey = 'all_images', $thumbnailPath = '', $galleryPath = '')
+//     {
+//         /**
+//          * SMALL INTERNAL FUNCTION TO BUILD IMAGE PATHS
+//          */
+//         $buildPath = function ($path, $filename) {
+//             return rtrim($path, '/') . '/' . ltrim($filename, '/');
+//         };
 
-        /**
-         * CASE 1 — SINGLE MODEL INSTANCE
-         */
-        if ($items instanceof \Illuminate\Database\Eloquent\Model) {
+//         /**
+//          * CASE 1 — SINGLE MODEL INSTANCE
+//          */
+//         if ($items instanceof \Illuminate\Database\Eloquent\Model) {
 
-            $images = [];
+//             $images = [];
 
-            // Add thumbnail + path
-            if (!empty($items->{$thumbnailColumn})) {
-                $images[] = $buildPath($thumbnailPath, $items->{$thumbnailColumn});
-            }
+//             // Add thumbnail + path
+//             if (!empty($items->{$thumbnailColumn})) {
+//                 $images[] = $buildPath($thumbnailPath, $items->{$thumbnailColumn});
+//             }
 
-            // Decode gallery JSON
-            $gallery = $items->{$galleryColumn};
-            $decoded = json_decode($gallery, true);
+//             // Decode gallery JSON
+//             $gallery = $items->{$galleryColumn};
+//             $decoded = json_decode($gallery, true);
 
-            if (is_array($decoded)) {
-                foreach ($decoded as $img) {
-                    $images[] = $buildPath($galleryPath, $img);
-                }
-            }
+//             if (is_array($decoded)) {
+//                 foreach ($decoded as $img) {
+//                     $images[] = $buildPath($galleryPath, $img);
+//                 }
+//             }
 
-            $items->{$finalKey} = $images;
-            return $items;
-        }
+//             $items->{$finalKey} = $images;
+//             return $items;
+//         }
 
-        /**
-         * CASE 2 — PAGINATOR / COLLECTION
-         */
-        $items->getCollection()->transform(function ($item) use ($thumbnailColumn, $galleryColumn, $finalKey, $thumbnailPath, $galleryPath, $buildPath) {
+//         /**
+//          * CASE 2 — PAGINATOR / COLLECTION
+//          */
+//         $items->getCollection()->transform(function ($item) use ($thumbnailColumn, $galleryColumn, $finalKey, $thumbnailPath, $galleryPath, $buildPath) {
 
-            $images = [];
+//             $images = [];
 
-            if (!empty($item->{$thumbnailColumn})) {
-                $images[] = $buildPath($thumbnailPath, $item->{$thumbnailColumn});
-            }
+//             if (!empty($item->{$thumbnailColumn})) {
+//                 $images[] = $buildPath($thumbnailPath, $item->{$thumbnailColumn});
+//             }
 
-            $gallery = $item->{$galleryColumn};
-            $decoded = json_decode($gallery, true);
+//             $gallery = $item->{$galleryColumn};
+//             $decoded = json_decode($gallery, true);
 
-            if (is_array($decoded)) {
-                foreach ($decoded as $img) {
-                    $images[] = $buildPath($galleryPath, $img);
-                }
-            }
+//             if (is_array($decoded)) {
+//                 foreach ($decoded as $img) {
+//                     $images[] = $buildPath($galleryPath, $img);
+//                 }
+//             }
 
-            $item->{$finalKey} = $images;
+//             $item->{$finalKey} = $images;
 
-            return $item;
-        });
+//             return $item;
+//         });
 
-        return $items;
-    }
-}
+//         return $items;
+//     }
+// }
 
 
 
