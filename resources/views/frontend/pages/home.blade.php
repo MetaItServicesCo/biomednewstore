@@ -91,6 +91,8 @@
     </section>
 
     <x-best-selling-products-section />    
+
+    <x-offers-section/>
     
     {{-- ================= contact us section ================== --}}
     <x-contact-us-section :footer-states="$footerStates" />

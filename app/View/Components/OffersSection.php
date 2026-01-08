@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 
 class OffersSection extends Component
 {
-    public $offers;
+    // public $offers;
     /**
      * Create a new component instance.
      */
@@ -17,16 +17,16 @@ class OffersSection extends Component
     public function __construct()
     {
         // Active offers only
-        $this->offers = Offer::where('is_active', true)
-            ->select([
-                'title',
-                'slug',
-                'short_description',
-                'thumbnail',
-                'image_alt',
-            ])
-            ->latest()
-            ->get();
+        // $this->offers = Offer::where('is_active', true)
+        //     ->select([
+        //         'title',
+        //         'slug',
+        //         'short_description',
+        //         'thumbnail',
+        //         'image_alt',
+        //     ])
+        //     ->latest()
+        //     ->get();
     }
 
     /**
