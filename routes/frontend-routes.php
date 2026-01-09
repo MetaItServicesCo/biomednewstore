@@ -60,6 +60,8 @@ Route::prefix('ajax')->group(function () {
 
     // Reviews filter route
     Route::get('/feedbacks/filter', [ReviewsController::class, 'filterReviews'])->name('reviews.filter');
+
+    Route::post('/products/filter', [ProductController::class, 'productsFilter'])->name('products.filter');
 });
 
 

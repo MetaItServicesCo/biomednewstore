@@ -367,8 +367,77 @@ class ProductController extends Controller
 
     public function products()
     {
-        return view('frontend.pages.product-list');
+        try {
+            // Categories to exclude
+            $excluded = ['parts', 'featured'];
+
+            // Get categories with products
+            $categories = Category::where('status', true) // active categories
+                ->whereNotIn('slug', $excluded)          // exclude specific slugs
+                ->with(['products' => function ($query) {
+                    $query->where('is_active', true)
+                        ->where('product_type', 'product')
+                        ->whereIn('type', ['for_store', 'both'])
+                        ->orderBy('name', 'asc'); // order products by name
+                }])
+                ->select(['id', 'name', 'slug']) // id is required for relation
+                ->orderBy('name', 'asc')         // order categories by name
+                ->get();
+
+
+            // All active products (for store + both) with pagination
+            $allProducts = Product::where('is_active', true)
+                ->where('product_type', 'product')
+                ->whereIn('type', ['for_store', 'both'])
+                ->orderBy('name', 'asc')
+                ->paginate(2); // 15 products per page
+
+            // Return view with data
+            return view('frontend.pages.product-list', compact('categories', 'allProducts'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle database query errors
+            Log::error('Database Query Error in Products Page: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong while fetching products. Please try again later.');
+        } catch (\Exception $e) {
+            // Handle any other errors
+            Log::error('Error in Products Page: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again later.');
+        }
     }
+
+
+    // AJAX Filter
+    public function productsFilter(Request $request)
+    {
+        try {
+            $min = (float) ($request->min_price ?? 0);
+            $max = (float) ($request->max_price ?? 50000);
+
+            if ($min > $max) {
+                [$min, $max] = [$max, $min];
+            }
+
+            $products = Product::where('is_active', true)
+                ->where('product_type', 'product')
+                ->whereIn('type', ['for_store', 'both'])
+                ->whereBetween('sale_price', [$min, $max])
+                ->orderBy('name', 'asc')
+                ->paginate(2);
+
+            return response()->json([
+                'html' => view('partials._products', ['products' => $products])->render(),
+                'pagination' => view('vendor.pagination._pagination', [
+                    'products' => $products
+                ])->render(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('AJAX Filter Error: ' . $e->getMessage());
+            return response()->json(['error' => true], 500);
+        }
+    }
+
+
+
 
     public function addToCart(Request $request)
     {

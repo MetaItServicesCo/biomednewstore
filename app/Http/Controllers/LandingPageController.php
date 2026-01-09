@@ -234,6 +234,7 @@ class LandingPageController extends Controller
             'sale_price',
             'thumbnail',
             'image_alt',
+            'rating',
         ])
             ->where('is_active', true)->where('product_type', 'product')
             ->whereIn('type', ['for_store', 'both'])
@@ -342,7 +343,7 @@ class LandingPageController extends Controller
         }
 
         // Category mil gayi, uske products fetch karo
-        $products = Product::where('is_active', true)
+        $products = Product::where('is_active', true)->where('product_type', 'product')
             ->where('category_id', $category->id)
             ->latest()
             ->take(4)

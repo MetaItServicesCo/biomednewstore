@@ -13,15 +13,22 @@
 
 
                  <div class="card-content-box p-3 pt-2">
-                     <div class="rating-stars p- pt-2 pb-0">
-                         <i class="fas fa-star text-warning"></i>
-                         <i class="fas fa-star text-warning"></i>
-                         <i class="fas fa-star text-warning"></i>
-                         <i class="fas fa-star text-warning"></i>
-                         <i class="fas fa-star text-warning"></i>
+                     <div class="stars p- pt-2 pb-0">
+                         @php
+                             $rating = $product->rating ?? 0; // rating 0-5
+                         @endphp
+
+                         @for ($i = 1; $i <= 5; $i++)
+                             @if ($i <= $rating)
+                                 <i class="bi bi-star-fill gold"></i>
+                             @else
+                                 <i class="bi bi-star-fill"></i>
+                             @endif
+                         @endfor
                      </div>
                      <h5 class="product-title fw-bold">{{ $product->name ?? '' }}</h5>
-                     <p class="card-text small mb-3">{{ \Illuminate\Support\Str::limit($product->short_description ?? '', 35) }}</p>
+                     <p class="card-text small mb-3">
+                         {{ \Illuminate\Support\Str::limit($product->short_description ?? '', 35) }}</p>
 
                      <div class="price-action-row d-flex justify-content-between align-items-center">
 
@@ -33,7 +40,8 @@
                              <span
                                  class="new-price fw-bolder fs-5 text-primary">${{ number_format($product->sale_price) }}</span>
                          @endif
-                         <a href="javascript:void(0)" class="btn buy-now-btn btn-sm" data-slug="{{ $product->slug ?? '' }}">Buy Now</a>
+                         <a href="javascript:void(0)" class="btn buy-now-btn btn-sm"
+                             data-slug="{{ $product->slug ?? '' }}">Buy Now</a>
                      </div>
                  </div>
              </div>

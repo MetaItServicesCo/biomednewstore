@@ -34,6 +34,7 @@ class BestSellingProductsSection extends Component
             'sale_price',
             'thumbnail',
             'image_alt',
+            'rating',
         ])
             ->where('is_active', true)->where('product_type', 'product')
             ->whereIn('type', ['for_store', 'both'])

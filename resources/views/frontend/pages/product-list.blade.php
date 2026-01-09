@@ -226,6 +226,121 @@
             font-weight: 600;
         }
 
+        // doesnt work funnly on firefox or edge, need to fix
+
+        .range-slider {
+            width: 300px;
+            text-align: center;
+            position: relative;
+
+            .rangeValues {
+                display: block;
+            }
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            border: 1px solid white;
+            width: 300px;
+            position: absolute;
+            left: 0;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 300px;
+            height: 5px;
+            background: #ddd;
+            border: none;
+            border-radius: 3px;
+
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            border: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #21c1ff;
+            margin-top: -4px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #ccc;
+        }
+
+        input[type=range]::-moz-range-track {
+            width: 300px;
+            height: 5px;
+            background: #ddd;
+            border: none;
+            border-radius: 3px;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            border: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #21c1ff;
+
+        }
+
+
+        /*hide the outline behind the border*/
+
+        input[type=range]:-moz-focusring {
+            outline: 1px solid white;
+            outline-offset: -1px;
+        }
+
+        input[type=range]::-ms-track {
+            width: 300px;
+            height: 5px;
+            /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+            background: transparent;
+            /*leave room for the larger thumb to overflow with a transparent border */
+            border-color: transparent;
+            border-width: 6px 0;
+            /*remove default tick marks*/
+            color: transparent;
+            z-index: -4;
+
+        }
+
+        input[type=range]::-ms-fill-lower {
+            background: #777;
+            border-radius: 10px;
+        }
+
+        input[type=range]::-ms-fill-upper {
+            background: #ddd;
+            border-radius: 10px;
+        }
+
+        input[type=range]::-ms-thumb {
+            border: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #21c1ff;
+        }
+
+        input[type=range]:focus::-ms-fill-lower {
+            background: #888;
+        }
+
+        input[type=range]:focus::-ms-fill-upper {
+            background: #ccc;
+        }
+
 
         /* ====================== end ================================ */
     </style>
@@ -272,64 +387,44 @@
                     <!-- CATEGORIES -->
                     <div class="filter-box">
                         <h5 class="filter-title">CATEGORIES</h5>
-
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>New Equipment</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Diagnostic Tools</li>
-                            <li>Surgical Items</li>
-                            <li>Hospital Beds</li>
-                            <li>Monitors</li>
-                            <li>Scanners</li>
-                        </ul>
-                    </div>
-
-                    <!-- MEDICAL EQUIPMENT -->
-                    <div class="filter-box">
-                        <h5 class="filter-title">MEDICAL EQUIPMENT</h5>
-
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>COVID-19 Antigen</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Test Kits</li>
-                            <li>Masks</li>
-                            <li>Sanitizers</li>
-                            <li>Ventilators</li>
-                        </ul>
-                    </div>
-
-                    <!-- PPE SUPPLIES -->
-                    <div class="filter-box">
-                        <h5 class="filter-title">PPE SUPPLIES</h5>
-
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>Blood Pressure Cuffs</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Gloves</li>
-                            <li>Face Shields</li>
-                            <li>Masks</li>
-                            <li>Gowns</li>
-                            <li>Shoe Covers</li>
-                            <li>Thermometers</li>
-                            <li>Oximeters</li>
-                        </ul>
+                        @foreach ($categories as $category)
+                            <div class="filter-item" onclick="toggleList(this)">
+                                <span>{{ $category->name }}</span>
+                                <i class="fa fa-plus"></i>
+                            </div>
+                            <ul class="filter-list">
+                                @if ($category->products->count())
+                                    @foreach ($category->products as $product)
+                                        <li>{{ $product->name }}</li>
+                                    @endforeach
+                                @else
+                                    <li class="text-muted">No Product Found</li>
+                                @endif
+                            </ul>
+                        @endforeach
                     </div>
 
                     <!-- PRICE RANGE -->
                     <div class="filter-box">
                         <h5 class="filter-title">PRICE RANGE</h5>
 
-                        <input type="range" min="0" max="100" value="18" id="priceRange">
-                        <p class="price-value">$<span id="priceValue">18</span></p>
+                        <div class="range-slider">
+                            <span class="rangeValues"></span>
+                            <input type="range" min="0" max="50000" step="500" value="0"
+                                class="range-min">
+                            <input type="range" min="0" max="50000" step="500" value="50000"
+                                class="range-max">
+                        </div>
+
+
+
+                        {{-- <input type="range" min="0" max="100" value="18" id="priceRange">
+                        <p class="price-value">$<span id="priceValue">18</span></p> --}}
 
                         <div class="d-flex gap-2">
-                            <button class="btn btn-outline-danger w-50">Clear</button>
+                            <a href="{{ route('products') }}" class="btn btn-outline-danger w-50">
+                                Clear
+                            </a>
                             <button class="btn btn-danger w-50">Apply</button>
                         </div>
                     </div>
@@ -352,101 +447,23 @@
 
                 <!-- ================= RIGHT PRODUCTS (col-9) ================= -->
                 <div class="col-md-9">
-                    <div class="row g-4">
-
-                        <!-- PRODUCT CARD -->
-                        <div class="col-md-4">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="product-meta">
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                    </div>
-                                    <span class="stock">In Stock</span>
-                                </div>
-
-                                <h6>Throat Lozenges Syrup</h6>
-
-                                <div class="price-row">
-                                    <span class="old">$22.00</span>
-                                    <span class="new">$18.00</span>
-                                    <button class="btn-buy">Buy Now</button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- DUPLICATE FOR MORE PRODUCTS -->
-                        <div class="col-md-4">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="product-meta">
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                    </div>
-                                    <span class="stock">In Stock</span>
-                                </div>
-
-                                <h6>Throat Lozenges Syrup</h6>
-
-                                <div class="price-row">
-                                    <span class="old">$22.00</span>
-                                    <span class="new">$18.00</span>
-                                    <button class="btn-buy">Buy Now</button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/rental/rental-img.jpg') }}" alt="">
-
-                                <div class="product-meta">
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                    </div>
-                                    <span class="stock">In Stock</span>
-                                </div>
-
-                                <h6>Throat Lozenges Syrup</h6>
-
-                                <div class="price-row">
-                                    <span class="old">$22.00</span>
-                                    <span class="new">$18.00</span>
-                                    <button class="btn-buy">Buy Now</button>
-                                </div>
-                            </div>
-
-                        </div>
-
+                    <div id="productsLoader" class="text-center my-4" style="display:none;">
+                        <div class="spinner-border text-danger" role="status"></div>
+                        <p class="mt-2">Loading...</p>
                     </div>
+                    <div id="productsContainer">
+                        @include('partials._products', ['products' => $allProducts])
+                    </div>
+
+                    <div class="mt-4" id="products-pagination-container">
+                        @include('vendor.pagination._pagination', ['products' => $allProducts])
+                    </div>
+
                 </div>
 
             </div>
         </div>
     </section>
-
-
-
-
-
-
-
 
 
 
@@ -463,6 +480,35 @@
 
 @push('frontend-scripts')
     <script>
+        function getVals() {
+            let parent = this.parentNode;
+            let slides = parent.getElementsByTagName("input");
+            let slide1 = parseFloat(slides[0].value);
+            let slide2 = parseFloat(slides[1].value);
+
+            if (slide1 > slide2) {
+                let tmp = slide2;
+                slide2 = slide1;
+                slide1 = tmp;
+            }
+
+            let displayElement = parent.getElementsByClassName("rangeValues")[0];
+            displayElement.innerHTML = "$" + slide1 + " - $" + slide2;
+        }
+
+        window.onload = function() {
+            let sliderSections = document.getElementsByClassName("range-slider");
+            for (let x = 0; x < sliderSections.length; x++) {
+                let sliders = sliderSections[x].getElementsByTagName("input");
+                for (let y = 0; y < sliders.length; y++) {
+                    if (sliders[y].type === "range") {
+                        sliders[y].oninput = getVals;
+                        sliders[y].oninput();
+                    }
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const heart = document.querySelector('.wishlist-icon');
             heart.addEventListener('click', function() {
@@ -470,6 +516,97 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let minPrice = 0;
+            let maxPrice = 50000;
+
+            const loader = document.getElementById('productsLoader');
+            const productsContainer = document.getElementById('productsContainer');
+            const paginationContainer = document.getElementById('products-pagination-container');
+
+            function showLoader() {
+                loader.style.display = 'block';
+
+                // hide old content
+                productsContainer.style.display = 'none';
+                paginationContainer.style.display = 'none';
+            }
+
+            function hideLoader() {
+                loader.style.display = 'none';
+
+                // show new content
+                productsContainer.style.display = 'block';
+                paginationContainer.style.display = 'block';
+            }
+
+
+            function updateSliderValues() {
+                const box = document.querySelector('.range-slider');
+                minPrice = Number(box.querySelector('.range-min').value);
+                maxPrice = Number(box.querySelector('.range-max').value);
+                box.querySelector('.rangeValues').innerText = `$${minPrice} - $${maxPrice}`;
+            }
+
+            document.querySelectorAll('.range-slider input').forEach(input => {
+                input.addEventListener('input', updateSliderValues);
+            });
+
+            updateSliderValues();
+
+            function fetchProducts(page = 1) {
+                showLoader();
+
+                fetch('/ajax/products/filter', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            min_price: minPrice,
+                            max_price: maxPrice,
+                            page: page
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        productsContainer.innerHTML = res.html;
+                        paginationContainer.innerHTML = res.pagination;
+                        bindPagination();
+                    })
+                    .catch(() => {
+                        alert('Something went wrong');
+                    })
+                    .finally(() => {
+                        hideLoader();
+                    });
+            }
+
+            document.querySelector('.filter-box .btn-danger').addEventListener('click', function(e) {
+                e.preventDefault();
+                fetchProducts();
+            });
+
+            function bindPagination() {
+                document.querySelectorAll('#products-pagination-container .page-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const page = this.dataset.page;
+                        if (page) fetchProducts(page);
+                    });
+                });
+            }
+
+            bindPagination();
+
+        });
+    </script>
+
+
 
     <script>
         function toggleList(el) {

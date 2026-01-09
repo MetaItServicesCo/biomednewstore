@@ -11,10 +11,26 @@
 
                 @if ($product->discount_percent > 0)
                     <span class="discount-badge">{{ $product->discount_percent }}% OFF</span>
-                @endif  
+                @endif
 
                 <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
                     alt="{{ $product->image_alt }}" class="product-img img-fluid">
+
+                <!-- Stars -->
+                <div class="stars">
+                    @php
+                        $rating = $product->rating ?? 0; // rating 0-5
+                    @endphp
+
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <= $rating)
+                            <i class="bi bi-star-fill gold"></i>
+                        @else
+                            <i class="bi bi-star-fill"></i>
+                        @endif
+                    @endfor
+                </div>
+
 
                 <h4 class="product-title">{{ $product->name }}</h4>
                 <p class="product-desc">
