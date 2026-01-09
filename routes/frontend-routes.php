@@ -8,12 +8,13 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LocationPageController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RepairServiceController;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
 // ===========================
-// Website Route
+// Store Route
 // ===========================
 
 Route::get('/', [LandingPageController::class, 'landingPage'])->name('home');
@@ -59,14 +60,13 @@ Route::prefix('ajax')->group(function () {
 
     // Reviews filter route
     Route::get('/feedbacks/filter', [ReviewsController::class, 'filterReviews'])->name('reviews.filter');
+
+    Route::post('/products/filter', [ProductController::class, 'productsFilter'])->name('products.filter');
 });
 
-// ===========================
-// Store Route
-// ===========================
 
 Route::get('/store', [LandingPageController::class, 'storeLandingPage'])->name('store');
 
-Route::get('/product-list', function () {
-    return view('frontend.pages.product-list');
-})->name('product-list');
+Route::get('/products', [ProductController::class , 'products'])->name('products');
+Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add');
+

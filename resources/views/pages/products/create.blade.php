@@ -61,9 +61,9 @@
                             </div>
 
                             <!-- Type -->
-                            <div class="col-lg-4 mb-4">
+                            <div class="col-lg-2 mb-4">
                                 <label for="type"
-                                    class="form-label fw-semibold required">{{ __('Type') }}</label>
+                                    class="form-label fw-semibold required">{{ __('Product For') }}</label>
                                 <select name="type" id="type"
                                     class="form-select form-select-lg @error('type') is-invalid @enderror" required>
                                     <option value="for_store"
@@ -81,6 +81,32 @@
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="col-lg-2 mb-4">
+                                <label for="product_type"
+                                    class="form-label fw-semibold required">{{ __('Product Type') }}</label>
+
+                                <select name="product_type" id="product_type"
+                                    class="form-select form-select-lg @error('product_type') is-invalid @enderror"
+                                    required>
+
+                                    <option value="product"
+                                        {{ old('product_type', $data->product_type ?? '') == 'product' ? 'selected' : '' }}>
+                                        {{ __('Product') }}
+                                    </option>
+
+                                    <option value="part"
+                                        {{ old('product_type', $data->product_type ?? '') == 'part' ? 'selected' : '' }}>
+                                        {{ __('Part') }}
+                                    </option>
+
+                                </select>
+
+                                @error('product_type')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
 
                             <!-- Product Name -->
                             <div class="col-lg-12 mb-4">
@@ -231,6 +257,109 @@
                                 @enderror
                             </div>
 
+                            <div class="col-lg-3 mb-4">
+                                <label for="condition" class="form-label fw-semibold">{{ __('Condition') }}</label>
+
+                                <select name="condition" id="condition"
+                                    class="form-select form-select-lg @error('condition') is-invalid @enderror">
+
+                                    <option value="new"
+                                        {{ old('condition', $data->condition ?? '') == 'new' ? 'selected' : '' }}>
+                                        {{ __('New') }}
+                                    </option>
+
+                                    <option value="old"
+                                        {{ old('condition', $data->condition ?? '') == 'old' ? 'selected' : '' }}>
+                                        {{ __('Old') }}
+                                    </option>
+
+                                </select>
+
+                                @error('condition')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-3 mb-4">
+                                <label for="rating"
+                                    class="form-label fw-semibold required">{{ __('Rating') }}</label>
+
+                                <select name="rating" id="rating"
+                                    class="form-select form-select-lg @error('rating') is-invalid @enderror">
+
+                                    <option value="">Select Rating</option>
+
+                                    <option value="1"
+                                        {{ old('rating', $data->rating ?? '') == 1 ? 'selected' : '' }}>
+                                        1 - Very Bad
+                                    </option>
+
+                                    <option value="2"
+                                        {{ old('rating', $data->rating ?? '') == 2 ? 'selected' : '' }}>
+                                        2 - Bad
+                                    </option>
+
+                                    <option value="3"
+                                        {{ old('rating', $data->rating ?? '') == 3 ? 'selected' : '' }}>
+                                        3 - Average
+                                    </option>
+
+                                    <option value="4"
+                                        {{ old('rating', $data->rating ?? '') == 4 ? 'selected' : '' }}>
+                                        4 - Good
+                                    </option>
+
+                                    <option value="5"
+                                        {{ old('rating', $data->rating ?? '') == 5 ? 'selected' : '' }}>
+                                        5 - Excellent
+                                    </option>
+                                </select>
+
+                                @error('rating')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-6 mb-4">
+                                <label for="availability"
+                                    class="form-label fw-semibold">{{ __('Availability') }}</label>
+                                <input type="text" id="availability" name="availability"
+                                    class="form-control form-control-lg @error('availability') is-invalid @enderror"
+                                    value="{{ old('availability', $data->availability ?? '') }}">
+                                @error('availability')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-4 mb-4">
+                                <label for="model" class="form-label fw-semibold">{{ __('Model') }}</label>
+                                <input type="text" id="model" name="model"
+                                    class="form-control form-control-lg @error('model') is-invalid @enderror"
+                                    value="{{ old('model', $data->model ?? '') }}">
+                                @error('model')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-8 mb-4">
+                                <label for="brochures" class="form-label fw-semibold">{{ __('Brochures') }}</label>
+                                <input type="file" id="brochures" name="brochures"
+                                    class="form-control form-control-lg @error('brochures') is-invalid @enderror">
+                                @error('brochures')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+
+                                {{-- Edit case: show existing file --}}
+                                @if (!empty($data->brochures))
+                                    <small class="d-block mt-2">
+                                        <a href="{{ asset('storage/products/brochures/' . $data->brochures) }}"
+                                            target="_blank">
+                                            {{ __('View uploaded brochure') }}
+                                        </a>
+                                    </small>
+                                @endif
+                            </div>
+
                             <!-- Thumbnail -->
                             <div class="col-lg-12 mb-4">
                                 <label for="thumbnail"
@@ -293,7 +422,8 @@
 
                             <!-- SEO -->
                             <div class="col-lg-6 mb-4">
-                                <label for="meta_title" class="form-label fw-semibold">{{ __('Meta Title') }}</label>
+                                <label for="meta_title"
+                                    class="form-label fw-semibold">{{ __('Meta Title') }}</label>
                                 <input type="text" id="meta_title" name="meta_title"
                                     class="form-control form-control-lg @error('meta_title') is-invalid @enderror"
                                     value="{{ old('meta_title', $data->meta_title ?? '') }}">

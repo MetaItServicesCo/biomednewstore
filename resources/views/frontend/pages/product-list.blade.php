@@ -1191,13 +1191,6 @@
 
 
 
-
-
-
-
-
-
-
     {{-- ================= pruduct sectiion ============= --}}
     <x-our-latest-products />
 
@@ -1210,6 +1203,35 @@
 
 @push('frontend-scripts')
     <script>
+        function getVals() {
+            let parent = this.parentNode;
+            let slides = parent.getElementsByTagName("input");
+            let slide1 = parseFloat(slides[0].value);
+            let slide2 = parseFloat(slides[1].value);
+
+            if (slide1 > slide2) {
+                let tmp = slide2;
+                slide2 = slide1;
+                slide1 = tmp;
+            }
+
+            let displayElement = parent.getElementsByClassName("rangeValues")[0];
+            displayElement.innerHTML = "$" + slide1 + " - $" + slide2;
+        }
+
+        window.onload = function() {
+            let sliderSections = document.getElementsByClassName("range-slider");
+            for (let x = 0; x < sliderSections.length; x++) {
+                let sliders = sliderSections[x].getElementsByTagName("input");
+                for (let y = 0; y < sliders.length; y++) {
+                    if (sliders[y].type === "range") {
+                        sliders[y].oninput = getVals;
+                        sliders[y].oninput();
+                    }
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const heart = document.querySelector('.wishlist-icon');
             heart.addEventListener('click', function() {
@@ -1217,6 +1239,97 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let minPrice = 0;
+            let maxPrice = 50000;
+
+            const loader = document.getElementById('productsLoader');
+            const productsContainer = document.getElementById('productsContainer');
+            const paginationContainer = document.getElementById('products-pagination-container');
+
+            function showLoader() {
+                loader.style.display = 'block';
+
+                // hide old content
+                productsContainer.style.display = 'none';
+                paginationContainer.style.display = 'none';
+            }
+
+            function hideLoader() {
+                loader.style.display = 'none';
+
+                // show new content
+                productsContainer.style.display = 'block';
+                paginationContainer.style.display = 'block';
+            }
+
+
+            function updateSliderValues() {
+                const box = document.querySelector('.range-slider');
+                minPrice = Number(box.querySelector('.range-min').value);
+                maxPrice = Number(box.querySelector('.range-max').value);
+                box.querySelector('.rangeValues').innerText = `$${minPrice} - $${maxPrice}`;
+            }
+
+            document.querySelectorAll('.range-slider input').forEach(input => {
+                input.addEventListener('input', updateSliderValues);
+            });
+
+            updateSliderValues();
+
+            function fetchProducts(page = 1) {
+                showLoader();
+
+                fetch('/ajax/products/filter', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            min_price: minPrice,
+                            max_price: maxPrice,
+                            page: page
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        productsContainer.innerHTML = res.html;
+                        paginationContainer.innerHTML = res.pagination;
+                        bindPagination();
+                    })
+                    .catch(() => {
+                        alert('Something went wrong');
+                    })
+                    .finally(() => {
+                        hideLoader();
+                    });
+            }
+
+            document.querySelector('.filter-box .btn-danger').addEventListener('click', function(e) {
+                e.preventDefault();
+                fetchProducts();
+            });
+
+            function bindPagination() {
+                document.querySelectorAll('#products-pagination-container .page-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const page = this.dataset.page;
+                        if (page) fetchProducts(page);
+                    });
+                });
+            }
+
+            bindPagination();
+
+        });
+    </script>
+
+
 
     <script>
         function toggleList(el) {

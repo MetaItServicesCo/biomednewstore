@@ -56,6 +56,13 @@ class ProductController extends Controller
             'meta_title'        => 'nullable|string|max:255',
             'meta_keywords'     => 'nullable|string|max:255',
             'meta_description'  => 'nullable|string',
+
+            'condition'    => 'nullable',
+            'rating'       => 'nullable|integer|min:1|max:5',
+            'availability' => 'nullable|string|max:255',
+            'model'        => 'nullable|string|max:255',
+            'brochures'    => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'product_type' => 'required|in:product,part',
         ]);
 
         DB::beginTransaction();
@@ -79,6 +86,14 @@ class ProductController extends Controller
             $product->in_stock = $request->in_stock;
             $product->is_active = $request->is_active;
             $product->show_on_header = $request->show_on_header;
+
+            $product->condition = $request->condition;
+            $product->rating = $request->rating;
+            $product->availability = $request->availability;
+            $product->model = $request->model;
+            $product->product_type = $request->product_type;
+
+            $product->brochures = $this->uploadImage($request->file('brochures'), 'products/brochures');
 
             // Thumbnail
             $product->thumbnail = $this->uploadImage($request->file('thumbnail'), 'products/thumbnails');
@@ -170,6 +185,14 @@ class ProductController extends Controller
             'meta_title'        => 'nullable|string|max:255',
             'meta_keywords'     => 'nullable|string|max:255',
             'meta_description'  => 'nullable|string',
+
+            'condition'    => 'nullable',
+            'rating'       => 'nullable|integer|min:1|max:5',
+            'availability' => 'nullable|string|max:255',
+            'model'        => 'nullable|string|max:255',
+            'brochures'    => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'product_type' => 'required|in:product,part',
+
         ]);
 
         DB::beginTransaction();
@@ -192,6 +215,14 @@ class ProductController extends Controller
             $product->in_stock = $request->in_stock;
             $product->is_active = $request->is_active;
             $product->show_on_header = $request->show_on_header;
+
+            $product->condition = $request->condition;
+            $product->rating = $request->rating;
+            $product->availability = $request->availability;
+            $product->model = $request->model;
+            $product->product_type = $request->product_type;
+
+            $product->brochures = $this->updateImage($request, 'brochures', 'products/brochures', $product->brochures);
 
             // Thumbnail image update
             $product->thumbnail = $this->updateImage($request, 'thumbnail', 'products/thumbnails', $product->thumbnail);
@@ -331,5 +362,130 @@ class ProductController extends Controller
 
             return back()->withErrors(['error' => 'Failed to delete the product: ' . $e->getMessage()]);
         }
+    }
+
+
+    public function products()
+    {
+        try {
+            // Categories to exclude
+            $excluded = ['parts', 'featured'];
+
+            // Get categories with products
+            $categories = Category::where('status', true) // active categories
+                ->whereNotIn('slug', $excluded)          // exclude specific slugs
+                ->with(['products' => function ($query) {
+                    $query->where('is_active', true)
+                        ->where('product_type', 'product')
+                        ->whereIn('type', ['for_store', 'both'])
+                        ->orderBy('name', 'asc'); // order products by name
+                }])
+                ->select(['id', 'name', 'slug']) // id is required for relation
+                ->orderBy('name', 'asc')         // order categories by name
+                ->get();
+
+
+            // All active products (for store + both) with pagination
+            $allProducts = Product::where('is_active', true)
+                ->where('product_type', 'product')
+                ->whereIn('type', ['for_store', 'both'])
+                ->orderBy('name', 'asc')
+                ->paginate(2); // 15 products per page
+
+            // Return view with data
+            return view('frontend.pages.product-list', compact('categories', 'allProducts'));
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle database query errors
+            Log::error('Database Query Error in Products Page: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong while fetching products. Please try again later.');
+        } catch (\Exception $e) {
+            // Handle any other errors
+            Log::error('Error in Products Page: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again later.');
+        }
+    }
+
+
+    // AJAX Filter
+    public function productsFilter(Request $request)
+    {
+        try {
+            $min = (float) ($request->min_price ?? 0);
+            $max = (float) ($request->max_price ?? 50000);
+
+            if ($min > $max) {
+                [$min, $max] = [$max, $min];
+            }
+
+            $products = Product::where('is_active', true)
+                ->where('product_type', 'product')
+                ->whereIn('type', ['for_store', 'both'])
+                ->whereBetween('sale_price', [$min, $max])
+                ->orderBy('name', 'asc')
+                ->paginate(2);
+
+            return response()->json([
+                'html' => view('partials._products', ['products' => $products])->render(),
+                'pagination' => view('vendor.pagination._pagination', [
+                    'products' => $products
+                ])->render(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('AJAX Filter Error: ' . $e->getMessage());
+            return response()->json(['error' => true], 500);
+        }
+    }
+
+
+
+
+    public function addToCart(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'qty'        => 'required|integer|min:1',
+        ]);
+
+        $product = Product::findOrFail($request->product_id);
+
+        // Stock validation
+        if ($request->qty > $product->stock_qty) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only ' . $product->stock_qty . ' items available in stock.'
+            ], 422);
+        }
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$product->id])) {
+            $newQty = $cart[$product->id]['qty'] + $request->qty;
+
+            if ($newQty > $product->stock_qty) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Maximum stock limit reached.'
+                ], 422);
+            }
+
+            $cart[$product->id]['qty'] = $newQty;
+        } else {
+            $cart[$product->id] = [
+                'id'    => $product->id,
+                'name'  => $product->name,
+                'price' => $product->price,
+                'qty'   => $request->qty,
+                'image' => $product->thumbnail,
+                'slug'  => $product->slug,
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product added to cart successfully',
+            'cart' => $cart
+        ]);
     }
 }
