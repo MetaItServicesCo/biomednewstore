@@ -74,7 +74,15 @@ class ProductApiController extends Controller
                 'sale_price',
                 'thumbnail',
                 'image_alt'
-            ]);
+            ])
+            ->map(function ($product) {
+                // Add full thumbnail path
+                $product->thumbnail = $product->thumbnail
+                    ? asset('storage/products/thumbnails/' . $product->thumbnail)
+                    : null;
+
+                return $product;
+            });
 
         return response()->json([
             'success' => true,
