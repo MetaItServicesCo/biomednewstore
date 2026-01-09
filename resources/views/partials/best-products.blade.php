@@ -27,7 +27,7 @@
                         <span class="old-price">${{ number_format($product->price) }}</span>
                     @endif
                     <span class="new-price">${{ number_format($product->sale_price) }}</span>
-                    <button class="buy-btn" data-slug="{{ $product->slug ?? '' }}" data-open-form>Get A Quote</button>
+                    <button class="buy-btn" data-slug="{{ $product->slug ?? '' }}">Buy Now</button>
                 </div>
             </div>
         </div>

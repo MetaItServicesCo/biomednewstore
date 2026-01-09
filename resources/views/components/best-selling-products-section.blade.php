@@ -144,7 +144,9 @@
             </div>
 
             <div class="text-center mt-5">
-                <button class="all-products-btn">All Products</button>
+                <a href="{{ route('products') }}">
+                    <button class="all-products-btn">All Products</button>
+                </a>
             </div>
         </div>
     </section>

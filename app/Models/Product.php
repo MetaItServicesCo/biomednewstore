@@ -34,6 +34,13 @@ class Product extends Model
         'created_by',
         'updated_by',
         'deleted_by',
+
+        'condition',
+        'availability',
+        'rating',
+        'brochures',
+        'model',
+        'product_type'
     ];
 
     protected $casts = [

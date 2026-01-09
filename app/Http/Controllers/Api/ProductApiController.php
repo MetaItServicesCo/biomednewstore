@@ -34,7 +34,7 @@ class ProductApiController extends Controller
      */
     public function products(Request $request)
     {
-        $query = Product::where('is_active', true)
+        $query = Product::where('is_active', true)->where('product_type', 'product')
             ->whereIn('type', ['for_store', 'both']);
 
         // Category filter

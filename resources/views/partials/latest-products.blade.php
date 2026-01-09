@@ -33,7 +33,7 @@
                              <span
                                  class="new-price fw-bolder fs-5 text-primary">${{ number_format($product->sale_price) }}</span>
                          @endif
-                         <a href="javascript:void(0)" class="btn buy-now-btn btn-sm" data-slug="{{ $product->slug ?? '' }}" data-open-form>Get A Quote</a>
+                         <a href="javascript:void(0)" class="btn buy-now-btn btn-sm" data-slug="{{ $product->slug ?? '' }}">Buy Now</a>
                      </div>
                  </div>
              </div>

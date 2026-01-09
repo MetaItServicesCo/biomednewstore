@@ -235,11 +235,12 @@ class LandingPageController extends Controller
             'thumbnail',
             'image_alt',
         ])
-            ->where('is_active', true)
+            ->where('is_active', true)->where('product_type', 'product')
             ->whereIn('type', ['for_store', 'both'])
             ->latest()
             ->take(16)
             ->get();
+
         $faqs = getFaqs('landing');
 
         return view('frontend.pages.home', compact(
@@ -283,7 +284,7 @@ class LandingPageController extends Controller
 
     public function filter(Request $request)
     {
-        $query = Product::where('is_active', true)
+        $query = Product::where('is_active', true)->where('product_type', 'product')
             ->whereIn('type', ['for_store', 'both']);
 
         // Category tab filter (button click)
@@ -350,15 +351,5 @@ class LandingPageController extends Controller
         return response()->json([
             'html' => view('partials.latest-products', compact('products'))->render()
         ]);
-    }
-
-
-
-    // ===========================
-    // Store landing page
-    // ===========================
-
-    public function storeLandingPage(){
-        return view('biomed-store.store-landing-page');
     }
 }

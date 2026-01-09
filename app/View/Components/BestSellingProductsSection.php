@@ -18,7 +18,7 @@ class BestSellingProductsSection extends Component
         // ✅ Sirf woh categories jin ke products exist karti hain
         $this->categories = Category::where('status', true)
             ->whereHas('products', function ($q) {
-                $q->where('is_active', true)
+                $q->where('is_active', true)->where('product_type', 'product')
                     ->whereIn('type', ['for_store', 'both']);
             })
             ->select(['id', 'name', 'slug'])
@@ -35,7 +35,7 @@ class BestSellingProductsSection extends Component
             'thumbnail',
             'image_alt',
         ])
-            ->where('is_active', true)
+            ->where('is_active', true)->where('product_type', 'product')
             ->whereIn('type', ['for_store', 'both'])
             ->latest()
             ->take(16)
