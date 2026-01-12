@@ -1358,3 +1358,61 @@ document.addEventListener('DOMContentLoaded', () => {
     updateVisibleItems();
     updateSlider();
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    function addToCart(productId, qty = 1, btn) {
+        console.log(productId, 'productId');
+        
+        btn.disabled = true;
+        btn.innerText = 'Adding...';
+
+        fetch("/cart/add", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                qty: qty
+            })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    btn.innerText = 'Added!';
+                    // Optional: update cart count in navbar
+                    if (window.updateCartCount) {
+                        window.updateCartCount(res.cart);
+                    }
+                    // Reset button text after 1.5s
+                    setTimeout(() => {
+                        btn.innerText = 'Add to Cart';
+                        btn.disabled = false;
+                    }, 1500);
+                } else {
+                    alert(res.message || 'Could not add to cart');
+                    btn.innerText = 'Add to Cart';
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Something went wrong');
+                btn.innerText = 'Add to Cart';
+                btn.disabled = false;
+            });
+    }
+
+    document.querySelectorAll('.offer-readd-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const productId = this.dataset.id;
+            const qty = this.dataset.qty ?? 1;
+            if (productId) addToCart(productId, qty, this);
+        });
+    });
+
+});

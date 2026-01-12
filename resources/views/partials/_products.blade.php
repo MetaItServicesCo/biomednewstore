@@ -36,7 +36,7 @@
                                 <span class="old-price">${{ number_format($product->price, 2) }}</span>
                             @endif
                             <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
-                            <button class="btn-buy" data-slug="{{ $product->slug ?? '' }}">Buy Now</button>
+                            <button class="btn-buy" data-slug="{{ $product->slug ?? '' }}" @if(!$product->in_stock) disabled class="disabled-btn" @endif>{{ $product->in_stock ? 'Buy Now' : 'Out of Stock' }}</button>
                         </div>
                     </div>
                 </div>

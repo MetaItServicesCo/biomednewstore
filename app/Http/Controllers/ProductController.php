@@ -390,10 +390,17 @@ class ProductController extends Controller
                 ->where('product_type', 'product')
                 ->whereIn('type', ['for_store', 'both'])
                 ->orderBy('name', 'asc')
-                ->paginate(2); // 15 products per page
+                ->paginate(15); // 15 products per page
 
+            $recentProducts = Product::where('is_active', true)
+                ->where('product_type', 'product')
+                ->whereIn('type', ['for_store', 'both'])
+                ->orderBy('created_at', 'desc')
+                ->limit(4)
+                ->get();
+            $faqs = getFaqs('products');
             // Return view with data
-            return view('frontend.pages.product-list', compact('categories', 'allProducts'));
+            return view('frontend.pages.product-list', compact('categories', 'allProducts', 'faqs', 'recentProducts'));
         } catch (\Illuminate\Database\QueryException $e) {
             // Handle database query errors
             Log::error('Database Query Error in Products Page: ' . $e->getMessage());
@@ -412,32 +419,36 @@ class ProductController extends Controller
         try {
             $min = (float) ($request->min_price ?? 0);
             $max = (float) ($request->max_price ?? 50000);
+            $search = trim($request->search ?? '');
 
             if ($min > $max) {
                 [$min, $max] = [$max, $min];
             }
 
-            $products = Product::where('is_active', true)
+            $query = Product::where('is_active', true)
                 ->where('product_type', 'product')
-                ->whereIn('type', ['for_store', 'both'])
-                ->whereBetween('sale_price', [$min, $max])
-                ->orderBy('name', 'asc')
-                ->paginate(2);
+                ->whereIn('type', ['for_store', 'both']);
+
+            // 🔍 Search
+            if ($search !== '') {
+                $query->where('name', 'like', "%{$search}%");
+            }
+            // 💰 Filter only when no search
+            else {
+                $query->whereBetween('sale_price', [$min, $max]);
+            }
+
+            $products = $query->orderBy('name', 'asc')->paginate(15);
 
             return response()->json([
-                'html' => view('partials._products', ['products' => $products])->render(),
-                'pagination' => view('vendor.pagination._pagination', [
-                    'products' => $products
-                ])->render(),
+                'html' => view('partials._products', compact('products'))->render(),
+                'pagination' => view('vendor.pagination._pagination', compact('products'))->render(),
             ]);
         } catch (\Exception $e) {
-            Log::error('AJAX Filter Error: ' . $e->getMessage());
+            Log::error('Product Filter Error', ['msg' => $e->getMessage()]);
             return response()->json(['error' => true], 500);
         }
     }
-
-
-
 
     public function addToCart(Request $request)
     {
