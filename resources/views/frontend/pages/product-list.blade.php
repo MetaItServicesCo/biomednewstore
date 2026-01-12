@@ -462,170 +462,21 @@
                     <div class="filter-main-box">
                         <h5 class="filter-main-title">CATEGORIES</h5>
 
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>New Equipment</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Diagnostic Tools</li>
-                            <li>Surgical Items</li>
-                            <li>Hospital Beds</li>
-                            <li>Monitors</li>
-                            <li>Scanners</li>
-                        </ul>
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>Rental Rquipment</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Diagnostic Tools</li>
-                            <li>Surgical Items</li>
-                            <li>Hospital Beds</li>
-                            <li>Monitors</li>
-                            <li>Scanners</li>
-                        </ul>
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>Refurbished</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Diagnostic Tools</li>
-                            <li>Surgical Items</li>
-                            <li>Hospital Beds</li>
-                            <li>Monitors</li>
-                            <li>Scanners</li>
-                        </ul>
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>Equipment</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Diagnostic Tools</li>
-                            <li>Surgical Items</li>
-                            <li>Hospital Beds</li>
-                            <li>Monitors</li>
-                            <li>Scanners</li>
-                        </ul>
-                        <div class="filter-item" onclick="toggleList(this)">
-                            <span>New Equipment</span>
-                            <i class="fa fa-plus"></i>
-                        </div>
-                        <ul class="filter-list">
-                            <li>Diagnostic Tools</li>
-                            <li>Surgical Items</li>
-                            <li>Hospital Beds</li>
-                            <li>Monitors</li>
-                            <li>Scanners</li>
-                        </ul>
-
-
-                        <!-- MEDICAL EQUIPMENT -->
-                        <div class="filter-box">
-                            <h5 class="filter-title">MEDICAL EQUIPMENT</h5>
-
+                        @foreach ($categories as $category)
                             <div class="filter-item" onclick="toggleList(this)">
-                                <span>COVID-19 Antigen</span>
+                                <span>{{ $category->name }}</span>
                                 <i class="fa fa-plus"></i>
                             </div>
                             <ul class="filter-list">
-                                <li>Test Kits</li>
-                                <li>Masks</li>
-                                <li>Sanitizers</li>
-                                <li>Ventilators</li>
+                                @if ($category->products->count())
+                                    @foreach ($category->products as $product)
+                                        <li>{{ $product->name }}</li>
+                                    @endforeach
+                                @else
+                                    <li class="text-muted">No Product Found</li>
+                                @endif
                             </ul>
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>COVID-19 Antigen</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <ul class="filter-list">
-                                <li>Test Kits</li>
-                                <li>Masks</li>
-                                <li>Sanitizers</li>
-                                <li>Ventilators</li>
-                            </ul>
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>Thermometers</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <ul class="filter-list">
-                                <li>Test Kits</li>
-                                <li>Masks</li>
-                                <li>Sanitizers</li>
-                                <li>Ventilators</li>
-                            </ul>
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>Face Masks</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <ul class="filter-list">
-                                <li>Test Kits</li>
-                                <li>Masks</li>
-                                <li>Sanitizers</li>
-                                <li>Ventilators</li>
-                            </ul>
-
-                        </div>
-
-                        <!-- PPE SUPPLIES -->
-                        <div class="filter-box">
-                            <h5 class="filter-title">PPE SUPPLIES</h5>
-
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>Blood Pressure Cuffs</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <ul class="filter-list">
-                                <li>Gloves</li>
-                                <li>Face Shields</li>
-                                <li>Masks</li>
-                                <li>Gowns</li>
-                                <li>Shoe Covers</li>
-                                <li>Thermometers</li>
-                                <li>Oximeters</li>
-                            </ul>
-
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>Blood Pressure Cuffs</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <ul class="filter-list">
-                                <li>Gloves</li>
-                                <li>Face Shields</li>
-                                <li>Masks</li>
-                                <li>Gowns</li>
-                                <li>Shoe Covers</li>
-                                <li>Thermometers</li>
-                                <li>Oximeters</li>
-                            </ul>
-
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>Blood Pressure Cuffs</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <ul class="filter-list">
-                                <li>Gloves</li>
-                                <li>Face Shields</li>
-                                <li>Masks</li>
-                                <li>Gowns</li>
-                                <li>Shoe Covers</li>
-                                <li>Thermometers</li>
-                                <li>Oximeters</li>
-                            </ul>
-
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>Blood Pressure Cuffs</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <ul class="filter-list">
-                                <li>Gloves</li>
-                                <li>Face Shields</li>
-                                <li>Masks</li>
-                                <li>Gowns</li>
-                                <li>Shoe Covers</li>
-                                <li>Thermometers</li>
-                                <li>Oximeters</li>
-                            </ul>
-                        </div>
+                        @endforeach
                     </div>
 
 
@@ -638,15 +489,16 @@
 
                         <div class="p-3">
                             <div class="range-slider">
-                                <input value="1000" min="1000" max="50000" step="500" type="range">
-                                <input value="50000" min="1000" max="50000" step="500" type="range">
+                                <input type="range" min="0" max="50000" step="500" value="0"
+                                    class="range-min">
+                                <input type="range" min="0" max="50000" step="500" value="50000"
+                                    class="range-max">
                                 <span class="rangeValues "></span>
                                 {{-- <hr> --}}
                             </div>
-
                             <div class="d-flex gap-2 mt-4">
-                                <button class="btn btn-outline-danger w-50">Clear</button>
-                                <button class="btn btn-danger w-50">Apply</button>
+                                <a href="{{route('products')}}" class="btn btn-outline-danger w-50">Clear</a>
+                                <button id="applyFilterBtn" class="btn btn-danger w-50">Apply</button>
                             </div>
                         </div>
                     </div>
@@ -767,357 +619,25 @@
 
                 <!-- ================= RIGHT PRODUCTS (col-9) ================= -->
                 <div class="col-lg-9 col-md-8">
-                    <div class="row g-4">
+                    <div id="productsLoader" class="text-center my-4" style="display:none;">
+                        <div class="spinner-border text-danger" role="status"></div>
+                        <p class="mt-2">Loading...</p>
+                    </div>
+                    <div id="productsContainer">
+                        @include('partials._products', ['products' => $allProducts])
+                    </div>
 
-                        <!-- PRODUCT CARD -->
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- DUPLICATE FOR MORE PRODUCTS -->
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-4 col-md-6 ">
-                            <div class="productt-cardd">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                                <div class="card-body p-2">
-                                    <div class="product-meta">
-                                        <div class="stars">
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star active"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <span class="stock">In Stock</span>
-                                    </div>
-
-                                    <h6>Throat Lozenges Syrup</h6>
-
-                                    <div class="price-row">
-                                        <span class="old-price">$22.00</span>
-                                        <span class="new-price">$18.00</span>
-                                        <button class="btn-buy">Buy Now</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
+                    <div class="mt-4" id="products-pagination-container">
+                        @include('vendor.pagination._pagination', ['products' => $allProducts])
 
                     </div>
 
                 </div>
-
             </div>
-        </div>
-        {{-- <section class="pagination-section py-5">
 
-        </section> --}}
+        </div>
 
     </section>
-
-
-
-
-
-
-
 
 
 
@@ -1134,6 +654,35 @@
 
 @push('frontend-scripts')
     <script>
+        function getVals() {
+            let parent = this.parentNode;
+            let slides = parent.getElementsByTagName("input");
+            let slide1 = parseFloat(slides[0].value);
+            let slide2 = parseFloat(slides[1].value);
+
+            if (slide1 > slide2) {
+                let tmp = slide2;
+                slide2 = slide1;
+                slide1 = tmp;
+            }
+
+            let displayElement = parent.getElementsByClassName("rangeValues")[0];
+            displayElement.innerHTML = "$" + slide1 + " - $" + slide2;
+        }
+
+        window.onload = function() {
+            let sliderSections = document.getElementsByClassName("range-slider");
+            for (let x = 0; x < sliderSections.length; x++) {
+                let sliders = sliderSections[x].getElementsByTagName("input");
+                for (let y = 0; y < sliders.length; y++) {
+                    if (sliders[y].type === "range") {
+                        sliders[y].oninput = getVals;
+                        sliders[y].oninput();
+                    }
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const heart = document.querySelector('.wishlist-icon');
             heart.addEventListener('click', function() {
@@ -1141,6 +690,97 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let minPrice = 0;
+            let maxPrice = 50000;
+
+            const loader = document.getElementById('productsLoader');
+            const productsContainer = document.getElementById('productsContainer');
+            const paginationContainer = document.getElementById('products-pagination-container');
+
+            function showLoader() {
+                loader.style.display = 'block';
+
+                // hide old content
+                productsContainer.style.display = 'none';
+                paginationContainer.style.display = 'none';
+            }
+
+            function hideLoader() {
+                loader.style.display = 'none';
+
+                // show new content
+                productsContainer.style.display = 'block';
+                paginationContainer.style.display = 'block';
+            }
+
+
+            function updateSliderValues() {
+                const box = document.querySelector('.range-slider');
+                minPrice = Number(box.querySelector('.range-min').value);
+                maxPrice = Number(box.querySelector('.range-max').value);
+                box.querySelector('.rangeValues').innerText = `$${minPrice} - $${maxPrice}`;
+            }
+
+            document.querySelectorAll('.range-slider input').forEach(input => {
+                input.addEventListener('input', updateSliderValues);
+            });
+
+            updateSliderValues();
+
+            function fetchProducts(page = 1) {
+                showLoader();
+
+                fetch('/ajax/products/filter', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            min_price: minPrice,
+                            max_price: maxPrice,
+                            page: page
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        productsContainer.innerHTML = res.html;
+                        paginationContainer.innerHTML = res.pagination;
+                        bindPagination();
+                    })
+                    .catch(() => {
+                        alert('Something went wrong');
+                    })
+                    .finally(() => {
+                        hideLoader();
+                    });
+            }
+
+            document.getElementById('applyFilterBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                fetchProducts();
+            });
+
+            function bindPagination() {
+                document.querySelectorAll('#products-pagination-container .page-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const page = this.dataset.page;
+                        if (page) fetchProducts(page);
+                    });
+                });
+            }
+
+            bindPagination();
+
+        });
+    </script>
+
+
 
     <script>
         function toggleList(el) {
@@ -1158,38 +798,5 @@
         // range.addEventListener('input', () => {
         //     value.innerText = range.value;
         // });
-    </script>
-    <script>
-        function getVals() {
-            // Get slider values
-            let parent = this.parentNode;
-            let slides = parent.getElementsByTagName("input");
-            let slide1 = parseFloat(slides[0].value);
-            let slide2 = parseFloat(slides[1].value);
-            // Neither slider will clip the other, so make sure we determine which is larger
-            if (slide1 > slide2) {
-                let tmp = slide2;
-                slide2 = slide1;
-                slide1 = tmp;
-            }
-
-            let displayElement = parent.getElementsByClassName("rangeValues")[0];
-            displayElement.innerHTML = "$" + slide1 + " - $" + slide2;
-        }
-
-        window.onload = function() {
-            // Initialize Sliders
-            let sliderSections = document.getElementsByClassName("range-slider");
-            for (let x = 0; x < sliderSections.length; x++) {
-                let sliders = sliderSections[x].getElementsByTagName("input");
-                for (let y = 0; y < sliders.length; y++) {
-                    if (sliders[y].type === "range") {
-                        sliders[y].oninput = getVals;
-                        // Manually trigger event first time to display values
-                        sliders[y].oninput();
-                    }
-                }
-            }
-        }
     </script>
 @endpush

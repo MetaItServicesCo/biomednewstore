@@ -37,9 +37,9 @@ class OurLatestProducts extends Component
         // Default Featured category products (latest 4)
         $featuredCategoryId = $this->latestProductCategories[0]['category_id'] ?? null;
 
-        $this->initialProducts = Product::where('is_active', true)
+        $this->initialProducts = Product::where('is_active', true)->where('product_type', 'product')
             ->when($featuredCategoryId, fn($q) => $q->where('category_id', $featuredCategoryId))
-            ->select(['name', 'slug', 'short_description', 'price', 'discount_percent', 'sale_price', 'thumbnail', 'image_alt'])
+            ->select(['name', 'slug', 'short_description', 'price', 'discount_percent', 'sale_price', 'thumbnail', 'image_alt', 'rating'])
             ->latest()
             ->take(4)
             ->get();

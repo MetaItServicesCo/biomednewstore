@@ -100,7 +100,9 @@
             <!-- Heading -->
             <div class=" wraperr">
                 <h2 class="text-center offer-tittle fade-left">Grateful for caregivers. Committed to Care</h2>
-                <button class="see-all-btn">See All</button>
+                <a href="{{ route('products') }}">
+                    <button class="see-all-btn">See All</button>
+                </a>
 
             </div>
 

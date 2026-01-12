@@ -25,14 +25,30 @@ class ProductDataTable extends DataTable
         return (new EloquentDataTable($query))
 
             ->editColumn('type', function ($product) {
-                if ($product->type == 'for_store') {
-                    return '<span class="badge badge-info">For Store</span>';
-                } elseif ($product->type == 'for_rent') {
-                    return '<span class="badge badge-warning">For Rent</span>';
-                } elseif ($product->type == 'both') {
-                    return '<span class="badge badge-primary">Both</span>';
+
+                // Type badge
+                if ($product->type === 'for_store') {
+                    $typeBadge = '<span class="badge badge-info me-1">For Store</span>';
+                } elseif ($product->type === 'for_rent') {
+                    $typeBadge = '<span class="badge badge-warning me-1">For Rent</span>';
+                } elseif ($product->type === 'both') {
+                    $typeBadge = '<span class="badge badge-primary me-1">Both</span>';
+                } else {
+                    $typeBadge = '-';
                 }
+
+                // Product Type badge
+                if ($product->product_type === 'product') {
+                    $productTypeBadge = '<span class="badge badge-success">Product</span>';
+                } elseif ($product->product_type === 'part') {
+                    $productTypeBadge = '<span class="badge badge-dark">Part</span>';
+                } else {
+                    $productTypeBadge = '';
+                }
+
+                return $typeBadge . $productTypeBadge;
             })
+
 
             ->addColumn('category_id', fn($product) => optional($product->category)->name ?? '-')
             ->addColumn('created_by', fn($product) => optional($product->createdBy)->name ?? '-')
