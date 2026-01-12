@@ -70,3 +70,23 @@ Route::get('/store', [LandingPageController::class, 'storeLandingPage'])->name('
 Route::get('/product-list', function () {
     return view('frontend.pages.product-list');
 })->name('product-list');
+
+Route::get('/product-detail', function () {
+    return view('frontend.pages.product-detail');
+})->name('product-detail');
+
+Route::get('/cart', function () {
+    return view('frontend.pages.cart');
+})->name('cart');
+
+Route::get('/billing', function () {
+    return view('frontend.pages.billing');
+})->name('billing');
+
+Route::get('/payment', function () {
+    return view('frontend.pages.payment');
+})->name('payment');
+
+Route::get('/parts', function () {
+    return view('frontend.pages.parts');
+})->name('parts');

@@ -125,10 +125,17 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .service-card .btn-primary:hover {
+            background-color: #0168A4;
+            border: none;
+            color: #ffffff;
         }
 
         .hero-secti {
-            margin-top: 130px;
+            margin-top: 150px;
         }
 
         .first-card-img {
@@ -164,6 +171,12 @@
             font-weight: 700;
             line-height: 100%;
             letter-spacing: 0;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .Seemore-btn:hover {
+            background-color: #025782;
+
         }
 
         /*================== about section  =========================*/
@@ -246,6 +259,44 @@
             box-shadow: 0 0 20px #0071A8;
         }
 
+        @media(max-width:768px) {
+            .see-all-btn {
+
+                margin: 15px auto !important;
+            }
+        }
+
+        @media(max-width:767px) {
+            .pro-section {
+                margin-top: 850px;
+            }
+
+            .sub-heading {
+                font-size: 20px !important;
+
+            }
+
+            .section-desc {
+                font-size: 14px !important;
+
+            }
+
+            .offer-tittle {
+                font-size: 30px !important;
+
+            }
+
+            .see-all-btn {
+
+                margin: 10px auto !important;
+            }
+
+            .offerr-desc {
+
+                font-size: 13px !important;
+
+            }
+        }
 
         /* ================== end =================================== */
     </style>
@@ -462,10 +513,14 @@
 
 
     {{-- ================= contact us section ================== --}}
+
     <x-contact-us-section :footer-states="$footerStates" />
 
     {{-- ================= pruduct sectiion ============= --}}
-    <x-our-latest-products />
+    <div class="pro-section">
+        <x-our-latest-products />
+
+    </div>
 
     {{-- ================faqs section ================ --}}
     <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
