@@ -83,13 +83,12 @@
                     </li>
 
                     <li class="nav-item dropdown  has-mega">
-                        <a class="nav-link mega-toggle "
-                            href="">
+                        <a class="nav-link mega-toggle " href="">
                             Categories List
                             <i class="bi bi-chevron-down dropdown-icon"></i>
                         </a>
                         <div class="mega-menu">
-                            <div class="container-fluid">
+                            {{-- <div class="container-fluid">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-3 col-md-6 mb-3">
@@ -99,7 +98,6 @@
                                             </h6>
                                             <h6 class="nav-title">
                                                 Biomedical Equipment Repair and Maintenance ›
-                                                {{-- <i class="fa-solid fa-angle-right"></i> --}}
                                             </h6>
 
                                             <ul class="list-unstyled">
@@ -113,7 +111,7 @@
                                             </ul>
                                             <h6 class="nav-title">
                                                 Medical Imaging
-                                                Repair and Maintenance › {{-- <i class="fa-solid fa-angle-right"></i> --}}
+                                                Repair and Maintenance › 
                                             </h6>
 
                                             <ul class="list-unstyled">
@@ -133,7 +131,6 @@
                                             </h6>
                                             <h6 class="nav-title">
                                                 Surgical Equipment Repair and Maintenance ›
-                                                {{-- <i class="fa-solid fa-angle-right"></i> --}}
                                             </h6>
 
                                             <ul class="list-unstyled">
@@ -147,7 +144,6 @@
                                             </ul>
                                             <h6 class="nav-title">
                                                 Surgical Laser and Technology Services ›
-                                                {{-- <i class="fa-solid fa-angle-right"></i> --}}
                                             </h6>
 
                                             <ul class="list-unstyled">
@@ -168,7 +164,6 @@
                                             <h6 class="nav-title">
                                                 Onsite Medical Equipment Management ›
 
-                                                {{-- <i class="fa-solid fa-angle-right"></i> --}}
                                             </h6>
 
                                             <ul class="list-unstyled">
@@ -209,6 +204,130 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div> --}}
+                            <div class="container-fluid nav-product">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -219,32 +338,133 @@
                         <div class="mega-menu">
                             <div class="container-fluid nav-product">
                                 <div class="row">
-                                    {{-- @foreach ($headerCategories as $category)
-                                        <div class="col-lg-3 col-md-6 mb-3">
-                                            <h6 class="city-repair-title">
-                                                {{ $category->name }}
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </h6>
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
 
-                                            @if ($category->products->isNotEmpty())
-                                                @foreach ($category->products as $product)
-                                                    <p>
-                                                        {{ $product->name }}
-                                                    </p>
-                                                @endforeach
-                                            @endif
-                                            <p class="mt-3"><a href="#" class="bottomm">Nearby
-                                                    communities</a></p>
-                                        </div>
-                                    @endforeach --}}
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-3">
+                                        <h6 class="city-repair-title text-white">
+                                            Category 1
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </h6>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                        <p class="mt-3">
+                                            <a href="#" class="bottomm">
+                                                Rental Rquipment
+
+                                            </a>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link "
-                            href="">
+                        <a class="nav-link " href="">
                             parts
                         </a>
                     </li>
@@ -258,36 +478,34 @@
 
 
                     <li class="nav-item ms-auto d-flex flex-column align-items-center mt-2 mt-lg-0">
-                        <div class="d-flex align-items-center gap-2 mb-1 contact-icons-wrapper">
+                        <div class="d-flex align-items-center gap-2  contact-icons-wrapper me-2 mt-2">
 
                             @if (setting('email'))
-                                <a href="mailto:{{ setting('email') }}" target="_blank">
-                                    <img src="{{ asset('frontend/images/nav-icon-img-1.png') }}" class="icon-image">
+                                <a href="mailto:{{ setting('email') }}" target="_blank" class="d-flex">
+                                    <img src="{{ asset('frontend/images/nav-ico1.png') }}" class="icon-arrow">
+                                    <img src="{{ asset('frontend/images/nav-ico2.png') }}" class="icon-image">
+
                                 </a>
                             @endif
 
-                            @if (setting('email') && (setting('phone') || setting('whatsapp')))
+                            {{-- @if (setting('email') && (setting('phone') || setting('whatsapp')))
                                 <span class="separator text-white fw-bold">|</span>
-                            @endif
+                            @endif --}}
 
                             @if (setting('phone'))
                                 <a href="tel:{{ cleanPhone(setting('phone')) }}">
-                                    <img src="{{ asset('frontend/images/nav-icon-mg-2.png') }}" class="icon-image">
+                                    <img src="{{ asset('frontend/images/nav-ico.png') }}" class="icon-shop">
                                 </a>
                             @endif
 
-                            @if (setting('phone') && setting('whatsapp'))
+                            {{-- @if (setting('phone') && setting('whatsapp'))
                                 <span class="separator text-white fw-bold">|</span>
-                            @endif
+                            @endif --}}
 
-                            @if (setting('whatsapp'))
-                                <a href="https://wa.me/{{ cleanPhone(setting('whatsapp')) }}" target="_blank">
-                                    <img src="{{ asset('frontend/images/nav-icon-img-3.png') }}" class="icon-image">
-                                </a>
-                            @endif
+
                         </div>
 
-                        <a href="{{ route('contact-us') }}" class="btn contact-btn mt-2 px-3 py-1">
+                        <a href="{{ route('contact-us') }}" class="btn contact-btn mt-1 px-3 py-">
                             CONTACT
                         </a>
                     </li>

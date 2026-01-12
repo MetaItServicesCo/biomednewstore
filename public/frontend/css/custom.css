@@ -698,8 +698,22 @@
 
 
  .contact-icons-wrapper .icon-image {
-     width: 29px;
-     height: 22px;
+     width: 18px;
+     height: 42px;
+     object-fit: contain;
+     transition: transform 0.2s ease;
+ }
+
+ .contact-icons-wrapper .icon-arrow {
+     width: 20px;
+     height: 17px;
+     object-fit: contain;
+     transition: transform 0.2s ease;
+ }
+
+ .contact-icons-wrapper .icon-shop {
+     width: 41px;
+     height: 36px;
      object-fit: contain;
      transition: transform 0.2s ease;
  }
@@ -4883,3 +4897,118 @@
      line-height: 48px;
      text-align: center;
  }
+
+ /*======================================= store product card  ================================================*/
+ .productt-cardd {
+     width: 272px;
+     height: 371px;
+     border: 1px solid #0000001A;
+     border-radius: 12px;
+ }
+
+ .productt-cardd img {
+     width: 272px;
+     height: 256px;
+     border-radius: 12px;
+
+ }
+
+ @media(max-width: 768px) {
+     .productt-cardd {
+         width: 220px;
+
+     }
+
+     .productt-cardd img {
+         width: 220px;
+
+
+     }
+
+     .recent-pro {
+         width: 100% !important;
+     }
+
+     .new-price {
+         margin-left: 0 !important;
+     }
+ }
+
+ @media(max-width: 767px) {
+     .productt-cardd {
+         width: 100%;
+
+     }
+
+     .productt-cardd img {
+         width: 100%;
+
+
+     }
+ }
+
+ .product-meta {
+     display: flex;
+     justify-content: space-between;
+     font-size: 13px;
+ }
+
+ .price-row {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+ }
+
+ .old {
+     text-decoration: line-through;
+     color: #888;
+ }
+
+ .new {
+     font-weight: bold;
+ }
+
+ .btn-buy {
+     background: #0071A8;
+     color: #FFFFFF;
+     border: none;
+     width: 72px;
+     height: 26px;
+     border-radius: 6px;
+     font-weight: 600;
+     font-size: 12px;
+     font-family: Inter;
+     line-height: 100%;
+ }
+
+ .stars {
+     display: flex;
+     /* gap: 1px; */
+ }
+
+ .stars i {
+     font-size: 14px;
+     color: #C4C4C4;
+     /* gray star */
+ }
+
+ .stars i.active {
+     color: #FFC107;
+     /* yellow star */
+ }
+
+ /* Product Meta */
+ .product-meta {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-top: 6px;
+ }
+
+ .stock {
+     font-size: 13px;
+     color: #28a745;
+     font-weight: 600;
+ }
+
+ /* ========================================= end ================================================================ */

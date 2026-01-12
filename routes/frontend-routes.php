@@ -64,9 +64,26 @@ Route::prefix('ajax')->group(function () {
     Route::post('/products/filter', [ProductController::class, 'productsFilter'])->name('products.filter');
 });
 
-
 Route::get('/store', [LandingPageController::class, 'storeLandingPage'])->name('store');
 
-Route::get('/products', [ProductController::class , 'products'])->name('products');
-Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add');
+Route::get('/product-detail', function () {
+    return view('frontend.pages.product-detail');
+})->name('product-detail');
 
+Route::get('/cart', function () {
+    return view('frontend.pages.cart');
+})->name('cart');
+
+Route::get('/billing', function () {
+    return view('frontend.pages.billing');
+})->name('billing');
+
+Route::get('/payment', function () {
+    return view('frontend.pages.payment');
+})->name('payment');
+
+Route::get('/parts', function () {
+    return view('frontend.pages.parts');
+})->name('parts');
+Route::get('/products', [ProductController::class, 'products'])->name('products');
+Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add');
