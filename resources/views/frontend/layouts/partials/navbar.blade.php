@@ -478,11 +478,11 @@
 
 
                     <li class="nav-item ms-auto d-flex flex-column align-items-center mt-2 mt-lg-0">
-                        <div class="d-flex align-items-center gap-2  contact-icons-wrapper me-2 mt-2">
+                        <div class="d-flex align-items-center gap-4  contact-icons-wrapper me-2 mt-2">
 
                             @if (setting('email'))
                                 <a href="mailto:{{ setting('email') }}" target="_blank" class="d-flex">
-                                    <img src="{{ asset('frontend/images/nav-ico1.png') }}" class="icon-arrow">
+                                    <img src="{{ asset('frontend/images/nav-ico1.png') }}" class="icon-arrow mt-2">
                                     <img src="{{ asset('frontend/images/nav-ico2.png') }}" class="icon-image">
 
                                 </a>
