@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ProductDataTable;
+use App\DataTables\ProductFeedbackDataTable;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\ProductFeedback;
 use App\Traits\UploadImageTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -459,7 +460,12 @@ class ProductController extends Controller
         $product = Product::where('slug', $slug)->where('is_active', true)->first();
         $faqs = getFaqs('products');
 
-        return view('frontend.pages.product-detail', compact('product', 'faqs'));
+        $latestReviews = ProductFeedback::where('product_id', $product->id)
+            ->where('status', 'approved')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('frontend.pages.product-detail', compact('product', 'faqs', 'latestReviews'));
     }
 
     public function addToCart(Request $request)
@@ -543,6 +549,7 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Item removed from cart',
+            'cart' => session('cart', []),
         ]);
     }
 
@@ -627,5 +634,150 @@ class ProductController extends Controller
             ->get();
 
         return view('frontend.pages.parts', compact('parts'));
+    }
+
+    public function productFeedback(Request $request)
+    {
+        try {
+            // ---------------- VALIDATION ----------------
+            $validated = $request->validate([
+                'product_id' => 'required|exists:products,id',
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'message' => 'required|string',
+                'rating' => 'required|integer|min:1|max:5',
+                'g-recaptcha-response' => 'required',
+            ], [
+                'g-recaptcha-response.required' => 'Please confirm you are not a robot.',
+            ]);
+
+            // ---------------- VERIFY reCAPTCHA ----------------
+            $response = Http::asForm()->post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                [
+                    'secret' => config('services.recaptcha.secret'),
+                    'response' => $request->input('g-recaptcha-response'),
+                    'remoteip' => $request->ip(),
+                ]
+            );
+
+            $responseBody = $response->json();
+
+            if (! ($responseBody['success'] ?? false)) {
+                throw ValidationException::withMessages([
+                    'g-recaptcha-response' => ['reCAPTCHA verification failed. Please try again.'],
+                ]);
+            }
+
+            DB::beginTransaction();
+
+            ProductFeedback::create([
+                'product_id' => $validated['product_id'],
+                'user_id' => auth()->check() ? auth()->id() : null,
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'message' => $validated['message'],
+                'rating' => $validated['rating'],
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Thanks for giving a feedback!',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Product Feedback Error', [
+                'error' => $e->getMessage(),
+                'request' => $request->all(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again later.',
+            ], 500);
+        }
+    }
+
+    // Product Feedback Management
+    public function feedbackIndex(ProductFeedbackDataTable $dataTable)
+    {
+        return $dataTable->render('pages.product-feedback.index');
+    }
+
+    public function feedbackEdit(ProductFeedback $feedback)
+    {
+        $products = Product::where('is_active', true)->get();
+
+        return view('pages.product-feedback.edit', [
+            'data' => $feedback,
+            'products' => $products,
+        ]);
+    }
+
+    public function feedbackUpdate(Request $request, ProductFeedback $feedback)
+    {
+
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5',
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $feedback->update([
+                'product_id' => $request->product_id,
+                'name' => $request->name,
+                'email' => $request->email,
+                'message' => $request->message,
+                'rating' => $request->rating,
+                'status' => $request->status,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('admin.product-feedback.list')->with('success', 'Product feedback updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Product Feedback Update Error: '.$e->getMessage(), [
+                'request_data' => $request->all(),
+                'feedback_id' => $feedback->id,
+            ]);
+
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function feedbackDestroy(ProductFeedback $feedback)
+    {
+        DB::beginTransaction();
+
+        try {
+            $feedback->delete();
+
+            DB::commit();
+
+            return redirect()->route('admin.product-feedback.list')->with('success', 'Product feedback deleted successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Product Feedback Delete Error: '.$e->getMessage(), [
+                'feedback_id' => $feedback->id,
+            ]);
+
+            return back()->withErrors(['error' => 'Failed to delete the product feedback: '.$e->getMessage()]);
+        }
     }
 }

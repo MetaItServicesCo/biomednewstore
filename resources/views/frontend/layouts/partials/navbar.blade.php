@@ -47,11 +47,6 @@
         transform: translateY(0);
     }
 
-
-
-
-
-
     .mega-menu {
         position: absolute;
         z-index: 99999;
@@ -283,9 +278,14 @@
                             </a>
 
 
-                            <a href="{{ route('cart') }}">
+                            <a href="{{ route('cart') }}" class="cart-icon-wrapper position-relative">
                                 <img src="{{ asset('frontend/images/nav-ico.png') }}" class="icon-shop">
+
+                                <span id="cart-count" class="cart-count-badge">
+                                    {{ count(session('cart', [])) }}
+                                </span>
                             </a>
+
 
                         </div>
 

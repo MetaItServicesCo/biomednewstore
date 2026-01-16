@@ -523,10 +523,10 @@
     <section class="hero-detail-section">
         <div class="container py-5 text-center text-white">
 
-            <h1 class="hero-title mb-3 fade-left">{!! highlightBracketText($data->hero_title ?? '', ['#000000']) !!}</h1>
+            <h1 class="hero-title mb-3 fade-left">FeedBack</h1>
 
             <p class="hero-description mx-auto mb-4 fade-right">
-                {{ $data->hero_subtitle ?? '' }}
+                dasd asd asdas das das das dasd asd asd asd asdas
             </p>
 
             <div class="container py-5 text-center text-white">
@@ -555,11 +555,11 @@
                 <div class="col-lg-6">
 
                     <h2 class="review-headingg mb-3 fade-right">
-                        {{ $data->main_heading ?? '' }}
+                        das dasd asd asdsa d
                     </h2>
 
                     <div class="review-desc mb-4 fade-left">
-                        {!! $data->main_description ?? '' !!}
+                        asd asda sdas dasd sad sad asdas
                     </div>
 
                     <div class="d-flex gap-4 mt-5 ">
@@ -585,15 +585,15 @@
             <div class="d-flex  justify-content-center align-items-center flex-wrrapper">
 
                 <!-- Left Image -->
-                <img src="{{ $data->cta_logo ? asset('storage/reviews/cta/' . $data->cta_logo) : '' }}"
-                    alt="{{ $data->cta_logo_alt ?? '' }}" class="bio-img">
+                <img src=""
+                    alt="" class="bio-img">
 
                 <!-- Blue Box -->
                 <div class="bio-box position-relative">
-                    <h3 class="bio-heading">{{ $data->cta_title ?? '' }}</h3>
+                    <h3 class="bio-heading">sadsad asd asd</h3>
 
                     <p class="bio-desc">
-                        {{ $data->cta_description ?? '' }}
+                        sda sdas das dasd
                     </p>
 
                     <!-- Button bottom-right -->
@@ -610,12 +610,12 @@
 
         <!-- Heading -->
         <h2 class="customer-heading text-center fade-left">
-            {!! highlightBracketText($data->testimonial_heading ?? '', ['#000000']) !!}
+            asd sadas das das da
         </h2>
 
         <!-- Description -->
         <p class="customer-desc text-center fade-right">
-            {{ $data->testimonial_subheading ?? '' }}
+            ad asda sdas das das
         </p>
 
         <!-- Category Buttons -->
@@ -658,8 +658,6 @@
         </div>
     </section>
 
-    <!-- BUTTON + ICON GROUP -->
-    <x-service-btn />
 
     {{-- ===================== feedback section ======================== --}}
 
@@ -771,10 +769,6 @@
 
     {{-- ============= reveiw sectiion ================== --}}
     <x-testimonial-slider />
-
-    {{-- ============ Recent News Section ============ --}}
-    <!-- Default: 4 blogs -->
-    <x-recent-blogs-section />
 
 @endsection
 

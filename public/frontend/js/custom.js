@@ -1418,3 +1418,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+window.updateCartCount = function (cart) {
+    const counter = document.getElementById('cart-count');
+    if (!counter) return;
+
+    const count = Object.keys(cart || {}).length;
+
+    counter.innerText = count;
+
+    // Hide if empty
+    counter.style.display = count > 0 ? 'flex' : 'none';
+};
