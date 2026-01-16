@@ -77,6 +77,7 @@ Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
 Route::post('/cart/clear', [ProductController::class, 'clearCart'])->name('cart.clear');
 Route::post('/cart/remove', [ProductController::class, 'removeCartItem'])->name('cart.remove');
 Route::post('/cart/update-qty', [ProductController::class, 'updateCartQuantity'])->name('cart.update-qty');
+Route::post('/product/feedback', [ProductController::class, 'productFeedback'])->name('post.product.feedback');
 
 
 

@@ -14,6 +14,7 @@ use Stripe\PaymentIntent;
 use App\Mail\OrderConfirmationMail;
 use App\Mail\OrderPaymentFailedMail;
 use Illuminate\Support\Facades\Mail;
+use App\DataTables\OrderDataTable;
 
 
 class OrderController extends Controller

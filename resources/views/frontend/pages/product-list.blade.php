@@ -436,13 +436,19 @@
 
                     <!-- Wishlist -->
                     <div class="wishlist d-flex align-items-center gap-2 pe-3 border-end">
-                        <i class="fa-regular fa-heart fa-lg mt-1 wishlist-icon"></i>
-                        <span class=" ">Add to Wishlist</span>
+                        {{-- <i class="fa-regular fa-heart fa-lg mt-1 wishlist-icon"></i>
+                        <span class=" ">Add to Wishlist</span> --}}
                     </div>
 
                     <!-- Shop Icon -->
                     <div class="shop-icon ms-1">
-                        <img src="{{ asset('frontend/images/list-icon.png') }}" alt="" class="list-icon-img">
+                        <a href="{{ route('cart') }}" class="cart-icon-wrapper position-relative">
+
+                            <img src="{{ asset('frontend/images/list-icon.png') }}" alt="" class="list-icon-img">
+                            <span id="cart-count" class="cart-count-badge">
+                                {{ count(session('cart', [])) }}
+                            </span>
+                        </a>
                     </div>
 
                 </div>
@@ -523,10 +529,12 @@
                                             {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
                                         </h6>
                                         <p class="recent-price">
-                                            @if ($product->price && $product->price > 0)
-                                                <span class="old-price">${{ number_format($product->price, 2) }}</span>
+                                            @if ($recentProduct->price && $recentProduct->price > 0)
+                                                <span
+                                                    class="old-price">${{ number_format($recentProduct->price, 2) }}</span>
                                             @endif
-                                            <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
+                                            <span
+                                                class="new-price">${{ number_format($recentProduct->sale_price, 2) }}</span>
                                         </p>
                                         <div class="stars">
                                             @php

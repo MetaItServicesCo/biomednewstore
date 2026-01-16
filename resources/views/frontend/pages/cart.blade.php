@@ -747,6 +747,9 @@
                             if (res.success) {
                                 toastr.success(res.message || 'Cart cleared successfully');
 
+                                if (window.updateCartCount) {
+                                    window.updateCartCount({});
+                                }
                                 // Optional: reload page to update table
                                 setTimeout(() => {
                                     location.reload();
@@ -787,6 +790,9 @@
                                 const row = btn.closest('tr');
                                 if (row) row.remove();
 
+                                if (window.updateCartCount) {
+                                    window.updateCartCount(res.cart || {});
+                                }
                                 // Update summary after removal
                                 updateSummary();
 

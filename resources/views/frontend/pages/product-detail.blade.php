@@ -280,6 +280,17 @@
         }
 
         /* ======================= end ========================= */
+
+        /* Star Rating */
+        .rate-stars .star {
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .rate-stars .star.selected {
+            color: #FFD700;
+            /* Gold color for selected stars */
+        }
     </style>
 @endpush
 
@@ -476,17 +487,103 @@
 
         </section>
 
-        {{-- ================= pruduct sectiion ============= --}}
-        <div class="pro-section">
-            <x-our-latest-products />
-
-        </div>
-
-        {{-- ================faqs section ================ --}}
-        <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
-            image="frontend/images/hero-main-img.png" :visible="4" />
 
     @endif
+    {{-- ============= reveiw sectiion ================== --}}
+    <x-testimonial-slider />
+
+    {{-- ===================== feedback section ======================== --}}
+
+    <section class="comment-section py-5">
+        <div class="container">
+            <div class="row g-4">
+
+                <!-- ================= LEFT COLUMN ================= -->
+                <div class="col-lg-6 col-md-6 fade-lef animate-card">
+
+                    <h3 class="comment-heading mb-4">Leave a Feedback</h3>
+
+                    <form id="feed_back_form" action="{{ route('post.product.feedback') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <div class="mb-3">
+                            <input type="text" name="name" class="form-control comment-input"
+                                placeholder="Enter Name">
+                            <span class="text-danger error-text name_error"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="email" name="email" class="form-control comment-input"
+                                placeholder="Enter Email">
+                            <span class="text-danger error-text email_error"></span>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <textarea name="message" class="form-control comment-textarea" rows="5" placeholder="Write your comment"></textarea>
+                            <span class="text-danger error-text message_error"></span>
+                        </div>
+
+                        {{-- ⭐ Rating --}}
+                        <div class="rate-box mb-3">
+                            <h4 class="rate-title">Give The Rate!</h4>
+
+                            <div class="rate-stars">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="fa-solid fa-star star" data-value="{{ $i }}"></i>
+                                @endfor
+                            </div>
+
+                            <input type="hidden" name="rating" id="rating">
+                            <span class="text-danger error-text rating_error"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                            <div class="g-recaptcha w-100" data-sitekey="{{ config('services.recaptcha.sitekey') }}">
+                            </div>
+                            <span class="text-danger error-text g-recaptcha-response_error"></span>
+                        </div>
+
+                        <button type="submit" class="btn submitt-btn mt-4">Submit</button>
+                    </form>
+
+                </div>
+
+                <!-- ================= RIGHT COLUMN ================= -->
+                <div class="col-lg-6 col-md-6 fade-righ animate-card">
+
+                    <h3 class="comment-heading mb-3">Feedbacks [{{ $latestReviews->count() }}]</h3>
+
+                    <!-- Outer Box -->
+                    <div class="feedback-box">
+
+                        <!-- Inner Comment -->
+                        @if ($latestReviews->isNotEmpty())
+                            @foreach ($latestReviews as $review)
+                                <div class="single-comment">
+                                    <h5 class="comment-name">{{ $review->name }}</h5>
+                                    <p class="comment-by">
+                                        {{ \Illuminate\Support\Str::words($review->message, 6, '...') }}
+                                    </p>
+                                </div>
+                            @endforeach
+                        @else
+                            <p>No feedbacks available.</p>
+                        @endif
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- ================= pruduct sectiion ============= --}}
+    <div class="pro-section">
+        <x-our-latest-products />
+
+    </div>
 
 @endsection
 
@@ -630,7 +727,7 @@
                         .then(res => {
                             if (res.success) {
                                 console.log('res', res);
-                                
+
                                 btn.innerText = 'Added!';
                                 toastr.success(res.message ?? 'Product added to cart!');
 
@@ -687,6 +784,83 @@
                 btn.classList.add("active");
                 document.getElementById(btn.dataset.tab).classList.add("active");
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Star Rating Logic
+            const stars = document.querySelectorAll('.rate-stars .star');
+            const ratingInput = document.getElementById('rating');
+
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    ratingInput.value = value;
+
+                    // Fill stars up to selected
+                    stars.forEach(s => {
+                        if (s.dataset.value <= value) {
+                            s.classList.add('selected');
+                        } else {
+                            s.classList.remove('selected');
+                        }
+                    });
+                });
+            });
+
+            // Feedback Form AJAX
+            const feedbackForm = document.getElementById('feed_back_form');
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Clear previous errors
+                    document.querySelectorAll('.error-text').forEach(el => el.textContent = '');
+
+                    const formData = new FormData(feedbackForm);
+
+                    fetch(feedbackForm.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content,
+                                'Accept': 'application/json',
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                toastr.success(data.message);
+                                feedbackForm.reset();
+                                // Reset stars
+                                stars.forEach(s => s.classList.remove('selected'));
+                                ratingInput.value = '';
+                                // Reset captcha
+                                if (typeof grecaptcha !== 'undefined') {
+                                    grecaptcha.reset();
+                                }
+                                // Reload page
+                                location.reload();
+                            } else {
+                                // Handle errors
+                                if (data.errors) {
+                                    Object.keys(data.errors).forEach(key => {
+                                        const errorEl = document.querySelector(`.${key}_error`);
+                                        if (errorEl) {
+                                            errorEl.textContent = data.errors[key][0];
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            toastr.error('Something went wrong. Please try again.');
+                        });
+                });
+            }
         });
     </script>
 @endpush

@@ -107,6 +107,16 @@ Route::middleware(['admin_or_redirect'])->group(function () {
     });
 
     // ===========================
+    // Product Feedback
+    // ===========================
+    Route::controller(ProductController::class)->prefix('admin/product-feedback')->as('admin.product-feedback.')->group(function () {
+        Route::get('/', 'feedbackIndex')->name('list');
+        Route::get('/{feedback}/edit', 'feedbackEdit')->name('edit');
+        Route::put('/{feedback}/update', 'feedbackUpdate')->name('update');
+        Route::delete('/{feedback}/delete', 'feedbackDestroy')->name('destroy');
+    });
+
+    // ===========================
     // Offers
     // ===========================
     Route::controller(OfferController::class)->prefix('admin/offers')->as('admin-offers.')->group(function () {

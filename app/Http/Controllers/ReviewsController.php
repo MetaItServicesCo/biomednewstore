@@ -46,26 +46,6 @@ class ReviewsController extends Controller
         $validated = $request->validate([
             'id' => 'nullable|exists:reviews_landing_pages,id',
 
-            // Hero
-            'hero_title' => 'required|string|max:255',
-            'hero_subtitle' => 'nullable|string',
-
-            // Main content
-            'main_heading' => 'nullable|string|max:255',
-            'main_description' => 'nullable|string',
-            'main_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'main_image_alt' => 'nullable|string|max:255',
-
-            // CTA
-            'cta_title' => 'nullable|string|max:255',
-            'cta_description' => 'nullable|string',
-            'cta_logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'cta_logo_alt' => 'nullable|string|max:255',
-
-            // Testimonials
-            'testimonial_heading' => 'nullable|string|max:255',
-            'testimonial_subheading' => 'nullable|string',
-
             // SEO
             'meta_title' => 'nullable|string|max:255',
             'meta_keywords' => 'nullable|string|max:255',
@@ -78,43 +58,8 @@ class ReviewsController extends Controller
             // ================= FIND OR CREATE =================
             $page = ReviewsLandingPage::find($request->id) ?? new ReviewsLandingPage();
 
-            // ================= IMAGE UPLOAD =================
-            $mainImage = $this->updateImage(
-                $request,
-                'main_image',
-                'reviews/main',
-                $page->main_image ?? null
-            );
-
-            $ctaLogo = $this->updateImage(
-                $request,
-                'cta_logo',
-                'reviews/cta',
-                $page->cta_logo ?? null
-            );
-
             // ================= SAVE DATA =================
             $page->fill([
-                // Hero
-                'hero_title' => $validated['hero_title'],
-                'hero_subtitle' => $validated['hero_subtitle'] ?? null,
-
-                // Main
-                'main_heading' => $validated['main_heading'] ?? null,
-                'main_description' => $validated['main_description'] ?? null,
-                'main_image' => $mainImage,
-                'main_image_alt' => $validated['main_image_alt'] ?? null,
-
-                // CTA
-                'cta_title' => $validated['cta_title'] ?? null,
-                'cta_description' => $validated['cta_description'] ?? null,
-                'cta_logo' => $ctaLogo,
-                'cta_logo_alt' => $validated['cta_logo_alt'] ?? null,
-
-                // Testimonials
-                'testimonial_heading' => $validated['testimonial_heading'] ?? null,
-                'testimonial_subheading' => $validated['testimonial_subheading'] ?? null,
-
                 // SEO
                 'meta_title' => $validated['meta_title'] ?? null,
                 'meta_keywords' => $validated['meta_keywords'] ?? null,
