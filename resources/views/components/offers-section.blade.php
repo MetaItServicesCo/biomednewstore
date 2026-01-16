@@ -121,186 +121,20 @@
                 <!-- Slider Container -->
                 <div class="offer-slider-container">
                     <div class="offer-slider-track">
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
+                        @foreach ($p as $product)
+                            <div class="offer-card">
+                                <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
+                                    alt="{{ $product->image_alt ?? $product->name }}" class="card-img img-fluid">
+                                <div class="card-body border-0">
+                                    <p class="card-desc">{{ $product->name }}
+                                    </p>
+                                    <p class="price text-danger text-center">
+                                        ${{ number_format($product->sale_price, 2) }}</p>
+                                        <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">Add
+                                            to Cart</button>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="offer-card">
-                            <img src="{{ asset('frontend/images/offer-img.png') }}" alt=""
-                                class="card-img img-fluid">
-                            <div class="card-body border-0">
-                                <p class="card-desc">Welch Allyn ECG 10-Lead Banana
-                                    Patient Cable for CP50, CP 150
-                                    (721328, 901006)</p>
-                                <p class="price text-danger text-center">$199.00</p>
-                                <a href="#">
-                                    <button class="offer-readd-btn">Add to Cart</button>
-                                </a>
-                            </div>
-                        </div>
+                        @endforeach
 
                     </div>
                 </div>

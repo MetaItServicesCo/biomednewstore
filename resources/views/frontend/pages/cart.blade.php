@@ -1,9 +1,6 @@
 @extends('frontend.layouts.frontend')
 
-{{-- @section('title', 'Home') --}}
-@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
-@section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '')
+@section('title', 'Cart')
 
 @push('frontend-styles')
     <style>
@@ -91,6 +88,15 @@
             flex-direction: column;
             font-size: 12px;
             cursor: pointer;
+        }
+
+        .qty-icons i {
+            padding: 2px;
+        }
+
+        .qty-icons i.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .item-actions {
@@ -249,7 +255,7 @@
             border-radius: 10px;
             width: 100%;
             max-width: 430px;
-            height: 609px;
+            height: 490px;
             margin: 0 auto;
         }
 
@@ -374,256 +380,171 @@
                 <div class="row g-4">
 
                     <!-- ================= LEFT CART COLUMN ================= -->
-                    {{-- <div class="col-lg-8">
+                    @php $cart = session('cart', []); @endphp
+                    @if (count($cart) > 0)
 
-                        <div class="cart-head">
-                            <span>Item</span>
-                            <span>Price</span>
-                            <span>Qty</span>
-                            <span>Subtotal</span>
-                        </div>
+                        <div class="col-lg-8">
 
-                        <div class="cart-item">
-                            <div class="item-info">
-                                <img src="{{ asset('frontend/images/offer-img.png') }}" alt="">
-                                <p>Welch Allyn CP 150 ECG System</p>
+                            <div class="table-responsive">
+                                <table class="table table-borderless align-middle cart-table ">
+
+                                    <!-- Head -->
+                                    <thead class="cart-head">
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+
+                                    <!-- Body -->
+                                    <tbody>
+                                        @forelse($cart as $item)
+                                            @php
+                                                $subtotal = ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+                                                $itemImage =
+                                                    isset($item['image']) && !empty($item['image'])
+                                                        ? asset('storage/products/thumbnails/' . $item['image'])
+                                                        : asset('frontend/images/offer-img.png');
+                                            @endphp
+                                            <!-- Item Row -->
+                                            <tr class="border-bottom">
+                                                <!-- Item -->
+                                                <td>
+                                                    <div class="item-info">
+                                                        <img src="{{ $itemImage }}"
+                                                            alt="{{ $item['name'] ?? 'Product' }}">
+                                                        <p class="mt-3">{{ $item['name'] ?? 'Product' }}</p>
+                                                    </div>
+                                                </td>
+
+                                                <!-- Price -->
+                                                <td class="item-price">${{ number_format($item['price'] ?? 0, 2) }}</td>
+
+                                                <!-- Qty -->
+                                                <td>
+                                                    <div class="item-qty" data-id="{{ $item['id'] ?? 0 }}"
+                                                        data-stock="{{ $item['stock_qty'] ?? 0 }}">
+                                                        <span>{{ $item['qty'] ?? 0 }}</span>
+                                                        <div class="qty-icons">
+                                                            <i class="fa fa-chevron-up increase-qty"></i>
+                                                            <i class="fa fa-chevron-down decrease-qty"></i>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <!-- Subtotal -->
+                                                <td class="item-subtotal">
+                                                    <div
+                                                        class="d-flex gap-3 align-items-start justify-content-center align-items-center">
+                                                        <p class="mt-3">${{ number_format($subtotal, 2) }}</p>
+                                                        <div class="item-actions">
+                                                            <div class="item-ico remove-item"
+                                                                data-id="{{ $item['id'] ?? 0 }}">
+                                                                <i class="fa-solid fa-xmark"></i>
+                                                            </div>
+                                                            <div class="item-ico edit-item"
+                                                                data-slug="{{ $item['slug'] ?? '#' }}"><i
+                                                                    class="fa fa-pen"></i></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4" class="text-center">Your cart is empty.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <div class="item-price">$3,586.95</div>
 
-                            <div class="item-qty">
-                                <span class="qty-number">1</span>
-                                <div class="qty-icons">
-                                    <i class="fa fa-chevron-up"></i>
+                            <!-- Buttons -->
+                            <div class="cart-actions mt-3">
+                                <a href="{{ route('products') }}">
+                                    <button class="btn-outline">Continue Shopping</button>
+                                </a>
+                                <button class="btn-outline danger" id="clear_cart">Clear Shopping Cart</button>
+                            </div>
+                        </div>
+
+
+                        <!-- ================= RIGHT SUMMARY COLUMN ================= -->
+                        <div class="col-lg-4">
+                            <div class="summary-card">
+
+                                <h5>Summary</h5>
+
+                                <div class="summary-toggle mt-3">
+                                    <span>Estimate Shipping and Tax</span>
                                     <i class="fa fa-chevron-down"></i>
                                 </div>
-                            </div>
+                                <p class="summary-text  mt-3">
+                                    Enter your destination to get a shipping estimate.
+                                </p>
 
-                            <div class="item-subtotal">
-                                <div class="d-flex gap-4">
-                                    <p>$3,586.95</p>
-                                    <div class="item-actions">
-                                        <div class="item-ico">
-                                            <i class="fa-solid fa-xmark"></i>
-
-                                        </div>
-                                        <div class="item-ico">
-                                            <i class="fa fa-pen"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr>
-
-
-                        <!-- Cart Item -->
-                        <div class="cart-item">
-                            <!-- Item -->
-                            <div class="item-info">
-                                <img src="{{ asset('frontend/images/offer-img.png') }}" alt="">
-                                <p>Welch Allyn CP 150 ECG System</p>
-                            </div>
-
-                            <!-- Price -->
-                            <div class="item-price">$3,586.95</div>
-
-                            <!-- Quantity -->
-                            <div class="item-qty">
-                                <span class="qty-number">1</span>
-                                <div class="qty-icons">
-                                    <i class="fa fa-chevron-up"></i>
+                                <div class="summary-toggle  mt-3">
+                                    <span>Apply Discount Code</span>
                                     <i class="fa fa-chevron-down"></i>
                                 </div>
-                            </div>
 
-                            <!-- Subtotal -->
-                            <div class="item-subtotal">
-                                <div class="d-flex gap-4">
-                                    <p>$3,586.95</p>
-                                    <div class="item-actions">
-                                        <div class="item-ico">
-                                            <i class="fa-solid fa-xmark"></i>
+                                <hr>
 
-                                        </div>
-                                        <div class="item-ico">
-                                            <i class="fa fa-pen"></i>
-                                        </div>
-                                    </div>
+                                <div class="summary-row mt-3 summary-subtotal">
+                                    <span>Subtotal</span>
+                                    <span>$0.00</span>
                                 </div>
+
+                                <div class="summary-row  mt-3 summary-shipping">
+                                    <span>Shipping</span>
+                                    <span>$40.00</span>
+                                </div>
+                                <p class="small-text  mt-3">
+                                    (Standard Rate - Price may vary depending on the item/destination. TECS Staff will
+                                    contact
+                                    you.)
+                                </p>
+
+                                <div class="summary-row  mt-3 summary-gst">
+                                    <span>GST (10%)</span>
+                                    <span>$0.00</span>
+                                </div>
+                                <div class="summary-total  mt-3 summary-total-amount">
+                                    <span>Order Total</span>
+                                    <span>$0.00</span>
+                                </div>
+
+                                <a href="{{ route('billing') }}">
+                                    <button class="checkout-btn mt-3">Proceed to Checkout</button>
+                                </a>
+
                             </div>
                         </div>
+                    @else
+                        <div class="col-lg-12">
+                            <div class="empty-cart-wrapper text-center">
 
-                        <hr>
-                        <!-- Cart Buttons -->
-                        <div class="cart-actions">
-                            <button class="btn-outline">Continue Shopping</button>
-                            <button class="btn-outline danger">Clear Shopping Cart</button>
+                                <div class="empty-cart-icon">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </div>
+
+                                <h3>Your cart is empty</h3>
+                                <p>
+                                    Looks like you haven’t added anything to your cart yet.
+                                    Start shopping to explore our latest products.
+                                </p>
+
+                                <a href="{{ route('products') }}">
+                                    <button class="btn-outline mt-3">
+                                        Continue Shopping
+                                    </button>
+                                </a>
+
+                            </div>
                         </div>
-                    </div> --}}
-                    <div class="col-lg-8">
-                        <div class="table-responsive">
-                            <table class="table table-borderless align-middle cart-table ">
-
-                                <!-- Head -->
-                                <thead class="cart-head">
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Price</th>
-                                        <th>Qty</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-
-                                <!-- Body -->
-                                <tbody>
-
-                                    <!-- Item Row -->
-                                    <tr class="border-bottom">
-                                        <!-- Item -->
-                                        <td>
-                                            <div class="item-info">
-                                                <img src="{{ asset('frontend/images/offer-img.png') }}" alt="">
-                                                <p class="mt-3">Welch Allyn CP 150 ECG System</p>
-                                            </div>
-                                        </td>
-
-                                        <!-- Price -->
-                                        <td class="item-price">$3,586.95</td>
-
-                                        <!-- Qty -->
-                                        <td>
-                                            <div class="item-qty">
-                                                <span>1</span>
-                                                <div class="qty-icons">
-                                                    <i class="fa fa-chevron-up"></i>
-                                                    <i class="fa fa-chevron-down"></i>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <!-- Subtotal -->
-                                        <td class="item-subtotal">
-                                            <div
-                                                class="d-flex gap-3 align-items-start justify-content-center align-items-center">
-                                                <p class="mt-3">$3,586.95</p>
-                                                <div class="item-actions">
-                                                    <div class="item-ico"><i class="fa-solid fa-xmark"></i></div>
-                                                    <div class="item-ico"><i class="fa fa-pen"></i></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-bottom">
-                                        <!-- Item -->
-                                        <td>
-                                            <div class="item-info">
-                                                <img src="{{ asset('frontend/images/offer-img.png') }}" alt="">
-                                                <p class="mt-3">Welch Allyn CP 150 ECG System</p>
-                                            </div>
-                                        </td>
-
-                                        <!-- Price -->
-                                        <td class="item-price">$3,586.95</td>
-
-                                        <!-- Qty -->
-                                        <td>
-                                            <div class="item-qty">
-                                                <span>1</span>
-                                                <div class="qty-icons">
-                                                    <i class="fa fa-chevron-up"></i>
-                                                    <i class="fa fa-chevron-down"></i>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <!-- Subtotal -->
-                                        <td class="item-subtotal">
-                                            <div
-                                                class="d-flex gap-3 align-items-start justify-content-center align-items-center">
-                                                <p class="mt-3">$3,586.95</p>
-                                                <div class="item-actions">
-                                                    <div class="item-ico"><i class="fa-solid fa-xmark"></i></div>
-                                                    <div class="item-ico"><i class="fa fa-pen"></i></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-
-                                </tbody>
-
-
-
-                            </table>
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="cart-actions mt-3">
-                            <button class="btn-outline">Continue Shopping</button>
-                            <button class="btn-outline danger">Clear Shopping Cart</button>
-                        </div>
-                    </div>
-
-
-                    <!-- ================= RIGHT SUMMARY COLUMN ================= -->
-                    <div class="col-lg-4">
-                        <div class="summary-card">
-
-                            <h5>Summary</h5>
-
-                            <div class="summary-toggle mt-3">
-                                <span>Estimate Shipping and Tax</span>
-                                <i class="fa fa-chevron-down"></i>
-                            </div>
-                            <p class="summary-text  mt-3">
-                                Enter your destination to get a shipping estimate.
-                            </p>
-
-                            <div class="summary-toggle  mt-3">
-                                <span>Apply Discount Code</span>
-                                <i class="fa fa-chevron-down"></i>
-                            </div>
-
-                            <hr>
-
-                            <div class="summary-row mt-3">
-                                <span>Subtotal</span>
-                                <span>$3,586.95</span>
-                            </div>
-
-                            <div class="summary-row  mt-3">
-                                <span>Shipping</span>
-                                <span>$40.00</span>
-                            </div>
-                            <p class="small-text  mt-3">
-                                (Standard Rate - Price may vary depending on the item/destination. TECS Staff will contact
-                                you.)
-                            </p>
-
-                            <div class="summary-row  mt-3">
-                                <span>Tax</span>
-                                <span>10%</span>
-                            </div>
-                            <div class="summary-row  mt-3">
-                                <span>GST (10%)</span>
-                                <span>10%</span>
-                            </div>
-                            <div class="summary-total  mt-3">
-                                <span>Order Total</span>
-                                <span>$3,982.64</span>
-                            </div>
-
-                            <button class="checkout-btn  mt-3">Proceed to Checkout</button>
-
-                            <button class="paypal-btn  mt-3">
-                                <img src="{{ asset('frontend/images/paypal-logo.png') }}" alt="PayPal">
-                            </button>
-
-                        </div>
-                    </div>
-
+                    @endif
                 </div>
             </div>
         </section>
@@ -642,8 +563,260 @@
         {{-- <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
         image="frontend/images/hero-main-img.png" :visible="4" /> --}}
 
+    </section>
+@endsection
 
-    @endsection
+@push('frontend-scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
 
-    @push('frontend-scripts')
-    @endpush
+            // Get cart object from Blade
+            const cart = @json($cart); // cart object with product IDs as keys
+
+            // Function to update summary
+            function updateSummary() {
+                let subtotal = 0;
+
+                // Calculate subtotal from all rows
+                document.querySelectorAll('.cart-table tbody tr').forEach(row => {
+                    const qtyElem = row.querySelector('.item-qty span');
+                    const priceElem = row.querySelector('.item-price');
+
+                    if (qtyElem && priceElem) {
+                        const qty = parseInt(qtyElem.innerText) || 0;
+                        const price = parseFloat(priceElem.innerText.replace('$', '')) || 0;
+                        subtotal += price * qty;
+                    }
+                });
+
+                // Get shipping and tax rates
+                const shipping = 40.00;
+                const taxRate = 0.10;
+
+                // Calculate totals
+                const gst = subtotal * taxRate;
+                const orderTotal = subtotal + shipping + gst;
+
+                // Update summary card using class names
+                const subtotalElem = document.querySelector('.summary-subtotal span:last-child');
+                const shippingElem = document.querySelector('.summary-shipping span:last-child');
+                const gstElem = document.querySelector('.summary-gst span:last-child');
+                const totalElem = document.querySelector('.summary-total-amount span:last-child');
+
+                if (subtotalElem) subtotalElem.innerText = `$${subtotal.toFixed(2)}`;
+                if (shippingElem) shippingElem.innerText = `$${shipping.toFixed(2)}`;
+                if (gstElem) gstElem.innerText = `$${gst.toFixed(2)}`;
+                if (totalElem) totalElem.innerText = `$${orderTotal.toFixed(2)}`;
+            }
+
+            // Function to update subtotal for a specific row
+            function updateRowSubtotal(row) {
+                const qtyElem = row.querySelector('.item-qty span');
+                const priceElem = row.querySelector('.item-price');
+                const subtotalElem = row.querySelector('.item-subtotal p');
+
+                if (qtyElem && priceElem && subtotalElem) {
+                    const qty = parseInt(qtyElem.innerText) || 0;
+                    const price = parseFloat(priceElem.innerText.replace('$', '')) || 0;
+                    const subtotal = price * qty;
+
+                    subtotalElem.innerText = `$${subtotal.toFixed(2)}`;
+                }
+            }
+
+            // Handle quantity changes
+            document.querySelectorAll('.item-qty').forEach(box => {
+                const plusBtn = box.querySelector('.increase-qty');
+                const minusBtn = box.querySelector('.decrease-qty');
+                const qtyNumber = box.querySelector('span');
+                const row = box.closest('tr');
+
+                // Convert data-id to number to match cart keys
+                const productId = parseInt(box.dataset.id);
+
+                // Get stock from data attribute
+                const stock = parseInt(box.dataset.stock) || 0;
+
+                // Function to update button states
+                function updateButtonStates() {
+                    const qty = parseInt(qtyNumber.innerText);
+
+                    // Disable minus button if qty is 1
+                    if (qty <= 1) {
+                        minusBtn.classList.add('disabled');
+                    } else {
+                        minusBtn.classList.remove('disabled');
+                    }
+
+                    // Disable plus button if qty equals stock
+                    if (qty >= stock) {
+                        plusBtn.classList.add('disabled');
+                    } else {
+                        plusBtn.classList.remove('disabled');
+                    }
+                }
+
+                // Initialize button states on load
+                updateButtonStates();
+
+                // Decrease qty
+                minusBtn.addEventListener('click', () => {
+                    let qty = parseInt(qtyNumber.innerText);
+                    if (qty > 1) {
+                        qty = qty - 1;
+                        qtyNumber.innerText = qty;
+
+                        // Update row subtotal
+                        updateRowSubtotal(row);
+
+                        // Update session and summary
+                        updateQuantityInCart(productId, qty);
+
+                        // Update button states
+                        updateButtonStates();
+                    }
+                });
+
+                // Increase qty
+                plusBtn.addEventListener('click', () => {
+                    let qty = parseInt(qtyNumber.innerText);
+                    if (qty < stock) {
+                        qty = qty + 1;
+                        qtyNumber.innerText = qty;
+
+                        // Update row subtotal
+                        updateRowSubtotal(row);
+
+                        // Update session and summary
+                        updateQuantityInCart(productId, qty);
+
+                        // Update button states
+                        updateButtonStates();
+                    }
+                });
+            });
+
+            // Function to update quantity in session via AJAX
+            function updateQuantityInCart(productId, qty) {
+                fetch("{{ route('cart.update-qty') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            product_id: productId,
+                            qty: qty
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.success) {
+                            // Update summary calculations
+                            updateSummary();
+                        } else {
+                            toastr.error(res.message || 'Failed to update quantity');
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        toastr.error('Something went wrong');
+                    });
+            }
+
+            // Initialize summary on page load
+            updateSummary();
+
+            // Clear cart functionality
+            const clearCartBtn = document.getElementById('clear_cart');
+
+            if (clearCartBtn) {
+                clearCartBtn.addEventListener('click', function() {
+                    if (!confirm('Are you sure you want to clear the shopping cart?')) return;
+
+                    fetch("{{ route('cart.clear') }}", {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content,
+                                'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                toastr.success(res.message || 'Cart cleared successfully');
+
+                                // Optional: reload page to update table
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 500);
+                            } else {
+                                toastr.error('Could not clear cart');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            toastr.error('Something went wrong');
+                        });
+                });
+            }
+
+            // Remove cart item
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = this.dataset.id;
+                    if (!confirm('Are you sure you want to remove this item?')) return;
+
+                    fetch("{{ route('cart.remove') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                product_id: productId
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                toastr.success(res.message || 'Item removed');
+                                // Remove the row from table
+                                const row = btn.closest('tr');
+                                if (row) row.remove();
+
+                                // Update summary after removal
+                                updateSummary();
+
+                                // Optional: reload page if cart is empty
+                                const tbody = document.querySelector('.cart-table tbody');
+                                if (!tbody || !tbody.querySelector('tr:not(:empty)')) {
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000);
+                                }
+                            } else {
+                                toastr.error('Could not remove item');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            toastr.error('Something went wrong');
+                        });
+                });
+            });
+
+            // Edit / redirect to product detail
+            document.querySelectorAll('.edit-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const slug = this.dataset.slug; // we'll store slug here
+                    // Redirect to product page
+                    window.location.href = `/product/${slug}`;
+                });
+            });
+
+        });
+    </script>
+@endpush

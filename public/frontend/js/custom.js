@@ -3,21 +3,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const servicesBtn = document.querySelector('.services-btn');
     const panel = document.querySelector('.services-panel');
 
-    // Button click → toggle panel
-    servicesBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // 👈 bahir wale click se roko
-        panel.classList.toggle('active');
-    });
+    if (servicesBtn && panel) {
+        // Button click → toggle panel
+        servicesBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // 👈 bahir wale click se roko
+            panel.classList.toggle('active');
+        });
 
-    // Panel ke andar click → panel close na ho
-    panel.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
+        // Panel ke andar click → panel close na ho
+        panel.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
 
-    // Bahir kahin bhi click → panel hide
-    document.addEventListener('click', () => {
-        panel.classList.remove('active');
-    });
+        // Bahir kahin bhi click → panel hide
+        document.addEventListener('click', () => {
+            panel.classList.remove('active');
+        });
+    }
 
 });
 
@@ -1357,4 +1359,62 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial setup
     updateVisibleItems();
     updateSlider();
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    function addToCart(productId, qty = 1, btn) {
+        btn.disabled = true;
+        btn.innerText = 'Adding...';
+
+        fetch("/cart/add", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                qty: qty
+            })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    // btn.innerText = 'Added!';
+                    toastr.success(res.message ?? 'Product added to cart!');
+
+                    // Optional: update cart count in navbar
+                    if (window.updateCartCount) {
+                        window.updateCartCount(res.cart);
+                    }
+
+                    setTimeout(() => {
+                        btn.innerText = 'Add to Cart';
+                        btn.disabled = false;
+                    }, 1500);
+                } else {
+                    btn.innerText = 'Add to Cart';
+                    btn.disabled = false;
+                    toastr.error(res.message || 'Could not add to cart');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                btn.innerText = 'Add to Cart';
+                btn.disabled = false;
+                toastr.error('Something went wrong');
+            });
+    }
+
+    document.querySelectorAll('.offer-readd-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const productId = this.dataset.id;
+            const qty = this.dataset.qty ?? 1;
+            if (productId) addToCart(productId, qty, this);
+        });
+    });
+
 });

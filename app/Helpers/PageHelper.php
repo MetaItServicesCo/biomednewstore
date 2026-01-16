@@ -8,14 +8,7 @@ class PageHelper
     {
         $labels = [
             'landing' => 'Landing Page',
-            'service' => 'Service Page',
-            'rental'  => 'Rental Page',
-            'blog'    => 'Blog Page',
-            'repair'  => 'Repair Page',
-            'location' => 'Location Page',
-            'about-us' => 'About Us',
-            'contact-us' => 'Contact Us',
-            'offer'   => 'Offer Page',
+            'products' => 'Products Page',
         ];
 
         ksort($labels); // ASC

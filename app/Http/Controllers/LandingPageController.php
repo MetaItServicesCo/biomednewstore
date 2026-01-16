@@ -12,6 +12,7 @@ use App\Models\Offer;
 use App\Models\Product;
 use App\Models\RepairService;
 use App\Models\RepairServiceSubPage;
+use App\Models\State;
 use App\Traits\UploadImageTrait;
 use Exception;
 use Illuminate\Http\Request;
@@ -258,27 +259,61 @@ class LandingPageController extends Controller
             // Validate state_id is numeric
             if (!is_numeric($state_id)) {
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
                     'message' => 'Invalid state ID.'
                 ], 400);
             }
 
-            // Only fetch ID and name
+            // Fetch cities for the given state_id
             $cities = City::where('state_id', $state_id)
+                ->select('id', 'name')
                 ->orderBy('name', 'asc')
-                ->pluck('name', 'id');
+                ->get();
 
             return response()->json([
-                'status' => true,
-                'data'   => $cities
+                'success' => true,
+                'cities' => $cities
             ], 200);
         } catch (Exception $e) {
-
             Log::error('Error fetching cities: ' . $e->getMessage());
 
             return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong while fetching cities.'
+                'success' => false,
+                'message' => 'Error fetching cities'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get states by country ID
+     */
+    public function getStates($country_id)
+    {
+        try {
+            // Validate country_id is numeric
+            if (!is_numeric($country_id)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid country ID.'
+                ], 400);
+            }
+
+            // Fetch states for the given country_id
+            $states = State::where('country_id', $country_id)
+                ->select('id', 'name')
+                ->orderBy('name', 'asc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'states' => $states
+            ], 200);
+        } catch (Exception $e) {
+            Log::error('Error fetching states: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching states'
             ], 500);
         }
     }

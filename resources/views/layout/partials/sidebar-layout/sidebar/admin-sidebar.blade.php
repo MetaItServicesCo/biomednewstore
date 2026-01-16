@@ -133,8 +133,15 @@
         </div>
     </div>
 
+    <div class="menu-item">
+            <a class="menu-link" href="{{ route('orders.index') }}">
+                <span class="menu-icon"><i class="ki-duotone ki-handcart fs-2x"></i></span>
+                <span class="menu-title">Order</span>
+            </a>
+        </div>
+
     <div data-kt-menu-trigger="click"
-        class="menu-item menu-accordion {{ request()->routeIs('admin.contact-us.form.*', 'admin.services-request.form.*', 'admin.consultancy.*', 'admin.buy.product.*') ? 'here show' : '' }}">
+        class="menu-item menu-accordion {{ request()->routeIs('admin.contact-us.form.*', 'admin.services-request.form.*', 'admin.consultancy.*') ? 'here show' : '' }}">
         <span class="menu-link">
             <span class="menu-icon"><i class="ki-duotone ki-tablet-text-down fs-2tx"><span
                         class="path1"></span><span class="path2"></span><span class="path3"></span><span
@@ -182,17 +189,6 @@
             </div>
         </div>
 
-        <div class="menu-sub menu-sub-accordion">
-            <div class="menu-item">
-                <a class="menu-link {{ request()->routeIs('admin.buy.product.*') ? 'active' : '' }}"
-                    href="{{ route('admin.buy.product.list') }}">
-                    <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
-                    </span>
-                    <span class="menu-title">Product</span>
-                </a>
-            </div>
-        </div>
     </div>
 
     @can('read general settings')

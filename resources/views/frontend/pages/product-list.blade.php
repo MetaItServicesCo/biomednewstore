@@ -237,7 +237,7 @@
             height: 80px;
         }
 
-     
+
 
         /* ============== price range ========== */
         .range-slider {
@@ -428,8 +428,8 @@
 
                     <!-- Search Input + Button -->
                     <div class="search-bar d-flex gap-2">
-                        <input type="text" class="form-control me-2" placeholder="Search products...">
-                        <button>
+                        <input type="text" id="searchInput" class="form-control me-2" placeholder="Search products...">
+                        <button id="searchBtn">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -470,7 +470,11 @@
                             <ul class="filter-list">
                                 @if ($category->products->count())
                                     @foreach ($category->products as $product)
-                                        <li>{{ $product->name }}</li>
+                                        <li>
+                                            <a href="{{ route('product-detail', $product->slug) }}">
+                                                {{ $product->name }}
+                                            </a>
+                                        </li>
                                     @endforeach
                                 @else
                                     <li class="text-muted">No Product Found</li>
@@ -478,10 +482,6 @@
                             </ul>
                         @endforeach
                     </div>
-
-
-
-
 
                     <!-- PRICE RANGE -->
                     <div class="filter-range-box">
@@ -497,7 +497,7 @@
                                 {{-- <hr> --}}
                             </div>
                             <div class="d-flex gap-2 mt-4">
-                                <a href="{{route('products')}}" class="btn btn-outline-danger w-50">Clear</a>
+                                <a href="{{ route('products') }}" class="btn btn-outline-danger w-50">Clear</a>
                                 <button id="applyFilterBtn" class="btn btn-danger w-50">Apply</button>
                             </div>
                         </div>
@@ -511,107 +511,35 @@
 
                         </div> --}}
                         <div class="row g-4 p-2">
-                            <div class="col-lg-5 col-md-12 col-5">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt=""
-                                    class="recent-pro">
+                            @foreach ($recentProducts as $recentProduct)
+                                <div class="col-lg-5 col-md-12 col-5">
+                                    <img src="{{ $recentProduct->thumbnail ? asset('storage/products/thumbnails/' . $recentProduct->thumbnail) : '' }}"
+                                        alt="{{ $recentProduct->image_alt ?? $recentProduct->name }}" class="recent-pro">
 
-                            </div>
-                            <div class="col-lg-7 col-md-12 col-7">
-                                <div>
-                                    <h6 class="recent-title">Multivitamin B6+</h6>
-                                    <p class="recent-price"> <span class="old-price">$18.00</span>
-                                        <span class="new-price">$18.00</span>
-                                    </p>
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
+                                </div>
+                                <div class="col-lg-7 col-md-12 col-7">
+                                    <div>
+                                        <h6 class="recent-title">
+                                            {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
+                                        </h6>
+                                        <p class="recent-price">
+                                            @if ($product->price && $product->price > 0)
+                                                <span class="old-price">${{ number_format($product->price, 2) }}</span>
+                                            @endif
+                                            <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
+                                        </p>
+                                        <div class="stars">
+                                            @php
+                                                $rating = round($recentProduct->rating ?? 0);
+                                            @endphp
+
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i class="fa-solid fa-star {{ $i <= $rating ? 'active' : '' }}"></i>
+                                            @endfor
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-5 col-md-12 col-5">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt=""
-                                    class="recent-pro">
-
-                            </div>
-                            <div class="col-lg-7 col-md-12 col-7">
-                                <div>
-                                    <h6 class="recent-title">Multivitamin B6+</h6>
-                                    <p class="recent-price"> <span class="old-price">$18.00</span>
-                                        <span class="new-price">$18.00</span>
-                                    </p>
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-md-12 col-5">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt=""
-                                    class="recent-pro">
-
-                            </div>
-                            <div class="col-lg-7 col-md-12 col-7">
-                                <div>
-                                    <h6 class="recent-title">Multivitamin B6+</h6>
-                                    <p class="recent-price"> <span class="old-price">$18.00</span>
-                                        <span class="new-price">$18.00</span>
-                                    </p>
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-md-12 col-5">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt=""
-                                    class="recent-pro">
-
-                            </div>
-                            <div class="col-lg-7 col-md-12 col-7">
-                                <div>
-                                    <h6 class="recent-title">Multivitamin B6+</h6>
-                                    <p class="recent-price"> <span class="old-price">$18.00</span>
-                                        <span class="new-price">$18.00</span>
-                                    </p>
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-md-12 col-5">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt=""
-                                    class="recent-pro">
-
-                            </div>
-                            <div class="col-lg-7 col-md-12 col-7">
-                                <div>
-                                    <h6 class="recent-title">Multivitamin B6+</h6>
-                                    <p class="recent-price"> <span class="old-price">$18.00</span>
-                                        <span class="new-price">$18.00</span>
-                                    </p>
-                                    <div class="stars">
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star active"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-
+                            @endforeach
                         </div>
                     </div>
 
@@ -640,20 +568,24 @@
     </section>
 
 
-
-
     {{-- ================= pruduct sectiion ============= --}}
     <x-our-latest-products />
 
     {{-- ================faqs section ================ --}}
-    {{-- <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
-        image="frontend/images/hero-main-img.png" :visible="4" /> --}}
+    <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
+        image="frontend/images/hero-main-img.png" :visible="4" />
 
 
 @endsection
 
 @push('frontend-scripts')
     <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-buy') && e.target.disabled) {
+                e.preventDefault();
+            }
+        });
+
         function getVals() {
             let parent = this.parentNode;
             let slides = parent.getElementsByTagName("input");
@@ -696,40 +628,37 @@
 
             let minPrice = 0;
             let maxPrice = 50000;
+            let searchText = '';
 
             const loader = document.getElementById('productsLoader');
             const productsContainer = document.getElementById('productsContainer');
             const paginationContainer = document.getElementById('products-pagination-container');
+            const searchInput = document.getElementById('searchInput');
 
             function showLoader() {
                 loader.style.display = 'block';
-
-                // hide old content
                 productsContainer.style.display = 'none';
                 paginationContainer.style.display = 'none';
             }
 
             function hideLoader() {
                 loader.style.display = 'none';
-
-                // show new content
                 productsContainer.style.display = 'block';
                 paginationContainer.style.display = 'block';
             }
 
-
-            function updateSliderValues() {
-                const box = document.querySelector('.range-slider');
-                minPrice = Number(box.querySelector('.range-min').value);
-                maxPrice = Number(box.querySelector('.range-max').value);
-                box.querySelector('.rangeValues').innerText = `$${minPrice} - $${maxPrice}`;
+            function resetFilter() {
+                minPrice = 0;
+                maxPrice = 50000;
+                document.querySelector('.range-min').value = 0;
+                document.querySelector('.range-max').value = 50000;
+                document.querySelector('.rangeValues').innerText = '$0 - $50000';
             }
 
-            document.querySelectorAll('.range-slider input').forEach(input => {
-                input.addEventListener('input', updateSliderValues);
-            });
-
-            updateSliderValues();
+            function resetSearch() {
+                searchText = '';
+                searchInput.value = '';
+            }
 
             function fetchProducts(page = 1) {
                 showLoader();
@@ -743,6 +672,7 @@
                         body: JSON.stringify({
                             min_price: minPrice,
                             max_price: maxPrice,
+                            search: searchText,
                             page: page
                         })
                     })
@@ -752,16 +682,32 @@
                         paginationContainer.innerHTML = res.pagination;
                         bindPagination();
                     })
-                    .catch(() => {
-                        alert('Something went wrong');
-                    })
-                    .finally(() => {
-                        hideLoader();
-                    });
+                    .finally(() => hideLoader());
             }
 
+            // 🔍 SEARCH
+            document.getElementById('searchBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                searchText = searchInput.value.trim();
+
+                // reset filter when searching
+                resetFilter();
+
+                fetchProducts();
+            });
+
+            // 💰 FILTER
             document.getElementById('applyFilterBtn').addEventListener('click', function(e) {
                 e.preventDefault();
+
+                // reset search when filtering
+                resetSearch();
+
+                const box = document.querySelector('.range-slider');
+                minPrice = Number(box.querySelector('.range-min').value);
+                maxPrice = Number(box.querySelector('.range-max').value);
+
                 fetchProducts();
             });
 
@@ -776,9 +722,9 @@
             }
 
             bindPagination();
-
         });
     </script>
+
 
 
 
