@@ -1,9 +1,6 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
-@section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '')
 
 @push('frontend-styles')
     <style>
@@ -513,13 +510,241 @@
         }
 
         /* ===================== end ====================================== */
-    </style>
+
+        /* ================ PAYMENT MODAL ================== */
+        .payment-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-modal-overlay.show {
+            display: flex;
+        }
+
+        .payment-modal {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .payment-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .payment-modal-header h2 {
+            font-family: Poppins;
+            font-size: 28px;
+            font-weight: 700;
+            color: #000;
+            margin: 0;
+        }
+
+        .payment-modal-close {
+            width: 35px;
+            height: 35px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .payment-modal-close:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .payment-info-section {
+            margin-bottom: 30px;
+        }
+
+        .payment-info-section label {
+            font-family: Poppins;
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        #card-element {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            height: 45px;
+            background: #fafafa;
+            transition: border-color 0.3s ease;
+        }
+
+        #card-element:focus {
+            border-color: #0071A8;
+            box-shadow: 0 0 0 3px rgba(0, 113, 168, 0.1);
+        }
+
+        #card-errors {
+            color: #e74c3c;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+
+        #card-errors.show {
+            display: block;
+        }
+
+        .payment-amount {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .payment-amount-label {
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .payment-amount-value {
+            font-size: 32px;
+            font-weight: 700;
+            font-family: Poppins;
+        }
+
+        .payment-modal-footer {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .payment-modal-footer button {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 50px;
+            font-family: Poppins;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-pay {
+            background: linear-gradient(135deg, #0071A8 0%, #005380 100%);
+            color: white;
+        }
+
+        .btn-pay:hover {
+            background: linear-gradient(135deg, #005380 0%, #003d5c 100%);
+            box-shadow: 0 5px 20px rgba(0, 113, 168, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-pay:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .security-badge i {
+            color: #27ae60;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .payment-modal {
+                width: 95%;
+                padding: 30px 20px;
+            }
+
+            .payment-modal-header h2 {
+                font-size: 24px;
+            }
+
+            .payment-amount-value {
+                font-size: 28px;
+            }
+        }
+
+        /* ================ END PAYMENT MODAL ================== */
 @endpush
 
 @section('frontend-content')
+    @php
+        $cart = session('cart', []);
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += $item['price'] * $item['qty'];
+        }
 
+        // Dynamic shipping based on selected method
+        $selectedShippingMethod = old('shipping_method', 'standard');
+        $shipping = ($selectedShippingMethod === 'pickup') ? 0.0 : 40.0;
+
+        $gst = $subtotal * 0.1;
+        $total = $subtotal + $shipping + $gst;
+    @endphp
     <section class="cart-banner ">
-
         <div class="container d-flex flex-wrap flex-md-nowrap justify-content-between">
 
             <h1> <span>Shipping</span> Address </h1>
@@ -555,88 +780,96 @@
 
     </section>
 
-
     <section class="checkout-section">
         <div class="container">
             <div class="row g-3">
 
                 <!-- LEFT COLUMN -->
                 <div class="col-lg-7">
-                    <form class="shipping-form">
-
+                    <form class="shipping-form" id="shipping_form" action="{{route('order.save')}}" method="POST">
+                        @csrf
+                        <!-- Hidden cart data -->
+                        <input type="hidden" name="cart" id="cart_data" value="{{ json_encode($cart) }}">
                         <!-- Email -->
                         <div class="mb-3">
                             <label class="form-label">Email Address *</label>
-                            <input type="email" class="form-control form-input">
+                            <input type="email" class="form-control form-input" id="email" name="email" value="{{ old('email') }}" required>
+                            <div class="text-danger error-message" id="email_error"></div>
                             <small class="helper-text mt-3">You can create an account after checkout.</small>
                         </div>
                         <hr class="form-divider my-4">
                         <!-- First Name -->
                         <div class="mb-3">
                             <label class="form-label">First Name *</label>
-                            <input type="text" class="form-control form-input">
+                            <input type="text" class="form-control form-input" id="first_name" name="first_name" value="{{ old('first_name') }}" required>
+                            <div class="text-danger error-message" id="first_name_error"></div>
                         </div>
 
                         <!-- Last Name -->
                         <div class="mb-3">
                             <label class="form-label">Last Name *</label>
-                            <input type="text" class="form-control form-input">
+                            <input type="text" class="form-control form-input" id="last_name" name="last_name" value="{{ old('last_name') }}" required>
+                            <div class="text-danger error-message" id="last_name_error"></div>
                         </div>
 
                         <!-- Company -->
                         <div class="mb-3">
-                            <label class="form-label">Company *</label>
-                            <input type="text" class="form-control form-input">
+                            <label class="form-label">Company</label>
+                            <input type="text" class="form-control form-input" id="company" name="company" value="{{ old('company') }}">
+                            <div class="text-danger error-message" id="company_error"></div>
                         </div>
 
                         <!-- Street -->
                         <div class="mb-3">
                             <label class="form-label">Street Address *</label>
-                            <input type="text" class="form-control form-input">
-                            <input type="text" class="form-control form-input mt-2">
-
+                            <input type="text" class="form-control form-input" placeholder="Address" id="street_address" name="street_address" value="{{ old('street_address') }}" required>
+                            <div class="text-danger error-message" id="street_address_error"></div>
+                            <input type="text" class="form-control form-input mt-2" placeholder="Address (Optional)" id="street_address_2" name="street_address_2" value="{{ old('street_address_2') }}">
+                            <div class="text-danger error-message" id="street_address_2_error"></div>
                         </div>
 
-                        <!-- City -->
                         <div class="mb-3">
-                            <label class="form-label">City *</label>
-                            <input type="text" class="form-control form-input">
+                            <label class="form-label">Country *</label>
+                            <select class="form-select form-input" id="country_id" name="country_id" required>
+                                <option value="">Select Country</option>
+                                @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" data-code="{{ $country->iso2 }}" {{ old('country_id') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="text-danger error-message" id="country_id_error"></div>
                         </div>
 
                         <!-- State -->
                         <div class="mb-3">
-                            <label class="form-label">State / Province *</label>
-                            <select class="form-select form-input" required>
+                            <label class="form-label" id="state_label">State / Province</label>
+                            <select class="form-select form-input" id="state_id" name="state_id">
                                 <option value="">Select State / Province</option>
-                                <option value="sindh">Sindh</option>
-                                <option value="punjab">Punjab</option>
-                                <option value="kpk">Khyber Pakhtunkhwa</option>
-                                <option value="balochistan">Balochistan</option>
-                                <option value="gilgit">Gilgit Baltistan</option>
                             </select>
+                            <div class="text-danger error-message" id="state_id_error"></div>
+                        </div>
+
+                        <!-- City -->
+                        <div class="mb-3">
+                            <label class="form-label" id="city_label">City</label>
+                            <select class="form-select form-input" id="city_id" name="city_id">
+                                <option value="">Select City</option>
+                            </select>
+                            <div class="text-danger error-message" id="city_id_error"></div>
                         </div>
 
 
                         <!-- Zip -->
                         <div class="mb-3">
                             <label class="form-label">Zip / Postal Code *</label>
-                            <input type="text" class="form-control form-input">
+                            <input type="text" class="form-control form-input" id="postal_code" name="postal_code" value="{{ old('postal_code') }}" required>
+                            <div class="text-danger error-message" id="postal_code_error"></div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Country *</label>
-                            <select class="form-select form-input" required>
-                                <option value="">Select Country</option>
-                                <option value="pk">Pakistan</option>
-                                <option value="us">United States</option>
-                                <option value="uk">United Kingdom</option>
-                                <option value="uae">United Arab Emirates</option>
-                                <option value="sa">Saudi Arabia</option>
-                            </select>
-                        </div>
+
                         <!-- Phone -->
                         <div class="mb-3">
                             <label class="form-label">Phone Number *</label>
-                            <input type="text" class="form-control form-input">
+                            <input type="text" class="form-control form-input" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" required>
+                            <div class="text-danger error-message" id="phone_number_error"></div>
                         </div>
 
                         <hr class="mt-5">
@@ -648,8 +881,8 @@
 
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="d-flex">
-                                    <input class="form-check-input mt-1 me-2" type="radio" name="shipping"
-                                        id="standardRate" checked>
+                                    <input class="form-check-input mt-1 me-2" type="radio" name="shipping_method"
+                                        id="standardRate" value="standard" {{ old('shipping_method', 'standard') === 'standard' ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="standardRate">
                                         Price may vary depending on the item/destination.
@@ -657,7 +890,7 @@
                                     </label>
                                 </div>
 
-                                <p class="fw-semibold">$222</p>
+                                <p class="fw-semibold">${{ number_format($total, 2) }}</p>
                             </div>
                         </div>
 
@@ -667,18 +900,20 @@
 
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="d-flex">
-                                    <input class="form-check-input mt-1 me-2" type="radio" name="shipping"
-                                        id="standardRate" checked>
+                                    <input class="form-check-input mt-1 me-2" type="radio" name="shipping_method"
+                                        id="pickup" value="pickup" {{ old('shipping_method') === 'pickup' ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="standardRate">
+                                    <label class="form-check-label" for="pickup">
                                         1234 Street Adress City Address, 1234
                                     </label>
                                 </div>
 
-                                <p class="fw-semibold">$222</p>
+                                <p class="fw-semibold">$0.00</p>
                             </div>
                         </div>
 
+
+                        <!-- PAYMENT METHOD MODAL -->
 
                         <!-- BUTTON -->
                         <button type="button" class="next-btn mt-4">
@@ -695,35 +930,35 @@
                         <h4>Order Summary</h4>
                         <hr>
 
-                        <p class="items-count">2 Items in Cart</p>
+                        <p class="items-count">{{ count($cart) }} {{ count($cart) == 1 ? 'Item' : 'Items' }} in Cart</p>
 
-                        <div class="summary-item">
-                            <img src="images/product.jpg" alt="">
-                            <div class="">
-                                <h6>Welch Allyn CP 150 ECG System</h6>
+                        @forelse($cart as $item)
+                            @php
+                                $itemSubtotal = ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+                                $itemImage =
+                                    isset($item['image']) && !empty($item['image'])
+                                        ? asset('storage/products/thumbnails/' . $item['image'])
+                                        : asset('frontend/images/offer-img.png');
+                                $itemName = $item['name'] ?? 'Product';
+                                $itemQty = $item['qty'] ?? 0;
+                            @endphp
+                            <div class="summary-item">
+                                <img src="{{ $itemImage }}" alt="{{ $itemName }}">
+                                <div class="">
+                                    <h6>{{ $itemName }}</h6>
 
-                                <div class="d-flex gap-2">
-                                    <p class="qty">Qty: 1</p>
-                                    <p class="price">$3,586.95</p>
+                                    <div class="d-flex gap-2">
+                                        <p class="qty">Qty: {{ $itemQty }}</p>
+                                        <p class="price">${{ number_format($itemSubtotal, 2) }}</p>
+                                    </div>
+
                                 </div>
-
                             </div>
-                        </div>
-                        <div class="summary-item">
-                            <img src="images/product.jpg" alt="">
-                            <div class="">
-                                <h6>Welch Allyn CP 150 ECG System</h6>
-
-                                <div class="d-flex gap-2">
-                                    <p class="qty">Qty: 1</p>
-                                    <p class="price">$3,586.95</p>
-                                </div>
-
-                            </div>
-                        </div>
+                        @empty
+                            <p class="text-center text-muted">No items in cart</p>
+                        @endforelse
                     </div>
                     <div class="summary-card mt-4">
-
 
                         <div class="summary-toggle mt-3">
                             <span>Estimate Shipping and Tax</span>
@@ -742,33 +977,26 @@
 
                         <div class="summary-row mt-3">
                             <span>Subtotal</span>
-                            <span>$3,586.95</span>
+                            <span>${{ number_format($subtotal, 2) }}</span>
                         </div>
 
-                        <div class="summary-row  mt-3">
+                        <div class="summary-row mt-3 shipping-row" id="shippingRow">
                             <span>Shipping</span>
-                            <span>$40.00</span>
+                            <span id="shippingAmount">${{ number_format($shipping, 2) }}</span>
                         </div>
-                        <p class="small-text  mt-2">
+                        <p class="small-text mt-2 shipping-note" id="shippingNote">
                             (Standard Rate - Price may vary depending on the item/destination. TECS Staff will contact
                             you.)
                         </p>
 
                         <div class="summary-row  mt-3">
-                            <span>Tax</span>
-                            <span>10%</span>
-                        </div>
-                        <div class="summary-row  mt-3">
                             <span>GST (10%)</span>
-                            <span>10%</span>
+                            <span>${{ number_format($gst, 2) }}</span>
                         </div>
                         <div class="summary-total  mt-3">
                             <span>Order Total</span>
-                            <span>$3,982.64</span>
+                            <span>${{ number_format($total, 2) }}</span>
                         </div>
-
-
-
                     </div>
                 </div>
 
@@ -776,11 +1004,528 @@
         </div>
     </section>
 
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal" class="payment-modal-overlay">
+        <div class="payment-modal">
+            <div class="payment-modal-header">
+                <h2>💳 Payment Details</h2>
+                <button type="button" class="payment-modal-close" id="closePaymentModal">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
 
+            <div class="payment-amount">
+                <div class="payment-amount-label">Total Amount Due</div>
+                <div class="payment-amount-value" id="modalTotalAmount">${{ number_format($total, 2) }}</div>
+            </div>
 
+            <div class="payment-info-section">
+                <label for="card-element">Card Information</label>
+                <div id="card-element"></div>
+                <div id="card-errors"></div>
+            </div>
 
+            <div class="payment-info-section">
+                <div style="font-size: 12px; color: #999; padding: 10px; background: #f9f9f9; border-radius: 6px;">
+                    <i class="fa fa-info-circle"></i> Your payment is secure and encrypted
+                </div>
+            </div>
 
+            <div class="payment-modal-footer">
+                <button type="button" class="payment-modal-footer button btn-cancel" id="cancelPaymentModal">
+                    Cancel
+                </button>
+                <button type="button" class="payment-modal-footer button btn-pay" id="confirmPaymentBtn">
+                    Pay Now
+                </button>
+            </div>
 
+            <div class="security-badge">
+                <i class="fa fa-lock"></i>
+                Secured by Stripe
+            </div>
+        </div>
+    </div>
+@endsection
 
-    @push('frontend-scripts')
-    @endpush
+@push('frontend-scripts')
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('Script loaded and document ready');
+
+            // Check if Stripe key is available
+            const stripeKey = '{{ config("services.stripe.key") }}';
+            console.log('Stripe key:', stripeKey);
+            if (!stripeKey || stripeKey.trim() === '') {
+                alert('Stripe public key is not configured. Please check your .env file.');
+                return;
+            }
+
+            // Initialize Stripe
+            const stripe = Stripe(stripeKey);
+            const elements = stripe.elements();
+
+            // Create card element
+            const cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+
+            // Handle card errors
+            cardElement.on('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                    displayError.classList.add('show');
+                } else {
+                    displayError.textContent = '';
+                    displayError.classList.remove('show');
+                }
+            });
+
+            const stateSelect = $('#state_id');
+            const citySelect = $('#city_id');
+
+            const stateLabel = $('#state_label');
+            const cityLabel = $('#city_label');
+
+            // =====================
+            // Reset functions
+            // =====================
+            function resetState() {
+                stateSelect.empty().append('<option value="">Select State / Province</option>');
+                stateSelect.prop('required', false);
+                stateLabel.text('State / Province');
+            }
+
+            function resetCity() {
+                citySelect.empty().append('<option value="">Select City</option>');
+                citySelect.prop('required', false);
+                cityLabel.text('City');
+            }
+
+            // =====================
+            // Country Change
+            // =====================
+            $('#country_id').on('change', function() {
+
+                let countryId = $(this).val();
+                                
+                resetState();
+                resetCity();
+
+                if (!countryId) return;
+
+                $.ajax({
+                    url: "{{ route('get.states', ':id') }}".replace(':id', countryId),
+                    type: 'GET',
+                    success: function(response) {
+
+                        resetState();
+
+                        if (response.success && response.states.length > 0) {
+
+                            $.each(response.states, function(key, state) {
+                                stateSelect.append(
+                                    `<option value="${state.id}">${state.name}</option>`
+                                );
+                            });
+
+                            stateSelect.prop('required', true);
+                            stateLabel.text('State / Province *');
+
+                        } else {
+                            stateSelect.append('<option value="">No State Found</option>');
+                            stateSelect.prop('required', false);
+                            stateLabel.text('State / Province');
+                        }
+                    },
+                    error: function() {
+                        resetState();
+                        stateSelect.append('<option value="">No State Found</option>');
+                    }
+                });
+            });
+
+            // =====================
+            // State Change
+            // =====================
+            $('#state_id').on('change', function() {
+
+                let stateId = $(this).val();
+
+                resetCity();
+
+                if (!stateId) return;
+
+                $.ajax({
+                    url: "{{ route('get.cities', ':id') }}".replace(':id', stateId),
+                    type: 'GET',
+                    success: function(response) {
+
+                        resetCity();
+
+                        if (response.success && response.cities.length > 0) {
+
+                            $.each(response.cities, function(key, city) {
+                                citySelect.append(
+                                    `<option value="${city.id}">${city.name}</option>`
+                                );
+                            });
+
+                            citySelect.prop('required', true);
+                            cityLabel.text('City *');
+
+                        } else {
+                            citySelect.append('<option value="">No Cities Found</option>');
+                            citySelect.prop('required', false);
+                            cityLabel.text('City');
+                        }
+                    },
+                    error: function() {
+                        resetCity();
+                        citySelect.append('<option value="">No Cities Found</option>');
+                    }
+                });
+            });
+
+            // =====================
+            // Form Validation
+            // =====================
+            function validateForm() {
+                console.log('Starting validation');
+                let isValid = true;
+                const errors = {};
+
+                // Clear previous errors
+                $('.error-message').text('');
+
+                // Email validation
+                const email = $('#email').val().trim();
+                if (!email) {
+                    errors.email = 'Email is required';
+                    isValid = false;
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    errors.email = 'Please enter a valid email address';
+                    isValid = false;
+                }
+
+                // First name validation
+                const firstName = $('#first_name').val().trim();
+                if (!firstName) {
+                    errors.first_name = 'First name is required';
+                    isValid = false;
+                }
+
+                // Last name validation
+                const lastName = $('#last_name').val().trim();
+                if (!lastName) {
+                    errors.last_name = 'Last name is required';
+                    isValid = false;
+                }
+
+                // Street address validation
+                const streetAddress = $('#street_address').val().trim();
+                if (!streetAddress) {
+                    errors.street_address = 'Street address is required';
+                    isValid = false;
+                }
+
+                // Country validation
+                const countryId = $('#country_id').val();
+                if (!countryId) {
+                    errors.country_id = 'Country is required';
+                    isValid = false;
+                }
+
+                // State validation (if required)
+                if (stateSelect.prop('required')) {
+                    const stateId = $('#state_id').val();
+                    if (!stateId) {
+                        errors.state_id = 'State/Province is required';
+                        isValid = false;
+                    }
+                }
+
+                // City validation (if required)
+                if (citySelect.prop('required')) {
+                    const cityId = $('#city_id').val();
+                    if (!cityId) {
+                        errors.city_id = 'City is required';
+                        isValid = false;
+                    }
+                }
+
+                // Postal code validation
+                const postalCode = $('#postal_code').val().trim();
+                if (!postalCode) {
+                    errors.postal_code = 'Postal code is required';
+                    isValid = false;
+                }
+
+                // Phone validation
+                const phoneNumber = $('#phone_number').val().trim();
+                if (!phoneNumber) {
+                    errors.phone_number = 'Phone number is required';
+                    isValid = false;
+                }
+
+                // Display errors
+                Object.keys(errors).forEach(field => {
+                    $(`#${field}_error`).text(errors[field]);
+                });
+
+                console.log('Validation complete. Is valid: ' + isValid + '. Errors: ' + JSON.stringify(errors));
+                return isValid;
+            }
+
+            // =====================
+            // Next Button Click
+            // =====================
+            $('.next-btn').on('click', function() {
+                console.log('Next button clicked');
+                if (!validateForm()) {
+                    console.log('Validation failed');
+                    return;
+                }
+                console.log('Validation passed, showing payment modal');
+
+                // Show payment modal
+                $('#paymentModal').addClass('show');
+
+                // Ensure Stripe elements are properly mounted after modal is shown
+                setTimeout(function() {
+                    try {
+                        // Check if element is already mounted, if not, mount it
+                        if (cardElement._implementation && cardElement._implementation._mounted) {
+                            // Already mounted, no need to do anything
+                            console.log('Card element already mounted');
+                        } else {
+                            // Mount the card element
+                            cardElement.mount('#card-element');
+                            console.log('Card element mounted');
+                        }
+                    } catch (error) {
+                        console.log('Stripe element mounting:', error);
+                        // Fallback: just try to mount
+                        try {
+                            cardElement.mount('#card-element');
+                        } catch (mountError) {
+                            console.log('Mount fallback failed:', mountError);
+                        }
+                    }
+                }, 200);
+            });
+
+            // =====================
+            // Close Payment Modal
+            // =====================
+            function closePaymentModal() {
+                $('#paymentModal').removeClass('show');
+
+                // Clear payment information
+                try {
+                    // Clear card element
+                    cardElement.clear();
+
+                    // Clear any error messages
+                    const displayError = document.getElementById('card-errors');
+                    displayError.textContent = '';
+                    displayError.classList.remove('show');
+
+                    // Reset modal total amount to current calculation
+                    const selectedMethod = $('input[name="shipping_method"]:checked').val();
+                    const subtotal = {{ $subtotal }};
+                    const gst = {{ $gst }};
+                    let shipping = 0;
+                    let total = 0;
+
+                    if (selectedMethod === 'standard') {
+                        shipping = 40.0;
+                    } else if (selectedMethod === 'pickup') {
+                        shipping = 0.0;
+                    }
+
+                    total = subtotal + shipping + gst;
+                    $('#modalTotalAmount').text('$' + total.toFixed(2));
+
+                } catch (error) {
+                    console.log('Error clearing payment info:', error);
+                }
+            }
+
+            $('#closePaymentModal, #cancelPaymentModal').on('click', function() {
+                closePaymentModal();
+            });
+
+            // Close modal when clicking outside
+            $('#paymentModal').on('click', function(e) {
+                if (e.target.id === 'paymentModal') {
+                    closePaymentModal();
+                }
+            });
+
+            // =====================
+            // Shipping Method Change
+            // =====================
+            $('input[name="shipping_method"]').on('change', function() {
+                const selectedMethod = $(this).val();
+                const subtotal = {{ $subtotal }};
+                const gst = {{ $gst }};
+                let shipping = 0;
+                let total = 0;
+
+                if (selectedMethod === 'standard') {
+                    shipping = 40.0;
+                    $('#shippingRow').show();
+                    $('#shippingNote').show();
+                    $('#shippingAmount').text('$' + shipping.toFixed(2));
+                } else if (selectedMethod === 'pickup') {
+                    shipping = 0.0;
+                    $('#shippingRow').hide();
+                    $('#shippingNote').hide();
+                }
+
+                // Update total calculation
+                total = subtotal + shipping + gst;
+
+                // Update the total display
+                $('.summary-total span:last-child').text('$' + total.toFixed(2));
+
+                // Update the shipping option display
+                $('.form-check .fw-semibold').each(function() {
+                    const method = $(this).closest('.form-check').find('input[type="radio"]').val();
+                    if (method === 'standard') {
+                        $(this).text('$' + total.toFixed(2));
+                    } else if (method === 'pickup') {
+                        $(this).text('$0.00');
+                    }
+                });
+
+                // Update modal total amount
+                $('#modalTotalAmount').text('$' + total.toFixed(2));
+            });
+
+            // Trigger initial shipping method check
+            $('input[name="shipping_method"]:checked').trigger('change');
+
+            // =====================
+            // Pay Now Button Click
+            // =====================
+            $('#confirmPaymentBtn').on('click', function() {
+                processPayment();
+            });
+
+            // =====================
+            // Process Payment
+            // =====================
+            function processPayment() {
+                // Show loading on button
+                $('#confirmPaymentBtn').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+
+                // Get form data
+                const formData = new FormData(document.getElementById('shipping_form'));
+
+                // Convert FormData to JSON
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+
+                // Add cart data
+                data.cart = JSON.parse($('#cart_data').val());
+
+                // Create payment intent directly (no order creation yet)
+                createPaymentIntent(data);
+            }
+
+            // =====================
+            // Create Payment Intent
+            // =====================
+            function createPaymentIntent(formData) {
+                $.ajax({
+                    url: "{{ route('order.payment-intent') }}",
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Confirm card payment
+                            stripe.confirmCardPayment(response.client_secret, {
+                                payment_method: {
+                                    card: cardElement,
+                                    billing_details: {
+                                        name: $('#first_name').val() + ' ' + $('#last_name').val(),
+                                        email: $('#email').val(),
+                                        phone: $('#phone_number').val(),
+                                        address: {
+                                            line1: $('#street_address').val(),
+                                            line2: $('#street_address_2').val(),
+                                            city: $('#city_id option:selected').text(),
+                                            state: $('#state_id option:selected').text(),
+                                            postal_code: $('#postal_code').val(),
+                                            country: $('#country_id option:selected').data('code'),
+                                        }
+                                    }
+                                }
+                            }).then(function(result) {
+                                if (result.error) {
+                                    // Payment failed
+                                    const displayError = document.getElementById('card-errors');
+                                    displayError.textContent = result.error.message;
+                                    displayError.classList.add('show');
+                                    $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                                } else {
+                                    if (result.paymentIntent.status === 'succeeded') {
+                                        // Payment successful, confirm payment and create order
+                                        confirmPayment(result.paymentIntent.id, formData);
+                                    }
+                                }
+                            });
+                        } else {
+                            alert('Error creating payment intent');
+                            $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                        }
+                    },
+                    error: function() {
+                        alert('Error creating payment intent');
+                        $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    }
+                });
+            }
+
+            // =====================
+            // Confirm Payment
+            // =====================
+            function confirmPayment(paymentIntentId, formData) {
+                // Add payment intent ID to form data
+                formData.payment_intent_id = paymentIntentId;
+
+                $.ajax({
+                    url: "{{ route('order.confirm-payment') }}",
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Redirect to thank you page
+                            window.location.href = "{{ route('order.details', ':id') }}".replace(':id', response.order_id);
+                        } else {
+                            alert('Payment confirmation failed');
+                            $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                        }
+                    },
+                    error: function() {
+                        alert('Error confirming payment');
+                        $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    }
+                });
+            }
+
+        });
+    </script>
+@endpush

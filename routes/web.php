@@ -25,6 +25,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LocationPageController;
 use App\Http\Controllers\OemContentController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\RentalServiceController;
 use App\Http\Controllers\RepairServiceController;
@@ -60,6 +61,16 @@ Route::middleware(['admin_or_redirect'])->group(function () {
         Route::resource('/user-management/users', UserManagementController::class);
         Route::resource('/user-management/roles', RoleManagementController::class);
         Route::resource('/user-management/permissions', PermissionManagementController::class);
+    });
+
+    // ===========================
+    // Orders Management
+    // ===========================
+    Route::controller(OrderController::class)->prefix('admin/orders')->as('orders.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{id}', 'show')->name('show');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}', 'update')->name('update');
     });
 
 

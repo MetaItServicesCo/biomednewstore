@@ -5,6 +5,7 @@ namespace App\Providers;
 use Livewire\Livewire;
 use App\Core\KTBootstrap;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\ServingCity;
 use App\Models\State;
 use Illuminate\Support\Facades\Route;
@@ -110,7 +111,6 @@ class AppServiceProvider extends ServiceProvider
             // Send both manual country list + states to footer
             $view->with([
                 'footerStates'      => $footerStates,
-
             ]);
         });
     }

@@ -237,7 +237,7 @@
             height: 80px;
         }
 
-     
+
 
         /* ============== price range ========== */
         .range-slider {
@@ -470,7 +470,11 @@
                             <ul class="filter-list">
                                 @if ($category->products->count())
                                     @foreach ($category->products as $product)
-                                        <li>{{ $product->name }}</li>
+                                        <li>
+                                            <a href="{{ route('product-detail', $product->slug) }}">
+                                                {{ $product->name }}
+                                            </a>
+                                        </li>
                                     @endforeach
                                 @else
                                     <li class="text-muted">No Product Found</li>

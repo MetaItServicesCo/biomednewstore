@@ -30,13 +30,16 @@
                             </span>
                         </div>
 
-                        <h6>{{ $product->name }}</h6>
+                        <h6>{{ $product->name ?? '' }}</h6>
                         <div class="price-row">
                             @if ($product->price && $product->price > 0)
                                 <span class="old-price">${{ number_format($product->price, 2) }}</span>
                             @endif
                             <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
-                            <button class="btn-buy" data-slug="{{ $product->slug ?? '' }}" @if(!$product->in_stock) disabled class="disabled-btn" @endif>{{ $product->in_stock ? 'Buy Now' : 'Out of Stock' }}</button>
+                            <a href="{{ route('product-detail', $product->slug) }}">
+                                <button class="btn-buy" data-slug="{{ $product->slug ?? '' }}"
+                                    @if (!$product->in_stock) disabled class="disabled-btn" @endif>{{ $product->in_stock ? 'Buy Now' : 'Out of Stock' }}</button>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LocationPageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RepairServiceController;
 use App\Http\Controllers\ReviewsController;
@@ -48,6 +49,9 @@ Route::controller(InquiryController::class)->group(function () {
 
 Route::prefix('ajax')->group(function () {
 
+    // Get states by country route
+    Route::get('/get-states/{country_id}', [LandingPageController::class, 'getStates'])->name('get.states');
+
     // Get cities route
     Route::get('/get-cities/{state_id}', [LandingPageController::class, 'getCities'])->name('get.cities');
 
@@ -64,26 +68,27 @@ Route::prefix('ajax')->group(function () {
     Route::post('/products/filter', [ProductController::class, 'productsFilter'])->name('products.filter');
 });
 
-Route::get('/store', [LandingPageController::class, 'storeLandingPage'])->name('store');
 
-Route::get('/product-detail', function () {
-    return view('frontend.pages.product-detail');
-})->name('product-detail');
-
-Route::get('/cart', function () {
-    return view('frontend.pages.cart');
-})->name('cart');
-
-Route::get('/billing', function () {
-    return view('frontend.pages.billing');
-})->name('billing');
-
-Route::get('/payment', function () {
-    return view('frontend.pages.payment');
-})->name('payment');
-
-Route::get('/parts', function () {
-    return view('frontend.pages.parts');
-})->name('parts');
 Route::get('/products', [ProductController::class, 'products'])->name('products');
+Route::get('/product/{slug}', [ProductController::class, 'productDetail'])->name('product-detail');
 Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add');
+
+Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
+Route::post('/cart/clear', [ProductController::class, 'clearCart'])->name('cart.clear');
+Route::post('/cart/remove', [ProductController::class, 'removeCartItem'])->name('cart.remove');
+Route::post('/cart/update-qty', [ProductController::class, 'updateCartQuantity'])->name('cart.update-qty');
+
+
+
+Route::get('/order', [ProductController::class, 'order'])->name('billing');
+
+
+Route::get('/parts', [ProductController::class, 'parts'])->name('parts');
+
+// ===========================
+// Order Routes
+// ===========================
+Route::post('/order/save', [OrderController::class, 'saveOrder'])->name('order.save');
+Route::post('/order/payment-intent', [OrderController::class, 'createPaymentIntent'])->name('order.payment-intent');
+Route::post('/order/confirm-payment', [OrderController::class, 'confirmPayment'])->name('order.confirm-payment');
+Route::get('/order/{orderId}', [OrderController::class, 'getOrder'])->name('order.details');

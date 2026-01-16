@@ -3,21 +3,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const servicesBtn = document.querySelector('.services-btn');
     const panel = document.querySelector('.services-panel');
 
-    // Button click → toggle panel
-    servicesBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // 👈 bahir wale click se roko
-        panel.classList.toggle('active');
-    });
+    if (servicesBtn && panel) {
+        // Button click → toggle panel
+        servicesBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // 👈 bahir wale click se roko
+            panel.classList.toggle('active');
+        });
 
-    // Panel ke andar click → panel close na ho
-    panel.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
+        // Panel ke andar click → panel close na ho
+        panel.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
 
-    // Bahir kahin bhi click → panel hide
-    document.addEventListener('click', () => {
-        panel.classList.remove('active');
-    });
+        // Bahir kahin bhi click → panel hide
+        document.addEventListener('click', () => {
+            panel.classList.remove('active');
+        });
+    }
 
 });
 
@@ -1364,8 +1366,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', function () {
 
     function addToCart(productId, qty = 1, btn) {
-        console.log(productId, 'productId');
-        
         btn.disabled = true;
         btn.innerText = 'Adding...';
 
@@ -1383,27 +1383,29 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(res => res.json())
             .then(res => {
                 if (res.success) {
-                    btn.innerText = 'Added!';
+                    // btn.innerText = 'Added!';
+                    toastr.success(res.message ?? 'Product added to cart!');
+
                     // Optional: update cart count in navbar
                     if (window.updateCartCount) {
                         window.updateCartCount(res.cart);
                     }
-                    // Reset button text after 1.5s
+
                     setTimeout(() => {
                         btn.innerText = 'Add to Cart';
                         btn.disabled = false;
                     }, 1500);
                 } else {
-                    alert(res.message || 'Could not add to cart');
                     btn.innerText = 'Add to Cart';
                     btn.disabled = false;
+                    toastr.error(res.message || 'Could not add to cart');
                 }
             })
             .catch(err => {
                 console.error(err);
-                alert('Something went wrong');
                 btn.innerText = 'Add to Cart';
                 btn.disabled = false;
+                toastr.error('Something went wrong');
             });
     }
 

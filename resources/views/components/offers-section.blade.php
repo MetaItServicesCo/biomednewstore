@@ -130,10 +130,8 @@
                                     </p>
                                     <p class="price text-danger text-center">
                                         ${{ number_format($product->sale_price, 2) }}</p>
-                                    <a href="#">
                                         <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">Add
                                             to Cart</button>
-                                    </a>
                                 </div>
                             </div>
                         @endforeach

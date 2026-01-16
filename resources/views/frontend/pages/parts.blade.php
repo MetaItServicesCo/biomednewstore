@@ -1,9 +1,9 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
+{{-- @section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
 @section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '')
+@section('meta_description', $data->meta_description ?? '') --}}
 
 @push('frontend-styles')
     <style>
@@ -70,7 +70,7 @@
             display: flex;
             align-items: center;
             /* justify-content: center;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    text-align: center; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    text-align: center; */
             margin-top: 30px;
         }
 
@@ -235,7 +235,6 @@
 @endpush
 
 @section('frontend-content')
-
     <section class="cart-banner ">
 
         <div class="container  ">
@@ -292,237 +291,54 @@
         </div>
         <div class="container mt-4">
             <div class="row g-5">
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
+                @foreach ($parts as $item)
+                    <div class="col-lg-3 col-md-6 animate-card">
+                        <div class="productt-cardd">
+                            <img src="{{ asset('storage/products/thumbnails/' . $item->thumbnail) }}"
+                                alt="{{ $item->image_alt }}" class="img-fluid">
 
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
+                            <div class="card-body p-2">
+                                <div class="product-meta">
+                                    <div class="stars">
+                                        @php
+                                            $rating = $item->rating ?? 0; // rating 0-5
+                                        @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i <= $rating)
+                                                <i class="fa-solid fa-star active"></i>
+                                            @else
+                                                <i class="fa-solid fa-star"></i>
+                                            @endif
+                                        @endfor
+                                    </div>
+
+                                    <span class="stock">In Stock</span>
                                 </div>
-                                <span class="stock">In Stock</span>
-                            </div>
 
-                            <h6>Throat Lozenges Syrup</h6>
+                                <h6>{{ $item->name }}</h6>
 
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
+                                <div class="price-row">
+                                    @if (!empty($item->price) && $item->price > 0)
+                                        <span class="old-price">${{ number_format($item->price) }}</span>
+                                    @endif
+                                    <span class="new-price">${{ number_format($item->sale_price) }}</span>
+                                    <button class="btn-buy">Buy Now</button>
+                                </div>
                             </div>
                         </div>
+
                     </div>
+                @endforeach
 
-                </div>
 
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="stock">In Stock</span>
-                            </div>
-
-                            <h6>Throat Lozenges Syrup</h6>
-
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="stock">In Stock</span>
-                            </div>
-
-                            <h6>Throat Lozenges Syrup</h6>
-
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="stock">In Stock</span>
-                            </div>
-
-                            <h6>Throat Lozenges Syrup</h6>
-
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="stock">In Stock</span>
-                            </div>
-
-                            <h6>Throat Lozenges Syrup</h6>
-
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="stock">In Stock</span>
-                            </div>
-
-                            <h6>Throat Lozenges Syrup</h6>
-
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="stock">In Stock</span>
-                            </div>
-
-                            <h6>Throat Lozenges Syrup</h6>
-
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-3 col-md-6 animate-card">
-                    <div class="productt-cardd">
-                        <img src="{{ asset('frontend/images/recent-news-img.png') }}" alt="">
-
-                        <div class="card-body p-2">
-                            <div class="product-meta">
-                                <div class="stars">
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star active"></i>
-                                    <i class="fa-solid fa-star"></i>
-                                </div>
-                                <span class="stock">In Stock</span>
-                            </div>
-
-                            <h6>Throat Lozenges Syrup</h6>
-
-                            <div class="price-row">
-                                <span class="old-price">$22.00</span>
-                                <span class="new-price">$18.00</span>
-                                <button class="btn-buy">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
     </section>
+@endsection
 
 
 
 
 
-
-
-
-
-
-
-
-    @push('frontend-scripts')
-    @endpush
+@push('frontend-scripts')
+@endpush

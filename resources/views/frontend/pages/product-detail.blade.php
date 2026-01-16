@@ -1,9 +1,9 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
-@section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '')
+@section('meta_title', $product->meta_title ?? 'Mr. Biomed Tech Services')
+@section('meta_keywords', $product->meta_keywords ?? '')
+@section('meta_description', $product->meta_description ?? '')
 
 @push('frontend-styles')
     <style>
@@ -285,186 +285,208 @@
 
 @section('frontend-content')
 
-    <section class="product-detail-banner">
-        <h1>Product <span>Detail page</span> </h1>
-    </section>
+    @if (!$product)
+        <section class="product-detail-banner">
+            <h1>Product <span>Not Found</span> </h1>
+        </section>
+        <div class="container py-5 text-center">
+            <p class="lead">Sorry, the product you're looking for doesn't exist or has been removed.</p>
+            <a href="{{ route('products') }}" class="btn btn-primary mt-3">Back to Products</a>
+        </div>
+    @else
+        <section class="product-detail-banner">
+            <h1>Product <span>Detail page</span> </h1>
+        </section>
 
 
 
 
-    <section>
+        <section>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
 
-                    <div class="image-slider">
-                        <!-- Main Image -->
-                        <img id="mainImage" src="{{ asset('frontend/images/recent-news-img.png') }}" class="main-img">
-                    </div>
+                        <div class="image-slider">
+                            <!-- Main Image -->
+                            <img id="mainImage"
+                                src="{{ $product->thumbnail ?? false ? asset('storage/products/thumbnails/' . $product->thumbnail) : asset('frontend/images/offer-img.png') }}"
+                                class="main-img">
+                        </div>
 
-                    <div class="thumb-slider-container">
+                        <div class="thumb-slider-container">
 
-                        <!-- Prev Button -->
-                        <button class="thumb-prev">&#10094;</button>
+                            <!-- Prev Button -->
+                            <button class="thumb-prev">&#10094;</button>
 
-                        <!-- Thumbnails -->
-                        <div class="thumb-wrapper">
-                            <div class="thumbs-track" id="thumbsTrack">
-                                <img src="{{ asset('frontend/images/recent-news-img.png') }}" class="thumb"
-                                    onclick="thumbClicked(this.src)">
+                            <!-- Thumbnails -->
+                            <div class="thumb-wrapper">
+                                <div class="thumbs-track" id="thumbsTrack">
+                                    {{-- Main thumbnail first --}}
+                                    @if ($product->thumbnail ?? false)
+                                        <img src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
+                                            class="thumb" onclick="thumbClicked(this.src)">
+                                    @endif
+                                    {{-- Then gallery images --}}
+                                    @php
+                                        $galleryImages = [];
 
-                                <img src="{{ asset('frontend/images/rental/rental-img.jpg') }}" class="thumb"
-                                    onclick="thumbClicked(this.src)">
+                                        if (!empty($product->gallery_images ?? null)) {
+                                            if (is_array($product->gallery_images)) {
+                                                $galleryImages = $product->gallery_images;
+                                            } else {
+                                                $galleryImages = json_decode($product->gallery_images, true); // decode JSON string to array
+                                            }
+                                        }
+                                    @endphp
 
-                                <img src="{{ asset('frontend/images/thumb-3.jpg') }}" class="thumb"
-                                    onclick="thumbClicked(this.src)">
-
-                                <img src="{{ asset('frontend/images/thumb-4.jpg') }}" class="thumb"
-                                    onclick="thumbClicked(this.src)">
-
-                                <img src="{{ asset('frontend/images/thumb-5.jpg') }}" class="thumb"
-                                    onclick="thumbClicked(this.src)">
+                                    @if (!empty($galleryImages))
+                                        @foreach ($galleryImages as $img)
+                                            @if (!empty($img))
+                                                <img src="{{ asset('storage/products/gallery/' . $img) }}" class="thumb"
+                                                    onclick="thumbClicked(this.src)">
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </div>
                             </div>
+
+
+                            <!-- Next Button -->
+                            <button class="thumb-next">&#10095;</button>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination-wrapper">
+                            <div class="pagination-bar" id="paginationBar"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+
+                        <!-- Product Title -->
+                        <h2 class="product-title">{{ $product->name ?? '' }}</h2>
+
+                        <!-- SKU / Condition / Availability -->
+                        <p class="meta"><strong>SKU:</strong> {{ $product->sku ?? '' }}</p>
+                        <p class="meta"><strong>CONDITION:</strong> {{ $product->condition === 'new' ? 'New' : 'Old' }}
+                        </p>
+                        <p class="meta"><strong>AVAILABILITY:</strong> {{ $product->availability ?? '' }}</p>
+
+                        <hr>
+
+                        <!-- Price -->
+                        <h3 class="product-price">${{ number_format($product->sale_price, 2) }}</h3>
+
+                        <!-- Rating -->
+                        <div class="rating mt-4">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= ($product->rating ?? 0))
+                                    <i class="fa-solid fa-star"></i>
+                                @else
+                                    <i class="fa-regular fa-star"></i>
+                                @endif
+                            @endfor
                         </div>
 
 
-                        <!-- Next Button -->
-                        <button class="thumb-next">&#10095;</button>
-                    </div>
+                        <hr>
 
-                    <!-- Pagination -->
-                    <div class="pagination-wrapper">
-                        <div class="pagination-bar" id="paginationBar"></div>
+                        <!-- Options -->
+                        @if (!empty($product->model))
+                            <p class="options-title"><strong>OPTIONS:</strong> REQUIRED</p>
+                            <ul class="my-4">
+                                <li class="options-title">{{ $product->model }}</li>
+                            </ul>
+                        @endif
+
+                        <hr>
+
+                        <!-- Quantity -->
+                        <div class="quantity-box" data-stock="{{ $product->stock_qty ?? 0 }}">
+                            <span class="qty-btn minus">-</span>
+                            <span class="qty-number">1</span>
+                            <span class="qty-btn plus">+</span>
+                        </div>
+
+
+                        <!-- Add to Cart -->
+                        <button class="add-to-cart-btn {{ !$product->in_stock ? 'disabled-btn' : '' }}"
+                            data-id="{{ $product->id }}" @if (!$product->in_stock) disabled @endif>
+                            {{ $product->in_stock ? 'Add to Cart' : 'Out of Stock' }}
+                        </button>
+
+
                     </div>
 
                 </div>
-                <div class="col-lg-6">
+            </div>
+            <div class="product-tabs  container">
 
-                    <!-- Product Title -->
-                    <h2 class="product-title">Welch Allyn CP 150 ECG System</h2>
-
-                    <!-- SKU / Condition / Availability -->
-                    <p class="meta"><strong>SKU:</strong> ECG-150</p>
-                    <p class="meta"><strong>CONDITION:</strong> New</p>
-                    <p class="meta"><strong>AVAILABILITY:</strong> In Stock</p>
-
-                    <hr>
-
-                    <!-- Price -->
-                    <h3 class="product-price">$3,586.95</h3>
-
-                    <!-- Rating -->
-                    <div class="rating mt-4">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                    </div>
-
-                    <hr>
-
-                    <!-- Options -->
-                    <p class="options-title"><strong>OPTIONS:</strong> REQUIRED</p>
-                    <ul class="my-4">
-                        <li class="options-title">CP150_INT,AHA,D,EN,NA_PCORD</li>
-                    </ul>
-
-                    <hr>
-
-                    <!-- Quantity -->
-                    <div class="quantity-box">
-                        <span class="qty-btn minus">-</span>
-                        <span class="qty-number">1</span>
-                        <span class="qty-btn plus">+</span>
-                    </div>
-
-
-                    <!-- Add to Cart -->
-                    <button class=" add-to-cart-btn ">
-                        Add to Cart
-                    </button>
-
+                <!-- Tabs Buttons -->
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="desc">DESCRIPTION</button>
+                    <button class="tab-btn" data-tab="brochure">BROCHURES</button>
                 </div>
 
-            </div>
-        </div>
-        <div class="product-tabs  container">
+                <hr>
 
-            <!-- Tabs Buttons -->
-            <div class="tab-buttons">
-                <button class="tab-btn active" data-tab="desc">DESCRIPTION</button>
-                <button class="tab-btn" data-tab="brochure">BROCHURES</button>
-            </div>
+                <!-- Tab Contents -->
 
-            <hr>
+                <!-- DESCRIPTION -->
+                <div class="tab-content active" id="desc">
+                    @php
+                        $words = str_word_count(strip_tags($product->description), 1); // get all words
+                        $limit = 150;
+                    @endphp
 
-            <!-- Tab Contents -->
+                    @if (count($words) > $limit)
+                        <span class="short-desc">
+                            {!! implode(' ', array_slice($words, 0, $limit)) !!}...
+                        </span>
+                        <span class="full-desc" style="display: none;">
+                            {!! $product->description !!}
+                        </span>
 
-            <!-- DESCRIPTION -->
-            <div class="tab-content active" id="desc">
-                <p>
-                    The Welch Allyn CP 150 Electrocardiograph (ECG) offers simplicity with speed using a unique,
-                    7" touch-screen display and keyboard helping to improve accuracy.
-                </p>
+                        <!-- See More Button -->
+                        <div class="tab-actions">
+                            <button class="action-btn" id="seeMoreBtn">
+                                <span>See More</span>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </button>
+                        </div>
+                    @else
+                        {!! $product->description !!}
+                    @endif
+                </div>
 
-                <p>
-                    To meet the needs of fast-paced environments, take quick ECG readings with the touch of a
-                    button. And with a range of advanced connectivity features, help improve your practice
-                    workflow by sending, managing, and sharing patient data with systems inside or outside
-                    your facility.
-                </p>
 
-                <p>
-                    The Welch Allyn CP 150 Electrocardiograph (ECG) offers simplicity with speed using a unique,
-                    7" touch-screen display and keyboard helping to improve accuracy.
-                </p>
-            </div>
-
-            <!-- BROCHURES -->
-            <div class="tab-content" id="brochure">
-                <p>
-                    Download product brochures, manuals, and technical documentation for the
-                    Welch Allyn CP 150 ECG System.
-                </p>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="tab-actions">
-
-                <!-- See More -->
-                <button class="action-btn">
-                    <span>See More</span>
-                    <i class="bi bi-chevron-down dropdown-icon"></i>
-                </button>
-
-                <!-- Download PDF -->
-                <button class="action-btn download">
-                    <span>Download PDF</span>
-                    <img src="{{ asset('frontend/images/detail-icon.png') }}" alt="PDF">
-                </button>
-
+                <!-- BROCHURES -->
+                <div class="tab-content" id="brochure">
+                    <div class="tab-actions">
+                        <!-- Download PDF -->
+                        <a href="{{ asset('storage/products/brochures/' . $product->brochures) }}" download>
+                            <button class="action-btn download">
+                                <span>Download PDF</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
 
+        </section>
+
+        {{-- ================= pruduct sectiion ============= --}}
+        <div class="pro-section">
+            <x-our-latest-products />
 
         </div>
 
-    </section>
+        {{-- ================faqs section ================ --}}
+        <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
+            image="frontend/images/hero-main-img.png" :visible="4" />
 
-
-
-
-
-
-
-    {{-- ================= pruduct sectiion ============= --}}
-    <x-our-latest-products />
-
-    {{-- ================faqs section ================ --}}
-    {{-- <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
-        image="frontend/images/hero-main-img.png" :visible="4" /> --}}
-
+    @endif
 
 @endsection
 
@@ -560,18 +582,94 @@
         });
     </script>
     <script>
-        const qtyBox = document.querySelector('.quantity-box');
-        const qtyNumber = qtyBox.querySelector('.qty-number');
+        document.addEventListener('DOMContentLoaded', function() {
 
-        qtyBox.addEventListener('click', function(e) {
-            let qty = parseInt(qtyNumber.innerText);
+            // Quantity box logic
+            document.querySelectorAll('.quantity-box').forEach(box => {
+                const minusBtn = box.querySelector('.minus');
+                const plusBtn = box.querySelector('.plus');
+                const qtyNumber = box.querySelector('.qty-number');
+                const stock = parseInt(box.dataset.stock);
 
-            if (e.target.innerText === '+') {
-                qtyNumber.innerText = qty + 1;
-            }
-            if (e.target.innerText === '-' && qty > 1) {
-                qtyNumber.innerText = qty - 1;
-            }
+                minusBtn.addEventListener('click', () => {
+                    let qty = parseInt(qtyNumber.innerText);
+                    if (qty > 1) qtyNumber.innerText = qty - 1;
+                });
+
+                plusBtn.addEventListener('click', () => {
+                    let qty = parseInt(qtyNumber.innerText);
+                    if (qty < stock) qtyNumber.innerText = qty + 1;
+                });
+            });
+
+            // Add to Cart logic
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (btn.disabled) return;
+
+                    const productId = btn.dataset.id;
+                    const qtyBox = btn.closest('.col-lg-6').querySelector('.quantity-box');
+                    const qty = parseInt(qtyBox.querySelector('.qty-number').innerText) || 1;
+
+                    btn.disabled = true;
+                    btn.innerText = 'Adding...';
+
+                    fetch("/cart/add", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                product_id: productId,
+                                qty: qty
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                console.log('res', res);
+                                
+                                btn.innerText = 'Added!';
+                                toastr.success(res.message ?? 'Product added to cart!');
+
+                                // Optional: update cart count in navbar
+                                if (window.updateCartCount) window.updateCartCount(res.cart);
+
+                                setTimeout(() => {
+                                    btn.innerText = 'Add to Cart';
+                                    btn.disabled = false;
+                                }, 1500);
+                            } else {
+                                btn.innerText = 'Add to Cart';
+                                btn.disabled = false;
+                                toastr.error(res.message || 'Could not add to cart');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            btn.innerText = 'Add to Cart';
+                            btn.disabled = false;
+                            toastr.error('Something went wrong');
+                        });
+
+                });
+            });
+
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const seeMoreBtn = document.getElementById('seeMoreBtn');
+            if (!seeMoreBtn) return;
+
+            seeMoreBtn.addEventListener('click', function() {
+                const tabContent = this.closest('#desc');
+                tabContent.querySelector('.short-desc').style.display = 'none';
+                tabContent.querySelector('.full-desc').style.display = 'inline';
+                this.style.display = 'none'; // hide button after click
+            });
         });
     </script>
     <script>
