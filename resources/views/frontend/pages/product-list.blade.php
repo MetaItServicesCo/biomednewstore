@@ -473,15 +473,26 @@
                                 <span>{{ $category->name }}</span>
                                 <i class="fa fa-plus"></i>
                             </div>
-                            <ul class="filter-list">
-                                @if ($category->products->count())
+                            @php $prodCount = $category->products->count(); @endphp
+                            <ul class="filter-list" data-cat-id="{{ $category->id }}">
+                                @if ($prodCount)
                                     @foreach ($category->products as $product)
-                                        <li>
-                                            <a href="{{ route('product-detail', $product->slug) }}">
+                                        <li class="mt-2 product-item" data-cat-id="{{ $category->id }}"
+                                            data-index="{{ $loop->index }}"
+                                            style="{{ $loop->index < 5 ? '' : 'display:none' }}">
+                                            <a href="{{ route('product-detail', $product->slug) }}"
+                                                class="text-decoration-none text-dark">
                                                 {{ $product->name }}
                                             </a>
                                         </li>
                                     @endforeach
+
+                                    @if ($prodCount > 5)
+                                        <li class="mt-2 text-center">
+                                            <button type="button" class="btn btn-link see-more-btn"
+                                                data-cat-id="{{ $category->id }}" data-next="5">See more</button>
+                                        </li>
+                                    @endif
                                 @else
                                     <li class="text-muted">No Product Found</li>
                                 @endif
@@ -502,6 +513,13 @@
                                 <span class="rangeValues "></span>
                                 {{-- <hr> --}}
                             </div>
+
+                            <!-- Manual Inputs -->
+                            <div class="d-flex gap-2 mt-3">
+                                <input type="number" id="priceFrom" class="form-control" placeholder="From">
+                                <input type="number" id="priceTo" class="form-control" placeholder="To">
+                            </div>
+
                             <div class="d-flex gap-2 mt-4">
                                 <a href="{{ route('products') }}" class="btn btn-outline-danger w-50">Clear</a>
                                 <button id="applyFilterBtn" class="btn btn-danger w-50">Apply</button>
@@ -518,35 +536,40 @@
                         </div> --}}
                         <div class="row g-4 p-2">
                             @foreach ($recentProducts as $recentProduct)
-                                <div class="col-lg-5 col-md-12 col-5">
-                                    <img src="{{ $recentProduct->thumbnail ? asset('storage/products/thumbnails/' . $recentProduct->thumbnail) : '' }}"
-                                        alt="{{ $recentProduct->image_alt ?? $recentProduct->name }}" class="recent-pro">
+                                <!-- Wrap the entire product in a link -->
+                                <a href="{{ route('product-detail', $recentProduct->slug) }}"
+                                    class="d-flex text-decoration-none text-dark">
+                                    <div class="col-lg-5 col-md-12 col-5">
+                                        <img src="{{ $recentProduct->thumbnail ? asset('storage/products/thumbnails/' . $recentProduct->thumbnail) : '' }}"
+                                            alt="{{ $recentProduct->image_alt ?? $recentProduct->name }}"
+                                            class="recent-pro">
 
-                                </div>
-                                <div class="col-lg-7 col-md-12 col-7">
-                                    <div>
-                                        <h6 class="recent-title">
-                                            {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
-                                        </h6>
-                                        <p class="recent-price">
-                                            @if ($recentProduct->price && $recentProduct->price > 0)
+                                    </div>
+                                    <div class="col-lg-7 col-md-12 col-7">
+                                        <div>
+                                            <h6 class="recent-title">
+                                                {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
+                                            </h6>
+                                            <p class="recent-price">
+                                                @if ($recentProduct->price && $recentProduct->price > 0)
+                                                    <span
+                                                        class="old-price">${{ number_format($recentProduct->price, 2) }}</span>
+                                                @endif
                                                 <span
-                                                    class="old-price">${{ number_format($recentProduct->price, 2) }}</span>
-                                            @endif
-                                            <span
-                                                class="new-price">${{ number_format($recentProduct->sale_price, 2) }}</span>
-                                        </p>
-                                        <div class="stars">
-                                            @php
-                                                $rating = round($recentProduct->rating ?? 0);
-                                            @endphp
+                                                    class="new-price">${{ number_format($recentProduct->sale_price, 2) }}</span>
+                                            </p>
+                                            <div class="stars">
+                                                @php
+                                                    $rating = round($recentProduct->rating ?? 0);
+                                                @endphp
 
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fa-solid fa-star {{ $i <= $rating ? 'active' : '' }}"></i>
-                                            @endfor
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <i class="fa-solid fa-star {{ $i <= $rating ? 'active' : '' }}"></i>
+                                                @endfor
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             @endforeach
                         </div>
                     </div>
@@ -600,34 +623,29 @@
             let slide1 = parseFloat(slides[0].value);
             let slide2 = parseFloat(slides[1].value);
 
-            if (slide1 > slide2) {
-                let tmp = slide2;
-                slide2 = slide1;
-                slide1 = tmp;
-            }
+            if (slide1 > slide2)[slide1, slide2] = [slide2, slide1];
 
-            let displayElement = parent.getElementsByClassName("rangeValues")[0];
-            displayElement.innerHTML = "$" + slide1 + " - $" + slide2;
+            // Clear manual inputs when slider is used
+            document.getElementById('priceFrom').value = '';
+            document.getElementById('priceTo').value = '';
+
+            parent.querySelector(".rangeValues").innerHTML = "$" + slide1 + " - $" + slide2;
         }
 
         window.onload = function() {
-            let sliderSections = document.getElementsByClassName("range-slider");
-            for (let x = 0; x < sliderSections.length; x++) {
-                let sliders = sliderSections[x].getElementsByTagName("input");
-                for (let y = 0; y < sliders.length; y++) {
-                    if (sliders[y].type === "range") {
-                        sliders[y].oninput = getVals;
-                        sliders[y].oninput();
-                    }
-                }
-            }
-        }
+            document.querySelectorAll(".range-slider input[type=range]").forEach(slider => {
+                slider.oninput = getVals;
+                slider.oninput();
+            });
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
             const heart = document.querySelector('.wishlist-icon');
-            heart.addEventListener('click', function() {
-                heart.classList.toggle('active'); // red heart toggle
-            });
+            if (heart) {
+                heart.addEventListener('click', function() {
+                    heart.classList.toggle('active'); // red heart toggle
+                });
+            }
         });
     </script>
 
@@ -643,6 +661,11 @@
             const paginationContainer = document.getElementById('products-pagination-container');
             const searchInput = document.getElementById('searchInput');
 
+            const rangeMin = document.querySelector('.range-min');
+            const rangeMax = document.querySelector('.range-max');
+            const priceFrom = document.getElementById('priceFrom');
+            const priceTo = document.getElementById('priceTo');
+
             function showLoader() {
                 loader.style.display = 'block';
                 productsContainer.style.display = 'none';
@@ -655,17 +678,10 @@
                 paginationContainer.style.display = 'block';
             }
 
-            function resetFilter() {
-                minPrice = 0;
-                maxPrice = 50000;
-                document.querySelector('.range-min').value = 0;
-                document.querySelector('.range-max').value = 50000;
+            function resetSlider() {
+                rangeMin.value = 0;
+                rangeMax.value = 50000;
                 document.querySelector('.rangeValues').innerText = '$0 - $50000';
-            }
-
-            function resetSearch() {
-                searchText = '';
-                searchInput.value = '';
             }
 
             function fetchProducts(page = 1) {
@@ -693,28 +709,26 @@
                     .finally(() => hideLoader());
             }
 
-            // 🔍 SEARCH
-            document.getElementById('searchBtn').addEventListener('click', function(e) {
-                e.preventDefault();
+            // Manual input → reset slider
+            priceFrom.addEventListener('input', resetSlider);
+            priceTo.addEventListener('input', resetSlider);
 
-                searchText = searchInput.value.trim();
-
-                // reset filter when searching
-                resetFilter();
-
-                fetchProducts();
-            });
-
-            // 💰 FILTER
+            // 💰 APPLY FILTER
             document.getElementById('applyFilterBtn').addEventListener('click', function(e) {
                 e.preventDefault();
 
-                // reset search when filtering
-                resetSearch();
+                const fromVal = Number(priceFrom.value);
+                const toVal = Number(priceTo.value);
 
-                const box = document.querySelector('.range-slider');
-                minPrice = Number(box.querySelector('.range-min').value);
-                maxPrice = Number(box.querySelector('.range-max').value);
+                if (fromVal || toVal) {
+                    // Manual inputs used
+                    minPrice = fromVal || 0;
+                    maxPrice = toVal || 50000;
+                } else {
+                    // Slider used
+                    minPrice = Number(rangeMin.value);
+                    maxPrice = Number(rangeMax.value);
+                }
 
                 fetchProducts();
             });
@@ -733,9 +747,6 @@
         });
     </script>
 
-
-
-
     <script>
         function toggleList(el) {
             const list = el.nextElementSibling;
@@ -745,6 +756,38 @@
             icon.classList.toggle('fa-plus');
             icon.classList.toggle('fa-minus');
         }
+
+        // See more per-category: reveal next 5 items on each click
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('see-more-btn')) return;
+
+            const btn = e.target;
+            const catId = btn.dataset.catId;
+            let start = parseInt(btn.dataset.next, 10) || 5;
+            const limit = 5;
+
+            const items = Array.from(
+                document.querySelectorAll('.product-item[data-cat-id="' + catId + '"]')
+            );
+
+            // Show ONLY next 5 hidden items
+            items.forEach(item => {
+                const idx = parseInt(item.dataset.index, 10);
+                if (idx >= start && idx < start + limit) {
+                    item.style.display = '';
+                }
+            });
+
+            // Move pointer forward
+            btn.dataset.next = start + limit;
+
+            // Hide button if no more items left
+            const stillHidden = items.some(item => item.style.display === 'none');
+            if (!stillHidden) {
+                btn.style.display = 'none';
+            }
+        });
+
 
         // const range = document.getElementById('priceRange');
         // const value = document.getElementById('priceValue');

@@ -1,9 +1,9 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-@section('meta_title', $product->meta_title ?? 'Mr. Biomed Tech Services')
-@section('meta_keywords', $product->meta_keywords ?? '')
-@section('meta_description', $product->meta_description ?? '')
+@section('meta_title', $part->meta_title ?? 'Mr. Biomed Tech Services')
+@section('meta_keywords', $part->meta_keywords ?? '')
+@section('meta_description', $part->meta_description ?? '')
 
 @push('frontend-styles')
     <style>
@@ -296,17 +296,17 @@
 
 @section('frontend-content')
 
-    @if (!$product)
+    @if (!$part)
         <section class="product-detail-banner">
-            <h1>Product <span>Not Found</span> </h1>
+            <h1>Parts <span>Not Found</span> </h1>
         </section>
         <div class="container py-5 text-center">
-            <p class="lead">Sorry, the product you're looking for doesn't exist or has been removed.</p>
-            <a href="{{ route('products') }}" class="btn btn-primary mt-3">Back to Products</a>
+            <p class="lead">Sorry, the part you're looking for doesn't exist or has been removed.</p>
+            <a href="{{ route('parts') }}" class="btn btn-primary mt-3">Back to parts</a>
         </div>
     @else
         <section class="product-detail-banner">
-            <h1>Product <span>Detail page</span> </h1>
+            <h1>Part <span>Detail page</span> </h1>
         </section>
 
 
@@ -321,7 +321,7 @@
                         <div class="image-slider">
                             <!-- Main Image -->
                             <img id="mainImage"
-                                src="{{ $product->thumbnail ?? false ? asset('storage/products/thumbnails/' . $product->thumbnail) : asset('frontend/images/offer-img.png') }}"
+                                src="{{ $part->thumbnail ?? false ? asset('storage/products/thumbnails/' . $part->thumbnail) : asset('frontend/images/offer-img.png') }}"
                                 class="main-img">
                         </div>
 
@@ -334,19 +334,19 @@
                             <div class="thumb-wrapper">
                                 <div class="thumbs-track" id="thumbsTrack">
                                     {{-- Main thumbnail first --}}
-                                    @if ($product->thumbnail ?? false)
-                                        <img src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
+                                    @if ($part->thumbnail ?? false)
+                                        <img src="{{ asset('storage/products/thumbnails/' . $part->thumbnail) }}"
                                             class="thumb" onclick="thumbClicked(this.src)">
                                     @endif
                                     {{-- Then gallery images --}}
                                     @php
                                         $galleryImages = [];
 
-                                        if (!empty($product->gallery_images ?? null)) {
-                                            if (is_array($product->gallery_images)) {
-                                                $galleryImages = $product->gallery_images;
+                                        if (!empty($part->gallery_images ?? null)) {
+                                            if (is_array($part->gallery_images)) {
+                                                $galleryImages = $part->gallery_images;
                                             } else {
-                                                $galleryImages = json_decode($product->gallery_images, true); // decode JSON string to array
+                                                $galleryImages = json_decode($part->gallery_images, true); // decode JSON string to array
                                             }
                                         }
                                     @endphp
@@ -376,23 +376,23 @@
                     <div class="col-lg-6">
 
                         <!-- Product Title -->
-                        <h2 class="product-title">{{ $product->name ?? '' }}</h2>
+                        <h2 class="product-title">{{ $part->name ?? '' }}</h2>
 
                         <!-- SKU / Condition / Availability -->
-                        <p class="meta"><strong>SKU:</strong> {{ $product->sku ?? '' }}</p>
-                        <p class="meta"><strong>CONDITION:</strong> {{ ucfirst($product->condition) }}
+                        <p class="meta"><strong>SKU:</strong> {{ $part->sku ?? '' }}</p>
+                        <p class="meta"><strong>CONDITION:</strong> {{ ucfirst($part->condition) }}
                         </p>
-                        <p class="meta"><strong>AVAILABILITY:</strong> {{ $product->availability ?? '' }}</p>
+                        <p class="meta"><strong>AVAILABILITY:</strong> {{ $part->availability ?? '' }}</p>
 
                         <hr>
 
                         <!-- Price -->
-                        <h3 class="product-price">${{ number_format($product->sale_price, 2) }}</h3>
+                        <h3 class="product-price">${{ number_format($part->sale_price, 2) }}</h3>
 
                         <!-- Rating -->
                         <div class="rating mt-4">
                             @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= ($product->rating ?? 0))
+                                @if ($i <= ($part->rating ?? 0))
                                     <i class="fa-solid fa-star"></i>
                                 @else
                                     <i class="fa-regular fa-star"></i>
@@ -404,17 +404,17 @@
                         <hr>
 
                         <!-- Options -->
-                        @if (!empty($product->model))
+                        @if (!empty($part->model))
                             <p class="options-title"><strong>OPTIONS:</strong> REQUIRED</p>
                             <ul class="my-4">
-                                <li class="options-title">{{ $product->model }}</li>
+                                <li class="options-title">{{ $part->model }}</li>
                             </ul>
                         @endif
 
                         <hr>
 
                         <!-- Quantity -->
-                        <div class="quantity-box" data-stock="{{ $product->stock_qty ?? 0 }}">
+                        <div class="quantity-box" data-stock="{{ $part->stock_qty ?? 0 }}">
                             <span class="qty-btn minus">-</span>
                             <span class="qty-number">1</span>
                             <span class="qty-btn plus">+</span>
@@ -422,9 +422,9 @@
 
 
                         <!-- Add to Cart -->
-                        <button class="add-to-cart-btn {{ !$product->in_stock ? 'disabled-btn' : '' }}"
-                            data-id="{{ $product->id }}" @if (!$product->in_stock) disabled @endif>
-                            {{ $product->in_stock ? 'Add to Cart' : 'Out of Stock' }}
+                        <button class="add-to-cart-btn {{ !$part->in_stock ? 'disabled-btn' : '' }}"
+                            data-id="{{ $part->id }}" @if (!$part->in_stock) disabled @endif>
+                            {{ $part->in_stock ? 'Add to Cart' : 'Out of Stock' }}
                         </button>
 
 
@@ -447,7 +447,7 @@
                 <!-- DESCRIPTION -->
                 <div class="tab-content active" id="desc">
                     @php
-                        $words = str_word_count(strip_tags($product->description), 1); // get all words
+                        $words = str_word_count(strip_tags($part->description), 1); // get all words
                         $limit = 150;
                     @endphp
 
@@ -456,7 +456,7 @@
                             {!! implode(' ', array_slice($words, 0, $limit)) !!}...
                         </span>
                         <span class="full-desc" style="display: none;">
-                            {!! $product->description !!}
+                            {!! $part->description !!}
                         </span>
 
                         <!-- See More Button -->
@@ -467,7 +467,7 @@
                             </button>
                         </div>
                     @else
-                        {!! $product->description !!}
+                        {!! $part->description !!}
                     @endif
                 </div>
 
@@ -476,13 +476,11 @@
                 <div class="tab-content" id="brochure">
                     <div class="tab-actions">
                         <!-- Download PDF -->
-                        @if (!empty($product->brochures))
-                            <a href="{{ asset('storage/products/brochures/' . $product->brochures) }}" download>
-                                <button class="action-btn download">
-                                    <span><i class="bi bi-download"></i> Download</span>
-                                </button>
-                            </a>
-                        @endif
+                        <a href="{{ asset('storage/products/brochures/' . $part->brochures) }}" download>
+                            <button class="action-btn download">
+                                <span>Download PDF</span>
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -507,7 +505,7 @@
 
                     <form id="feed_back_form" action="{{ route('post.product.feedback') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="product_id" value="{{ $part->id }}">
                         <div class="mb-3">
                             <input type="text" name="name" class="form-control comment-input"
                                 placeholder="Enter Name">

@@ -36,7 +36,7 @@
 
         <!--begin::Link-->
         <div class="mb-0">
-            <a href="{{ route('dashboard') }}" class="btn btn-sm btn-primary">Return Home</a>
+            <a href="{{ route('home') }}" class="btn btn-sm btn-primary">Return Home</a>
         </div>
         <!--end::Link-->
 

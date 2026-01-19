@@ -273,6 +273,11 @@
                                         {{ __('Old') }}
                                     </option>
 
+                                    <option value="refurbished"
+                                        {{ old('condition', $data->condition ?? '') == 'refurbished' ? 'selected' : '' }}>
+                                        {{ __('Refurbished') }}
+                                    </option>
+
                                 </select>
 
                                 @error('condition')
@@ -332,6 +337,17 @@
                             </div>
 
                             <div class="col-lg-4 mb-4">
+                                <label for="manufacture"
+                                    class="form-label fw-semibold">{{ __('Manufacture') }}</label>
+                                <input type="text" id="manufacture" name="manufacture"
+                                    class="form-control form-control-lg @error('manufacture') is-invalid @enderror"
+                                    value="{{ old('manufacture', $data->manufacture ?? '') }}">
+                                @error('manufacture')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-4 mb-4">
                                 <label for="model" class="form-label fw-semibold">{{ __('Model') }}</label>
                                 <input type="text" id="model" name="model"
                                     class="form-control form-control-lg @error('model') is-invalid @enderror"
@@ -341,7 +357,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-lg-8 mb-4">
+                            <div class="col-lg-4 mb-4">
                                 <label for="brochures" class="form-label fw-semibold">{{ __('Brochures') }}</label>
                                 <input type="file" id="brochures" name="brochures"
                                     class="form-control form-control-lg @error('brochures') is-invalid @enderror">

@@ -77,129 +77,17 @@
                             href="{{ route('home') }}">Home</a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('products') ? 'active' : '' }}"
+                            href="{{ route('products') }}">MrBioMed Store</a>
+                    </li>
+
                     <li class="nav-item dropdown  has-mega">
-                        <a class="nav-link mega-toggle " href="{{ route('products') }}">
+                        <a class="nav-link mega-toggle" href="javascript:void(0)">
                             Categories List
                             <i class="bi bi-chevron-down dropdown-icon"></i>
                         </a>
                         <div class="mega-menu">
-                            {{-- <div class="container-fluid">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-6 mb-3">
-                                            <h6 class="nav-repair-title">
-                                                Repair Services
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </h6>
-                                            <h6 class="nav-title">
-                                                Biomedical Equipment Repair and Maintenance ›
-                                            </h6>
-
-                                            <ul class="list-unstyled">
-                                                <li><a href="#" class="bottomm"> Beds and Surfaces ›</a></li>
-                                                <li><a href="#" class="bottomm">Infusion ›</a></li>
-                                                <li><a href="#" class="bottomm"> Anesthesia ›</a></li>
-                                                <li><a href="#" class="bottomm"> Monitors ›</a></li>
-
-
-
-                                            </ul>
-                                            <h6 class="nav-title">
-                                                Medical Imaging
-                                                Repair and Maintenance › 
-                                            </h6>
-
-                                            <ul class="list-unstyled">
-                                                <li><a href="#" class="bottomm"> Beds and Surfaces ›</a></li>
-                                                <li><a href="#" class="bottomm">Infusion ›</a></li>
-                                                <li><a href="#" class="bottomm"> Anesthesia ›</a></li>
-                                                <li><a href="#" class="bottomm"> Monitors ›</a></li>
-
-
-
-                                            </ul>
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 mb-3">
-                                            <h6 class="nav-repair-title">
-                                                Surgical Equipment
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </h6>
-                                            <h6 class="nav-title">
-                                                Surgical Equipment Repair and Maintenance ›
-                                            </h6>
-
-                                            <ul class="list-unstyled">
-                                                <li><a href="#" class="bottomm"> Beds and Surfaces ›</a></li>
-                                                <li><a href="#" class="bottomm">Infusion ›</a></li>
-                                                <li><a href="#" class="bottomm"> Anesthesia ›</a></li>
-                                                <li><a href="#" class="bottomm"> Monitors ›</a></li>
-
-
-
-                                            </ul>
-                                            <h6 class="nav-title">
-                                                Surgical Laser and Technology Services ›
-                                            </h6>
-
-                                            <ul class="list-unstyled">
-                                                <li><a href="#" class="bottomm"> Beds and Surfaces ›</a></li>
-                                                <li><a href="#" class="bottomm">Infusion ›</a></li>
-                                                <li><a href="#" class="bottomm"> Anesthesia ›</a></li>
-                                                <li><a href="#" class="bottomm"> Monitors ›</a></li>
-
-
-
-                                            </ul>
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 mb-3">
-                                            <h6 class="nav-repair-title">
-                                                Medical Equipment
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </h6>
-                                            <h6 class="nav-title">
-                                                Onsite Medical Equipment Management ›
-
-                                            </h6>
-
-                                            <ul class="list-unstyled">
-                                                <li><a href="#" class="bottomm"> Beds and Surfaces ›</a></li>
-                                                <li><a href="#" class="bottomm">Infusion ›</a></li>
-
-
-
-
-                                            </ul>
-
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 mb-3">
-                                            <h6 class="nav-repair-title">
-                                                Retired assets
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </h6>
-                                            <div class="nav-div">
-                                                <p>Our reputation is based on integrity, honesty, and reliability for
-                                                    selling new medical equipment, pre-owned medical equipment, and
-                                                    disposition services.</p>
-                                                <a href="{{ route('contact-us') }}">
-                                                    <button class="nav-mega-btn">Talk To Expert</button>
-                                                </a>
-                                            </div>
-
-                                            <h6 class="nav-repair-title mt-4">
-                                                Consultancy
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </h6>
-
-                                            <ul class="list-unstyled">
-                                                <li><a href="#" class="bottomm"> Beds and Surfaces ›</a></li>
-                                                <li><a href="#" class="bottomm">Infusion ›</a></li>
-                                                <li><a href="#" class="bottomm"> Anesthesia ›</a></li>
-                                                <li><a href="#" class="bottomm"> Monitors ›</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="container-fluid nav-product">
                                 <div class="row">
                                     @foreach ($headerCategories as $category)
@@ -226,7 +114,7 @@
                     </li>
 
                     <li class="nav-item dropdown has-mega">
-                        <a class="nav-link mega-toggle" href="{{ route('products') }}">Accessories<i
+                        <a class="nav-link mega-toggle" href="javascript:void(0)">Accessories<i
                                 class="bi bi-chevron-down dropdown-icon"></i></a>
                         <div class="mega-menu">
                             <div class="container-fluid nav-product">
@@ -255,7 +143,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " href="{{ route('parts') }}">
+                        <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} " href="{{ route('parts') }}">
                             Parts
                         </a>
                     </li>

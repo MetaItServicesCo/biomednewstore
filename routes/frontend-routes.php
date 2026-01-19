@@ -66,6 +66,7 @@ Route::prefix('ajax')->group(function () {
     Route::get('/feedbacks/filter', [ReviewsController::class, 'filterReviews'])->name('reviews.filter');
 
     Route::post('/products/filter', [ProductController::class, 'productsFilter'])->name('products.filter');
+    Route::get('/parts/filter', [ProductController::class, 'partsAjax'])->name('parts.filter');
 });
 
 
@@ -85,6 +86,8 @@ Route::get('/order', [ProductController::class, 'order'])->name('billing');
 
 
 Route::get('/parts', [ProductController::class, 'parts'])->name('parts');
+Route::get('/part/{slug}', [ProductController::class, 'partDetail'])->name('part-detail');
+
 
 // ===========================
 // Order Routes

@@ -1,9 +1,9 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-{{-- @section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
+@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
 @section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '') --}}
+@section('meta_description', $data->meta_description ?? '')
 
 @push('frontend-styles')
     <style>
@@ -44,6 +44,12 @@
             color: #000000;
         }
 
+        .request-parts-btn {
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
         /* ---------- Responsive ---------- */
         @media (max-width: 768px) {
             .product-detail-banner {
@@ -70,7 +76,7 @@
             display: flex;
             align-items: center;
             /* justify-content: center;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    text-align: center; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            text-align: center; */
             margin-top: 30px;
         }
 
@@ -143,11 +149,19 @@
             font-weight: 500;
             font-family: Inter;
             font-size: 17px;
-            line-height: 100%;
-            width: 208px;
             color: #121212CF;
             transition: all 0.3s ease-in-out;
+
+            /* Flex for arrow positioning */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+
+            /* Remove line-height */
+            line-height: normal;
         }
+
 
         .filtter-btn:hover {
             background: #c0cce6;
@@ -277,63 +291,86 @@
 
                 <!-- Right Buttons -->
                 <div class="d-flex gap-2 flex-wrap me-4 pe-2">
-                    <button class="filtter-btn">All Manufacturers</button>
-                    <button class="filtter-btn">All Categories</button>
-                    <button class="find-btn"> <img src="{{ asset('frontend/images/find-icon.png') }}" alt="">
+                    <!-- Manufacturers Dropdown -->
+                    <div class="dropdown">
+                        <button class="filtter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            All Manufacturers
+                        </button>
+                        <div class="dropdown-menu p-3" style="min-width: 250px; max-height: 200px; overflow-y: auto;">
+                            @foreach ($manufacture as $man)
+                                <div class="form-check">
+                                    <input class="form-check-input manufacturer-checkbox" type="checkbox"
+                                        value="{{ $man }}" id="man-{{ str_replace(' ', '-', $man) }}">
+                                    <label class="form-check-label" for="man-{{ str_replace(' ', '-', $man) }}">
+                                        {{ $man }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Categories Dropdown -->
+                    <div class="dropdown">
+                        <button class="filtter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            All Categories
+                        </button>
+                        <div class="dropdown-menu p-3" style="min-width: 250px; max-height: 200px; overflow-y: auto;">
+                            @foreach ($categories as $cat)
+                                <div class="form-check">
+                                    <input class="form-check-input category-checkbox" type="checkbox"
+                                        value="{{ $cat->id }}" id="cat-{{ $cat->id }}">
+                                    <label class="form-check-label" for="cat-{{ $cat->id }}">
+                                        {{ $cat->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <button class="find-btn" id="findBtn"> <img src="{{ asset('frontend/images/find-icon.png') }}"
+                            alt="">
                         Find</button>
                 </div>
 
             </div>
 
             <!-- Bottom Text -->
-            <p class="show-parts my-5">Show <span>7</span> Parts</p>
+            <p class="show-parts my-5">
+                Show <span id="partsCount">{{ $totalParts }}</span> Parts
+            </p>
 
         </div>
         <div class="container mt-4">
-            <div class="row g-5">
-                @foreach ($parts as $item)
-                    <div class="col-lg-3 col-md-6 animate-card">
-                        <div class="productt-cardd">
-                            <img src="{{ asset('storage/products/thumbnails/' . $item->thumbnail) }}"
-                                alt="{{ $item->image_alt }}" class="img-fluid">
+            {{-- Loader --}}
+            <div id="partsLoader" class="text-center my-4" style="display:none;">
+                <div class="spinner-border text-danger"></div>
+                <p class="mt-2">Loading...</p>
+            </div>
 
-                            <div class="card-body p-2">
-                                <div class="product-meta">
-                                    <div class="stars">
-                                        @php
-                                            $rating = $item->rating ?? 0; // rating 0-5
-                                        @endphp
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            @if ($i <= $rating)
-                                                <i class="fa-solid fa-star active"></i>
-                                            @else
-                                                <i class="fa-solid fa-star"></i>
-                                            @endif
-                                        @endfor
-                                    </div>
+            <div class="row g-5" id="partsContainer">
+                @include('partials._parts', ['parts' => $parts])
+            </div>
 
-                                    <span class="stock">In Stock</span>
-                                </div>
+            <div class="mt-4" id="parts-pagination-container">
+                @include('vendor.pagination._pagination', ['products' => $parts])
+            </div>
 
-                                <h6>{{ $item->name }}</h6>
-
-                                <div class="price-row">
-                                    @if (!empty($item->price) && $item->price > 0)
-                                        <span class="old-price">${{ number_format($item->price) }}</span>
-                                    @endif
-                                    <span class="new-price">${{ number_format($item->sale_price) }}</span>
-                                    <button class="btn-buy">Buy Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                @endforeach
-
-
+            <div class="mt-5 text-center">
+                <a href="javascript:void(0)" id="getProposalBtn" class="btn btn-danger px-5 py-2 request-parts-btn">
+                    Request Custom Parts
+                </a>
             </div>
         </div>
     </section>
+
+    {{-- ================= pruduct sectiion ============= --}}
+    <x-our-latest-products />
+
+    {{-- ================faqs section ================ --}}
+    <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
+        image="frontend/images/hero-main-img.png" :visible="4" />
 @endsection
 
 
@@ -341,4 +378,92 @@
 
 
 @push('frontend-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const loader = document.getElementById('partsLoader');
+            const container = document.getElementById('partsContainer');
+            const pagination = document.getElementById('parts-pagination-container');
+
+            function showLoader() {
+                loader.style.display = 'block';
+                container.style.display = 'none';
+                pagination.style.display = 'none';
+            }
+
+            function hideLoader() {
+                loader.style.display = 'none';
+                container.style.display = 'flex';
+                pagination.style.display = 'block';
+            }
+
+            function fetchParts(page = 1) {
+                showLoader();
+
+                // Collect filters
+                const search = document.querySelector('.search-input').value.trim();
+                const manufacturers = Array.from(document.querySelectorAll('.manufacturer-checkbox:checked')).map(
+                    cb => cb.value);
+                const categories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb
+                    .value);
+
+                const params = new URLSearchParams({
+                    page: page,
+                    search: search,
+                    manufacturers: manufacturers.join(','),
+                    categories: categories.join(',')
+                });
+
+                fetch('/ajax/parts/filter?' + params.toString(), {
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        container.innerHTML = res.html;
+                        pagination.innerHTML = res.pagination;
+
+                        container.querySelectorAll('.animate-card').forEach(card => {
+                            card.classList.remove('animate-card');
+                        });
+
+                        // Update the parts count dynamically
+                        const partsCountElem = document.getElementById('partsCount');
+                        if (partsCountElem) {
+                            partsCountElem.innerText = res.totalParts;
+                        }
+                        
+                        bindPagination();
+                    })
+                    .finally(() => hideLoader());
+            }
+
+            function bindPagination() {
+                document.querySelectorAll('#parts-pagination-container .page-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const page = this.dataset.page;
+                        if (page) fetchParts(page);
+                    });
+                });
+            }
+
+            // Bind find button
+            document.getElementById('findBtn').addEventListener('click', function() {
+                fetchParts();
+            });
+
+            // Bind search input on enter
+            document.querySelector('.search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    fetchParts();
+                }
+            });
+
+            bindPagination();
+        });
+    </script>
 @endpush
