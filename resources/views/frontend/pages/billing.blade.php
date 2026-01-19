@@ -741,7 +741,8 @@
         $selectedShippingMethod = old('shipping_method', 'standard');
         $shipping = ($selectedShippingMethod === 'pickup') ? 0.0 : 40.0;
 
-        $gst = $subtotal * 0.1;
+        $gst_percent = 8.25 / 100; // 8.25%
+        $gst = $subtotal * $gst_percent;
         $total = $subtotal + $shipping + $gst;
     @endphp
     <section class="cart-banner ">
@@ -990,7 +991,7 @@
                         </p>
 
                         <div class="summary-row  mt-3">
-                            <span>GST (10%)</span>
+                            <span>GST (8.25%)</span>
                             <span>${{ number_format($gst, 2) }}</span>
                         </div>
                         <div class="summary-total  mt-3">

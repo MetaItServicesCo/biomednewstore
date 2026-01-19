@@ -40,6 +40,7 @@ class Product extends Model
         'rating',
         'brochures',
         'model',
+        'manufacture',
         'product_type'
     ];
 

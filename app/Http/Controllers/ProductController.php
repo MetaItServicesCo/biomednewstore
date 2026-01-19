@@ -10,9 +10,12 @@ use App\Models\Product;
 use App\Models\ProductFeedback;
 use App\Traits\UploadImageTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
@@ -65,6 +68,7 @@ class ProductController extends Controller
             'rating' => 'nullable|integer|min:1|max:5',
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
+            'manufacture' => 'nullable|string|max:255',
             'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
             'product_type' => 'required|in:product,part',
         ]);
@@ -95,6 +99,7 @@ class ProductController extends Controller
             $product->rating = $request->rating;
             $product->availability = $request->availability;
             $product->model = $request->model;
+            $product->manufacture = $request->manufacture;
             $product->product_type = $request->product_type;
 
             $product->brochures = $this->uploadImage($request->file('brochures'), 'products/brochures');
@@ -195,6 +200,7 @@ class ProductController extends Controller
             'rating' => 'nullable|integer|min:1|max:5',
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
+            'manufacture' => 'nullable|string|max:255',
             'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
             'product_type' => 'required|in:product,part',
 
@@ -225,6 +231,7 @@ class ProductController extends Controller
             $product->rating = $request->rating;
             $product->availability = $request->availability;
             $product->model = $request->model;
+            $product->manufacture = $request->manufacture;
             $product->product_type = $request->product_type;
 
             $product->brochures = $this->updateImage($request, 'brochures', 'products/brochures', $product->brochures);
@@ -627,13 +634,149 @@ class ProductController extends Controller
 
     public function parts()
     {
-        $parts = Product::where('is_active', true)
-            ->where('product_type', 'part')
-            // ->whereIn('type', ['for_store', 'both'])
-            ->orderBy('name', 'asc')
-            ->get();
+        try {
+            $parts = Product::where('is_active', true)
+                ->where('product_type', 'part')
+                // ->whereIn('type', ['for_store', 'both'])
+                ->orderBy('name', 'asc')
+                ->paginate(16);
 
-        return view('frontend.pages.parts', compact('parts'));
+            $totalParts = $parts->total();
+            $faqs = getFaqs('parts');
+
+            $categories = Category::where('status', true)->orderBy('name', 'asc')->get();
+
+            $manufacture = Product::whereNotNull('manufacture') // ignore null
+                ->where('manufacture', '!=', '')               // ignore empty string
+                ->where('product_type', 'part')
+                ->pluck('manufacture')                         // get only the manufacture column
+                ->unique()                                     // remove duplicates
+                ->sort()                                       // sort alphabetically
+                ->values()                                     // reindex array
+                ->toArray();                                   // convert to plain array
+
+            return view('frontend.pages.parts', compact('parts', 'totalParts', 'faqs', 'manufacture', 'categories'));
+
+        } catch (\Throwable $e) {
+
+            // Log the actual error for debugging
+            Log::error('Error fetching parts products', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+
+            // Optional: show user-friendly message
+            return redirect()->route('home')->with(
+                'error',
+                'Something went wrong while loading parts. Please try again later.'
+            );
+        }
+    }
+
+    public function partsAjax(Request $request)
+    {
+        try {
+            $query = Product::where('is_active', true)
+                ->where('product_type', 'part');
+
+            // Search: in product name or category name
+            $search = trim($request->search ?? '');
+            if ($search !== '') {
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%')
+                      ->orWhereHas('category', function($catQ) use ($search) {
+                          $catQ->where('name', 'like', '%' . $search . '%');
+                      });
+                });
+            }
+
+            // Manufacturers filter
+            $manufacturers = $request->manufacturers ? explode(',', $request->manufacturers) : [];
+            if (!empty($manufacturers)) {
+                $query->whereIn('manufacture', $manufacturers);
+            }
+
+            // Categories filter
+            $categories = $request->categories ? explode(',', $request->categories) : [];
+            if (!empty($categories)) {
+                $query->whereHas('category', function($catQ) use ($categories) {
+                    $catQ->whereIn('id', $categories);
+                });
+            }
+
+            $parts = $query->orderBy('name', 'asc')->paginate(16);
+            $totalParts = $parts->total(); // total filtered count
+
+            return response()->json([
+                'html' => view('partials._parts', compact('parts'))->render(),
+                'pagination' => view('vendor.pagination._pagination', [
+                    'products' => $parts,
+                ])->render(),
+                'totalParts' => $totalParts,
+            ]);
+
+        } catch (\Throwable $e) {
+
+            Log::error('Parts AJAX Error', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return response()->json(['error' => true], 500);
+        }
+    }
+
+    public function partDetail($slug)
+    {
+        $part = Product::where('slug', $slug)
+            ->where('is_active', true)
+            ->where('product_type', 'part')
+            ->first();
+
+        if (! $part) {
+            abort(404);
+        }
+
+        try {
+            $faqs = getFaqs('parts');
+
+            $latestReviews = ProductFeedback::where('product_id', $part->id)
+                ->where('status', 'approved')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return view('frontend.pages.part-detail', compact(
+                'part',
+                'faqs',
+                'latestReviews'
+            ));
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            Log::error('DB error on part detail', [
+                'slug' => $slug,
+                'msg' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('parts')->with(
+                'error',
+                'Database error occurred. Please try again.'
+            );
+
+        } catch (\Throwable $e) {
+
+            Log::error('Part detail page error', [
+                'slug' => $slug,
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+
+            return redirect()->route('parts')->with(
+                'error',
+                'Something went wrong while loading the part details.'
+            );
+        }
     }
 
     public function productFeedback(Request $request)

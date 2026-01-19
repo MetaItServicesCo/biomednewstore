@@ -508,7 +508,7 @@
                                 </p>
 
                                 <div class="summary-row  mt-3 summary-gst">
-                                    <span>GST (10%)</span>
+                                    <span>GST (8.25%)</span>
                                     <span>$0.00</span>
                                 </div>
                                 <div class="summary-total  mt-3 summary-total-amount">
@@ -573,6 +573,9 @@
             // Get cart object from Blade
             const cart = @json($cart); // cart object with product IDs as keys
 
+            const SHIPPING_COST = 40.00;
+            const GST_RATE = 8.25/100; // 8.25%
+
             // Function to update summary
             function updateSummary() {
                 let subtotal = 0;
@@ -589,13 +592,9 @@
                     }
                 });
 
-                // Get shipping and tax rates
-                const shipping = 40.00;
-                const taxRate = 0.10;
-
-                // Calculate totals
-                const gst = subtotal * taxRate;
-                const orderTotal = subtotal + shipping + gst;
+                // Calculations (JS = source of truth)
+                const gst = subtotal * GST_RATE;
+                const total = subtotal + SHIPPING_COST + gst;
 
                 // Update summary card using class names
                 const subtotalElem = document.querySelector('.summary-subtotal span:last-child');
@@ -604,9 +603,9 @@
                 const totalElem = document.querySelector('.summary-total-amount span:last-child');
 
                 if (subtotalElem) subtotalElem.innerText = `$${subtotal.toFixed(2)}`;
-                if (shippingElem) shippingElem.innerText = `$${shipping.toFixed(2)}`;
+                if (shippingElem) shippingElem.innerText = `$${SHIPPING_COST.toFixed(2)}`;
                 if (gstElem) gstElem.innerText = `$${gst.toFixed(2)}`;
-                if (totalElem) totalElem.innerText = `$${orderTotal.toFixed(2)}`;
+                if (totalElem) totalElem.innerText = `$${total.toFixed(2)}`;
             }
 
             // Function to update subtotal for a specific row
