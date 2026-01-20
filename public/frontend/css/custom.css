@@ -1327,7 +1327,7 @@
  }
 
  .gold {
-     color: #E9A426;
+     color: #E9A426 !important;
  }
 
  .product-title {

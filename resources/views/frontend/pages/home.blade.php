@@ -1,10 +1,105 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
+@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services | Reliable Biomedical Solutions')
 @section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '')
+@section('meta_description', $data->meta_description ?? 'Mr. Biomed Tech Services delivers biomedical solutions—installation to repair. Visit 555 N 5th St, Garland, TX. Call +1 469-767-8853. Fast & reliable.')
 
+
+@section('page_schema')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://mbmts.com/#organization",
+      "name": "MBMTS",
+      "url": "https://mbmts.com/",
+      "logo": "https://mbmts.com/logo.png",
+      "sameAs": [
+        "https://www.facebook.com/Mr.BioMed",
+        "https://www.linkedin.com/company/mr-biomed-tech-pt-medical"
+      ],
+      "telephone": "+1-469-767-8853",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "555 N. 5th Street Suite 109B",
+        "addressLocality": "Garland",
+        "addressRegion": "TX",
+        "postalCode": "75040",
+        "addressCountry": "US"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "telephone": "+1-469-767-8853",
+        "areaServed": "US",
+        "availableLanguage": "English"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mbmts.com/#website",
+      "url": "https://mbmts.com/",
+      "name": "MBMTS",
+      "publisher": {
+        "@id": "https://mbmts.com/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://mbmts.com/#homepage",
+      "url": "https://mbmts.com/",
+      "name": "MBMTS – Biomedical Equipment & Services",
+      "isPartOf": {
+        "@id": "https://mbmts.com/#website"
+      },
+      "about": {
+        "@id": "https://mbmts.com/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://mbmts.com/store/#webpage",
+      "url": "https://mbmts.com/store/",
+      "name": "Mr BioMed Store",
+      "isPartOf": {
+        "@id": "https://mbmts.com/#website"
+      },
+      "about": {
+        "@id": "https://mbmts.com/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://mbmts.com/feedback/#webpage",
+      "url": "https://mbmts.com/feedback/",
+      "name": "Customer Feedback – MBMTS",
+      "isPartOf": {
+        "@id": "https://mbmts.com/#website"
+      },
+      "about": {
+        "@id": "https://mbmts.com/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://mbmts.com/parts/#webpage",
+      "url": "https://mbmts.com/parts/",
+      "name": "Biomedical Parts – MBMTS",
+      "isPartOf": {
+        "@id": "https://mbmts.com/#website"
+      },
+      "about": {
+        "@id": "https://mbmts.com/#organization"
+      }
+    }
+  ]
+}
+</script>
+
+@endsection
 @push('frontend-styles')
     <style>
         .image-dots .dot {
@@ -312,13 +407,14 @@
 
             <!-- Second Heading -->
             <h3 class="sub-heading mt-3 fade-right">
-                Complete Overview of Our Biomedical Services
+                Medical Equipment, Supplies & Parts — One Place, Hassle-Free
             </h3>
 
             <!-- Paragraph -->
             <p class="section-desc mt-3 fade-left">
-                We cover a full spectrum of medical equipment, ensuring you have access to everything you need.
-                This is the fact that hospitals and healthcare providers trust Mr. Biomed Tech Services for clear,
+                We help hospitals, clinics, labs, and home-care providers find reliable biomedical equipment, genuine parts,
+                and responsive technical support. Whether you’re buying new essentials, replacing accessories, or scheduling
+                service—our team makes it simple to choose the right solution.
             </p>
         </div>
 
@@ -333,12 +429,12 @@
                             <img src="{{ asset('frontend/images/first-card-img.png') }}"
                                 class="first-card-img img-fluid mb-3" alt="service">
 
-                            <h4 class="cardd-title">Service Title</h4>
+                            <h4 class="cardd-title">Preventive Maintenance (PM)</h4>
                             <hr>
                             <p class="card-desc">
-                                Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet suscipit nulla. Nullam
-                                vitae sit tempus diam.Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet
-                                suscipit nulla. Nullam vitae sit tempus diam. </p>
+                                Keep your equipment performing safely and consistently with scheduled inspections, safety
+                                checks, cleaning, and documentation—helping reduce downtime and unexpected failures.
+                            </p>
 
                             <a href="#" class="btn btn-primary mt-3">Read More</a>
                         </div>
@@ -349,12 +445,11 @@
                         <div class="service-card text-center">
                             <img src="{{ asset('frontend/images/2nd-card-img.png') }}" class="s-card-img img-fluid mb-3"
                                 alt="service">
-                            <h4 class="cardd-title">Service Title</h4>
+                            <h4 class="cardd-title">Installation & Calibration</h4>
                             <hr>
                             <p class="card-desc">
-                                Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet suscipit nulla. Nullam
-                                vitae sit tempus diam.Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet
-                                suscipit nulla. Nullam vitae sit tempus diam. </p>
+                                Professional setup, configuration, and calibration to ensure accuracy from day one. We
+                                verify performance, safety, and readiness for clinical use.</p>
 
                             <a href="#" class="btn btn-primary mt-3">Read More</a>
                         </div>
@@ -365,19 +460,20 @@
                         <div class="service-card text-center">
                             <img src="{{ asset('frontend/images/3rd-card-img.png') }}" class="ss-card-img img-fluid mb-3"
                                 alt="service">
-                            <h4 class="cardd-title">Service Title</h4>
+                            <h4 class="cardd-title">Repair & Troubleshooting</h4>
                             <hr>
                             <p class="card-desc">
-                                Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet suscipit nulla. Nullam
-                                vitae sit tempus diam.Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet
-                                suscipit nulla. Nullam vitae sit tempus diam. </p>
+                                From diagnosis to final testing, we provide practical repair solutions and parts replacement
+                                to restore performance quickly and reliably.</p>
 
                             <a href="#" class="btn btn-primary mt-3">Read More</a>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <button class="Seemore-btn">See more Service Details</button>
+                        <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/medical-equipment-repair">
+                            <button class="Seemore-btn">See more Service Details</button>
+                        </a>
                     </div>
 
                 </div>
@@ -397,7 +493,7 @@
                     <i class="bi bi-truck feature-icon"></i>
                     <div class="ms-3">
                         <h5 class="fw-bol mt-2">Free Shipping</h5>
-                        <p class="small mb-0">Order over $600</p>
+                        <p class="small mb-0">On eligible orders over $15000</p>
                     </div>
                 </div>
 
@@ -406,8 +502,8 @@
                     class="col-lg-3 col-md-6 col-12 animate-card mb-4 d-flex align-items-start justify-content-lg-start justify-content-center text-lg-start text-center">
                     <i class="bi bi-credit-card feature-icon"></i>
                     <div class="ms-3">
-                        <h5 class="fw-bol mt-2">Quick Payment</h5>
-                        <p class="small ">100% secure</p>
+                        <h5 class="fw-bol mt-2">Secure Payments</h5>
+                        <p class="small ">Safe checkout with multiple payment options</p>
                     </div>
                 </div>
 
@@ -416,8 +512,8 @@
                     class="col-lg-3 col-md-6 animate-card col-12 mb-4 d-flex align-items-start justify-content-lg-start justify-content-center text-lg-start text-center">
                     <i class="bi bi-cash-coin feature-icon"></i>
                     <div class="ms-3">
-                        <h5 class="fw-bol mt-1">Big Cashback</h5>
-                        <p class="small ">Over 50% cash back</p>
+                        <h5 class="fw-bol mt-1">Best Value Deals</h5>
+                        <p class="small ">Bundles, seasonal offers, and smart savings</p>
                     </div>
                 </div>
 
@@ -426,8 +522,8 @@
                     class="col-lg-3 col-md-6 animate-card mb-4 d-flex align-items-start justify-content-lg-start justify-content-center text-lg-start text-center">
                     <i class="bi bi-headset feature-icon"></i>
                     <div class="ms-3 mt-2">
-                        <h5 class="fw-bold">24/7 Support</h5>
-                        <p class="small">Ready for you</p>
+                        <h5 class="fw-bold">Support</h5>
+                        <p class="small">Reach us anytime—we respond as soon as possible</p>
                     </div>
                 </div>
 
@@ -446,16 +542,17 @@
 
                 <!-- LEFT COLUMN -->
                 <div class="col-lg-6 fade-left">
-                    <span class="who-we-are">WHO WE ARE</span>
+                    <span class="who-we-are">Who We Are</span>
 
                     <h2 class="about-main-heading mt-2">
-                        ABOUT <span>MR BIOMED TECH SERVICES</span>
+                        About <span>Mr. Biomed Tech Services</span>
                     </h2>
 
                     <p class="about-short-desc mt-3">
-                        Mr. Biomed Tech Services is committed to delivering high-quality biomedical solutions that support
-                        modern healthcare facilities. We provide reliable and innovative medical equipment services tailored
-                        to the evolving needs of hospitals and clinics.
+                        Mr Biomed Tech Services is committed to delivering dependable biomedical solutions for hospitals,
+                        clinics, labs, and home-care settings. We provide a complete range of support—from product sourcing
+                        and parts to installation, preventive maintenance, calibration, and repair—so your equipment stays
+                        safe, accurate, and ready for use.
                     </p>
 
                     <!-- Icon + Heading -->
@@ -467,11 +564,8 @@
                                 Better Quality
                             </h5>
                             <p class="about-long-desc mt-2">
-                                We specialize in providing comprehensive biomedical equipment services,
-                                including installation, maintenance, calibration, and technical support.
-                                Our experienced team ensures reliability, safety, and compliance with
-                                international healthcare standards, making us a trusted partner for
-                                hospitals and healthcare providers.
+                                We supply carefully selected biomedical equipment and accessories that meet practical
+                                clinical needs—balancing performance, durability, and value.
                             </p>
                         </div>
                     </div>
@@ -481,12 +575,11 @@
 
                         <div>
                             <h5 class="icon-heading">
-                                Better Quality
+                                Technical Expertise
                             </h5>
                             <p class="about-long-desc mt-2">
-                                We specialize in providing comprehensive biomedical equipment services,
-                                including installation, maintenance, calibration, and technical support.
-
+                                Our service approach is built on structured diagnostics, careful repairs, and final
+                                verification—so you get solutions that last, not quick fixes.
                             </p>
                         </div>
                     </div>

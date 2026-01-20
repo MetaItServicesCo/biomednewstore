@@ -1,9 +1,9 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
+@section('meta_title', 'Buy Biomedical Parts Online | Mr. Biomed Tech Services')
 @section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '')
+@section('meta_description', 'Shop high-quality biomedical parts at Mr. Biomed Tech Services. Get the best deals on medical equipment. Contact us at +1 (469) 767-8853.')
 
 @push('frontend-styles')
     <style>
@@ -76,7 +76,7 @@
             display: flex;
             align-items: center;
             /* justify-content: center;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            text-align: center; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        text-align: center; */
             margin-top: 30px;
         }
 
@@ -252,11 +252,11 @@
     <section class="cart-banner ">
 
         <div class="container  ">
-            <h1> <span> Title For</span> Parts </h1>
-            <p class="text-white mt-2">Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet suscipit nulla.
-                Nullam
-                vitae sit tempus
-                diam.</p>
+            <h1> <span> Parts & </span>Accessories </h1>
+            <p class="text-white mt-2">Find genuine, compatible replacement parts for biomedical and medical equipment—fast,
+                simple, and supported.
+                Search by part name, device, manufacturer, or category. Need help? We’ll guide you.
+            </p>
 
 
         </div>
@@ -266,13 +266,10 @@
     <section class="part-banner ">
 
         <div class="container  ">
-            <h1> Shop By Device </h1>
-            <p class="text-white mt-2">Libero diam auctor tristique hendrerit in eu vel id. Nec leo amet suscipit nulla.
-                Nullam
-                vitae sit tempus
-                diam.</p>
-
-
+            <h1>Shop By Device</h1>
+            <p class="text-white mt-2">Looking for a specific part? Start by selecting your device type, manufacturer, or
+                category. Use the search bar to find parts by name, model, or part number—then filter results to match your
+                equipment.</p>
         </div>
 
     </section>
@@ -332,6 +329,11 @@
                     <button class="find-btn" id="findBtn"> <img src="{{ asset('frontend/images/find-icon.png') }}"
                             alt="">
                         Find</button>
+
+                    <!-- Reset Filter Button -->
+                    <a href="{{ route('parts') }}" class="btn btn-secondary">
+                        Reset Filter
+                    </a>
                 </div>
 
             </div>
@@ -435,7 +437,7 @@
                         if (partsCountElem) {
                             partsCountElem.innerText = res.totalParts;
                         }
-                        
+
                         bindPagination();
                     })
                     .finally(() => hideLoader());

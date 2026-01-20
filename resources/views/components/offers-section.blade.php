@@ -99,7 +99,7 @@
 
             <!-- Heading -->
             <div class=" wraperr">
-                <h2 class="text-center offer-tittle fade-left">Grateful for caregivers. Committed to Care</h2>
+                <h2 class="text-center offer-tittle fade-left">Grateful for Caregivers. Committed to Care.</h2>
                 <a href="{{ route('products') }}">
                     <button class="see-all-btn">See All</button>
                 </a>
@@ -107,9 +107,9 @@
             </div>
 
             <p class="text-center offerr-desc mb-5 fade-right">
-                Hospitals in the Texas area trust Mr Biomed Tech to provide cost-effective medical equipment rentals so
-                they can focus on surging patient care. Signing a lease with us means an organized documentation system
-                and the latest in machinery.
+                Healthcare teams deserve equipment they can trust. That’s why we focus on quality products, clear
+                recommendations, and helpful support—so you can spend less time troubleshooting and more time caring for
+                patients.
             </p>
 
             <!-- Slider Wrapper -->
@@ -130,8 +130,8 @@
                                     </p>
                                     <p class="price text-danger text-center">
                                         ${{ number_format($product->sale_price, 2) }}</p>
-                                        <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">Add
-                                            to Cart</button>
+                                    <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">Add
+                                        to Cart</button>
                                 </div>
                             </div>
                         @endforeach

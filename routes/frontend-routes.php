@@ -19,13 +19,6 @@ use Illuminate\Support\Facades\Route;
 // ===========================
 
 Route::get('/', [LandingPageController::class, 'landingPage'])->name('home');
-Route::get('/BioMed-Service', [BiomedServicesController::class, 'mainPage'])->name('biomed-services');
-
-Route::get('/about', [AboutUsController::class, 'landingPage'])->name('about-us');
-
-Route::get('/locations', [LocationPageController::class, 'landingPage'])->name('location');
-Route::get('/locations/{slug}', [LocationPageController::class, 'locationDetail'])->name('location.detail');
-Route::get('/contact', [ContactUsController::class, 'landingPage'])->name('contact-us');
 
 Route::get('/feedback', [ReviewsController::class, 'landingPage'])->name('feedback');
 Route::post('/feedback', [ReviewsController::class, 'store'])->name('post.feedback');
@@ -70,8 +63,8 @@ Route::prefix('ajax')->group(function () {
 });
 
 
-Route::get('/products', [ProductController::class, 'products'])->name('products');
-Route::get('/product/{slug}', [ProductController::class, 'productDetail'])->name('product-detail');
+Route::get('/store', [ProductController::class, 'products'])->name('products');
+Route::get('/category/{slug}', [ProductController::class, 'productDetail'])->name('product-detail');
 Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add');
 
 Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
@@ -82,11 +75,11 @@ Route::post('/product/feedback', [ProductController::class, 'productFeedback'])-
 
 
 
-Route::get('/order', [ProductController::class, 'order'])->name('billing');
+Route::get('/address-billing', [ProductController::class, 'order'])->name('billing');
 
 
 Route::get('/parts', [ProductController::class, 'parts'])->name('parts');
-Route::get('/part/{slug}', [ProductController::class, 'partDetail'])->name('part-detail');
+Route::get('/parts/{slug}', [ProductController::class, 'partDetail'])->name('part-detail');
 
 
 // ===========================

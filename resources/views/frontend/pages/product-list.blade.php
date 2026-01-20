@@ -1,9 +1,9 @@
 @extends('frontend.layouts.frontend')
 
 {{-- @section('title', 'Home') --}}
-@section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services')
+@section('meta_title', 'Buy Biomedical Equipment & Parts | Mr. Biomed Online Store')
 @section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? '')
+@section('meta_description', 'Find biomedical equipment, parts & accessories at Mr. Biomed\'s online store—affordable prices, quality products. Visit: 555 N 5th St, Garland TX.')
 
 @push('frontend-styles')
     <style>
@@ -560,7 +560,7 @@
                                             </p>
                                             <div class="stars">
                                                 @php
-                                                    $rating = round($recentProduct->rating ?? 0);
+                                                    $rating = getProductRating($recentProduct);
                                                 @endphp
 
                                                 @for ($i = 1; $i <= 5; $i++)
@@ -742,6 +742,20 @@
                     });
                 });
             }
+
+            // Search button click
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                searchText = searchInput.value.trim();
+                fetchProducts();
+            });
+
+            // Enter key in search input
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchText = searchInput.value.trim();
+                    fetchProducts();
+                }
+            });
 
             bindPagination();
         });
