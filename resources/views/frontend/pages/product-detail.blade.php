@@ -5,6 +5,10 @@
 @section('meta_keywords', $product->meta_keywords ?? '')
 @section('meta_description', $product->meta_description ?? '')
 
+@section('page_schema')
+
+@endsection
+
 @push('frontend-styles')
     <style>
         .product-title {
@@ -306,7 +310,7 @@
         </div>
     @else
         <section class="product-detail-banner">
-            <h1>Product <span>Detail page</span> </h1>
+            <h1>{{ $product->name ?? '' }}</h1>
         </section>
 
 
@@ -390,13 +394,10 @@
                         <h3 class="product-price">${{ number_format($product->sale_price, 2) }}</h3>
 
                         <!-- Rating -->
+                        @php $rating = getProductRating($product); @endphp
                         <div class="rating mt-4">
                             @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= ($product->rating ?? 0))
-                                    <i class="fa-solid fa-star"></i>
-                                @else
-                                    <i class="fa-regular fa-star"></i>
-                                @endif
+                                <i class="{{ $i <= $rating ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
                             @endfor
                         </div>
 

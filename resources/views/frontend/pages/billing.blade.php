@@ -878,7 +878,7 @@
                         <!-- SHIPPING OPTION -->
 
                         <div class="form-check mt-4">
-                            <h5 class="mb-2">Standard Rate</h5>
+                            <h5 class="mb-2">Standard Shipping</h5>
 
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="d-flex">
@@ -886,8 +886,7 @@
                                         id="standardRate" value="standard" {{ old('shipping_method', 'standard') === 'standard' ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="standardRate">
-                                        Price may vary depending on the item/destination.
-                                        Shop Staff will contact you.
+                                        Shipping cost may vary based on item size, weight, and destination. Our team will confirm the final shipping charges before dispatch.
                                     </label>
                                 </div>
 
@@ -897,7 +896,7 @@
 
 
                         <div class="form-check mt-4">
-                            <h5 class="mb-2">Pickup from store</h5>
+                            <h5 class="mb-2">Pick Up From Store (Free)</h5>
 
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="d-flex">
@@ -905,7 +904,7 @@
                                         id="pickup" value="pickup" {{ old('shipping_method') === 'pickup' ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="pickup">
-                                        1234 Street Adress City Address, 1234
+                                        Place your order online and pick it up from our store. We’ll notify you when it’s ready.
                                     </label>
                                 </div>
 

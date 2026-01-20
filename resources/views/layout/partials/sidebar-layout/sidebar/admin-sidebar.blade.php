@@ -189,7 +189,7 @@
     </div>
 
     <div data-kt-menu-trigger="click"
-        class="menu-item menu-accordion {{ request()->routeIs('admin.contact-us.form.*', 'admin.services-request.form.*', 'admin.consultancy.*') ? 'here show' : '' }}">
+        class="menu-item menu-accordion {{ request()->routeIs('admin.contact-us.form.*', 'admin.services-request.form.*') ? 'here show' : '' }}">
         <span class="menu-link">
             <span class="menu-icon"><i class="ki-duotone ki-tablet-text-down fs-2tx"><span class="path1"></span><span
                         class="path2"></span><span class="path3"></span><span class="path4"></span></i>
@@ -220,18 +220,6 @@
                         <span class="bullet bullet-dot"></span>
                     </span>
                     <span class="menu-title">Service Request</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="menu-sub menu-sub-accordion">
-            <div class="menu-item">
-                <a class="menu-link {{ request()->routeIs('admin.consultancy.*') ? 'active' : '' }}"
-                    href="{{ route('admin.consultancy.list') }}">
-                    <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
-                    </span>
-                    <span class="menu-title">Consultancy</span>
                 </a>
             </div>
         </div>

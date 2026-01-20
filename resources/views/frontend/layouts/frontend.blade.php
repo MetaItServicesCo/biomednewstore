@@ -58,6 +58,9 @@
     <link rel="stylesheet" href="{{ asset('frontend/css') }}/custom.css" />
     <!--end::Custom Stylesheets-->
 
+    {{-- Schema Section --}}
+    @yield('page_schema')
+    
     @stack('frontend-styles')
 
     @livewireStyles

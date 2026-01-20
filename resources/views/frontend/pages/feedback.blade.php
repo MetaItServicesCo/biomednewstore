@@ -205,8 +205,8 @@
         }
 
         /* ============================
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   📱 Responsive Breakpoints
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ============================ */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   📱 Responsive Breakpoints
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ============================ */
 
         @media (max-width: 768px) {
             .bio-wrapper {
@@ -368,8 +368,8 @@
         }
 
         /* .review-scroll::-webkit-scrollbar {
-                                                                                                                                                                                                                    width: 8px;
-                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                                    width: 8px;
+                                                                                                                                                                                                                                } */
 
         /* -------- Scrollbar Styling -------- */
         .review-scroll::-webkit-scrollbar {
@@ -523,10 +523,12 @@
     <section class="hero-detail-section">
         <div class="container py-5 text-center text-white">
 
-            <h1 class="hero-title mb-3 fade-left">FeedBack</h1>
+            <h1 class="hero-title mb-3 fade-left">Real Experiences. Trusted Biomedical Store</h1>
 
             <p class="hero-description mx-auto mb-4 fade-right">
-                dasd asd asdas das das das dasd asd asd asd asdas
+                Welcome to Mr. Biomed Tech Store (mbmts.com) – your one-stop online shop for biomedical equipment, parts,
+                and accessories.
+                Here you can explore real reviews from hospitals, clinics, labs, and technicians who buy from us.
             </p>
 
             <div class="container py-5 text-center text-white">
@@ -555,11 +557,33 @@
                 <div class="col-lg-6">
 
                     <h2 class="review-headingg mb-3 fade-right">
-                        das dasd asd asdsa d
+                        Mr. Biomed Tech Reviews <span>What It’s Like To Shop With Us</span>
                     </h2>
 
                     <div class="review-desc mb-4 fade-left">
-                        asd asda sdas dasd sad sad asdas
+                        Buying biomedical equipment online requires trust, quality, and reliability. At mbmts.com, we make
+                        it easy for healthcare professionals to find genuine medical products with complete peace of mind.
+                        Our customers choose us because we offer:
+                        100% Genuine Biomedical Products
+
+
+                        Competitive Store Pricing
+
+
+                        Fast & Secure Delivery
+
+
+                        Verified Medical Brands
+
+
+                        Expert Pre-Sales Guidance
+
+
+                        After-Sales Technical Support
+
+
+                        From ICU equipment to small spare parts – we deliver quality at your doorstep.
+
                     </div>
 
                     <div class="d-flex gap-4 mt-5 ">
@@ -572,8 +596,8 @@
 
                 <!-- RIGHT COLUMN -->
                 <div class="col-lg-6 text-center fade-right">
-                    <img src="{{ $data->main_image ? asset('storage/reviews/main/' . $data->main_image) : '' }}"
-                        class="review-img" alt="{{ $data->main_image_alt ?? '' }}">
+                    <img src="{{ asset('storage/' . setting('site_logo', 'frontend/images/logo.png')) }}" class="review-img"
+                        alt="{{ setting('site_name') }}">
 
                 </div>
 
@@ -585,19 +609,21 @@
             <div class="d-flex  justify-content-center align-items-center flex-wrrapper">
 
                 <!-- Left Image -->
-                <img src=""
-                    alt="" class="bio-img">
+                <img src="{{ asset('storage/' . setting('site_logo', 'frontend/images/logo.png')) }}"
+                    alt="{{ setting('site_name') }}" class="bio-img">
 
                 <!-- Blue Box -->
                 <div class="bio-box position-relative">
-                    <h3 class="bio-heading">sadsad asd asd</h3>
+                    <h3 class="bio-heading">Expert Biomedical Store for Your Equipment Needs</h3>
 
                     <p class="bio-desc">
-                        sda sdas das dasd
+                        Shop medical equipment, parts, and accessories with confidence.
+                        Our team ensures you get the right product for the right application.
                     </p>
 
                     <!-- Button bottom-right -->
-                    <a href="javascript:void(0)" class="bio-btn" id="getProposalBtn">Get My Free Proposal</a>
+                    <a href="javascript:void(0)" class="bio-btn" id="" data-open-service-modal>Get My Free
+                        Proposal</a>
                 </div>
 
             </div>
@@ -610,12 +636,12 @@
 
         <!-- Heading -->
         <h2 class="customer-heading text-center fade-left">
-            asd sadas das das da
+            Hear From 1,100+ Happy Customers
         </h2>
 
         <!-- Description -->
         <p class="customer-desc text-center fade-right">
-            ad asda sdas das das
+            Hospitals, labs, and technicians across the country trust mbmts.com for their biomedical purchases.
         </p>
 
         <!-- Category Buttons -->

@@ -481,7 +481,7 @@
         <div class="d-flex justify-content-between align-items-center w-100 flex-column flex-md-row">
             <div class="contact-left mb-3 mb-md-0 text-center text-md-start">
                 <h3 class=" mb-1">GET IN TOUCH</h3>
-                <p class="mb-0 ">We are the top biomedical service and equipment repair company.</p>
+                <p class="mb-0 ">We’re here to help with equipment, parts, and biomedical support—when you need it.</p>
             </div>
             <div class="contact-right">
                 <p class="mb-0">Click Here To <a href="javascript:void(0)" class="btn quote-button ms-2"
@@ -577,7 +577,7 @@
                     <span class="rotate-text"></span>
                 </h4>
 
-                <p class="footer-p">Fill out the form below and we'll get back to you as soon as possible.
+                <p class="footer-p">Fill out the form and our team will contact you as soon as possible.
                 </p>
                 <form class="contact-us-form" id="footerContactUsForm" action="{{ route('contact.us.form') }}"
                     method="POST">
@@ -683,26 +683,26 @@
         <div class="container text-center ">
             <div class="footer-links-wrapper">
                 <div class="footer-links mb-1">
-                    <a href="#" class="text-decoration-none mx-2">Mr Biomed
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/BioMed-Service" class="text-decoration-none mx-2">Mr Biomed
                         Service</a><span class="separator">|</span>
-                    <a href="#" class="text-decoration-none mx-2">Locations</a><span
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/locations" class="text-decoration-none mx-2">Locations</a><span
                         class="separator">|</span>
                     {{-- <a href="#" class="text-decoration-none mx-2">Product Store</a><span
                         class="separator">|</span> --}}
-                    <a href="#" class="text-decoration-none mx-2">About Mbmts</a><span
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about" class="text-decoration-none mx-2">About Mbmts</a><span
                         class="separator">|</span>
-                    <a href="#" class="text-decoration-none mx-2">Blog</a><span
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/blogs" class="text-decoration-none mx-2">Blog</a><span
                         class="separator">|</span>
                     {{-- <a href="#" class="text-decoration-none mx-2">Career</a><span class="separator">|</span> --}}
-                    <a href="" class="text-decoration-none mx-2">Terms & Conditions</a><span
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/terms-and-conditions" class="text-decoration-none mx-2">Terms & Conditions</a><span
                         class="separator">|</span>
-                    <a href="" class="text-decoration-none mx-2">Privacy Policy</a><span
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/privacy-policy" class="text-decoration-none mx-2">Privacy Policy</a><span
                         class="separator">|</span>
-                    <a href="" class="text-decoration-none mx-2">Disclaimer</a><span
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/disclaimer" class="text-decoration-none mx-2">Disclaimer</a><span
                         class="separator">|</span>
-                    <a href="" class="text-decoration-none mx-2">FeedBack</a><span
+                    <a href="{{ route('feedback') }}" class="text-decoration-none mx-2">FeedBack</a><span
                         class="separator">|</span>
-                    <a href="" class="text-decoration-none mx-2">FAQs</a>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/faqs" class="text-decoration-none mx-2">FAQs</a>
                 </div>
             </div>
             <p class="copyright mb-0 t">
