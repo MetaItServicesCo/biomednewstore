@@ -34,30 +34,37 @@
 
 
         .offer-card {
-            border: 1px solid #0071A8;
-            background-color: #ffffff;
-            width: 260px !important;
+            width: 260px;
             height: 394px;
+            border: 1px solid #0071A8;
             border-radius: 13px;
-            padding: 0 !important;
-            /* overflow: hidden; */
-            /* 🔴 important */
+            background: #fff;
+            padding: 0;
             box-sizing: border-box;
             position: relative;
+            overflow: hidden;
         }
 
-        .offer-card .card-body {
+        /* Image */
+        .offer-card img {
             width: 100%;
-            height: 158.5px;
-            /* padding: 0 !important; */
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Card Body */
+        .offer-card .card-body {
+            height: calc(394px - 200px);
+            /* ✔ exact fit */
             background-color: #C9E0EB;
-            box-sizing: border-box;
             padding: 10px;
+            box-sizing: border-box;
             border-bottom-left-radius: 13px;
             border-bottom-right-radius: 13px;
-            padding-top: 0px !important;
-            margin-top: 0 !important;
+            margin: 0;
         }
+
 
         .offerr-desc {
             max-width: 1166px;
@@ -68,12 +75,6 @@
             letter-spacing: 0;
             margin-top: 20px;
 
-        }
-
-        .offer-card img {
-            width: 166px;
-            height: 218px;
-            object-fit: contain;
         }
 
         .price {
@@ -130,8 +131,8 @@
                                     </p>
                                     <p class="price text-danger text-center">
                                         ${{ number_format($product->sale_price, 2) }}</p>
-                                        <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">Add
-                                            to Cart</button>
+                                    <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">Add
+                                        to Cart</button>
                                 </div>
                             </div>
                         @endforeach

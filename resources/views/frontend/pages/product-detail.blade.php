@@ -291,6 +291,73 @@
             color: #FFD700;
             /* Gold color for selected stars */
         }
+
+        /* =================== related-products-section ============================ */
+
+        .related-title {
+            width: 344px;
+            height: 51px;
+            border: 1px solid #0071A8;
+            border-radius: 15px;
+            color: #0071A8;
+            font-family: Inter;
+            font-weight: 600;
+            font-size: 36px;
+            line-height: 100%;
+            letter-spacing: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        /* Card */
+        .related-card {
+            width: 260px;
+            height: 394px;
+            border: 1px solid #0071A8;
+            border-radius: 13px;
+            overflow: hidden;
+            background: #ffffff;
+            margin: auto;
+        }
+
+        .related-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        /* Card Body */
+        .related-card-body {
+            background: #C9E0EB;
+            height: calc(394px - 250px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        /* Product Title */
+        .product-titlee {
+            font-family: Inter;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 100%;
+            letter-spacing: 0;
+            color: #000000;
+            margin-bottom: 10px;
+            max-width: 278px;
+        }
+
+        /* Price */
+        .product-pricee {
+            font-family: Inter;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 100%;
+            color: #A33333;
+        }
     </style>
 @endpush
 
@@ -580,6 +647,87 @@
             </div>
         </div>
     </section>
+
+    {{-- ============================related-products-section=========================== --}}
+    <section class="related-products-section py-5">
+        <div class="container">
+
+            <!-- Heading -->
+            <div class="related-title mb-4">
+                Related Products
+            </div>
+
+            <!-- Cards Row -->
+            <div class="row g-4 mt-5">
+
+                <!-- Card 1 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/medical-img.jpg') }}" alt="product">
+
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+
+                            <div class="product-pricee">
+                                $199.00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/product-img-1.jpg') }}" alt="product">
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+                            <div class="product-pricee">$199.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/product-img-1.jpg') }}" alt="product">
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+                            <div class="product-pricee">$199.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/product-img-1.jpg') }}" alt="product">
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+                            <div class="product-pricee">$199.00</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
 
     {{-- ================= pruduct sectiion ============= --}}
     <div class="pro-section">

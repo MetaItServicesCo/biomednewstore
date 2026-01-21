@@ -123,10 +123,10 @@
  }
 
  .btn-buy.disabled-btn {
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
-}
+     opacity: 0.6;
+     cursor: not-allowed;
+     pointer-events: none;
+ }
 
  .explore-btn {
      margin-top: 10px;
@@ -895,20 +895,20 @@
  }
 
  .cart-count-badge {
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    background: #ff3b3b;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    min-width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+     position: absolute;
+     top: -6px;
+     right: -10px;
+     background: #ff3b3b;
+     color: #fff;
+     font-size: 12px;
+     font-weight: 600;
+     min-width: 20px;
+     height: 20px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
 
  /*============== HERO SECTION css ===============================css */
  .hero-section {
@@ -1528,12 +1528,12 @@
      opacity: 1 !important;
  }
 
- .card-img {
+ /* .card-img {
      width: 251;
      height: 150px;
      object-fit: cover;
      border-radius: 10px;
- }
+ } */
 
  .card-title {
      font-size: 20px;
