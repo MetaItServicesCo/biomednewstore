@@ -8,8 +8,9 @@
                 <div class="product-meta">
                     <div class="stars">
                         @php
-                            $rating = $item->rating ?? 0; // rating 0-5
+                            $rating = getProductRating($item); // helper call
                         @endphp
+
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $rating)
                                 <i class="fa-solid fa-star active"></i>

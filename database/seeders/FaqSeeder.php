@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Faq;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class FaqSeeder extends Seeder
@@ -22,91 +22,121 @@ class FaqSeeder extends Seeder
 
             'landing' => [
                 [
-                    'question' => 'What types of medical equipment do you service?',
-                    'answer'   => 'We service a range of biomed equipment in the Texas area, including: anesthesia machines, general surgical and medical equipment, laboratory equipment, imaging and diagnostic tools, rehabilitation and pain management equipment, respiratory equipment, and sterilizers.',
+                    'question' => 'What products do you sell?',
+                    'answer' => 'We provide a wide range of medical equipment, biomedical accessories, supplies, and replacement parts for hospitals, clinics, labs, and home-care setups. If you can’t find something online, you can request it and we’ll help source it.',
                 ],
                 [
-                    'question' => 'Do you offer 24/7 medical equipment repair services?',
-                    'answer'   => 'Yes, we are known for our reliability and around-the-clock solutions for selling new and refurbished medical equipment and reliable disposition services.',
+                    'question' => 'Do you help customers choose the right equipment or part?',
+                    'answer' => 'Yes. If you’re not sure which item fits your needs, share your device model, part number, or requirement, and our team will guide you to the best option—without confusing technical jargon.',
                 ],
                 [
-                    'question' => 'What is the closest medical equipment rental near me?',
-                    'answer'   => 'The closest medical equipment rental services are located in the heart of Texas-- Mr Biomed Tech. They provide a variety of biomed tech makes and models for the Austin, San Antonio, Dallas, and Houston areas.',
+                    'question' => 'Are your parts genuine (OEM) or compatible replacements?',
+                    'answer' => 'We offer OEM/genuine parts and trusted compatible replacements depending on availability. Product pages (or quotes) include compatibility details so you can order with confidence.',
                 ],
                 [
-                    'question' => 'Which areas does Mr Biomed Tech serve in Texas?',
-                    'answer'   => 'Mr Biomed Tech offers fast diagnostics and repair for critical care equipment with transparent pricing in the Austin, San Antonio, Dallas, and Houston areas of Texas.',
+                    'question' => 'What biomedical services do you offer?',
+                    'answer' => 'We support equipment with services such as installation, calibration, preventive maintenance (PM), troubleshooting, and repair. Service availability may depend on your location and equipment type.',
                 ],
                 [
-                    'question' => 'How do I know which biomed equipment is right for my hospital?',
-                    'answer'   => 'The BMEs (biomedical engineering) and experts at Mr Biomed Tech can help assess patient needs and long-term scaling plans in order to provide you with the best biomed equipment options for your hospital.',
+                    'question' => 'Do you provide on-site service?',
+                    'answer' => 'On-site service may be available in selected areas. Contact us with your location and device details, and we’ll confirm coverage and scheduling.',
                 ],
                 [
-                    'question' => 'What types of imaging devices do biomedical engineers repair?',
-                    'answer'   => 'Biomedical equipment technicians repair a wide array of imaging devices from computer tomography (CT) scans to X-ray machines. Mr Biomed Tech specializes in repairing C-arms in the Austin, Texas area.',
+                    'question' => 'How do I check compatibility before ordering a part?',
+                    'answer' => 'The fastest way is to search by part number. If you don’t have it, send us the device name + model, or a photo of the label, and we’ll help verify compatibility before you buy.',
                 ],
                 [
-                    'question' => 'Can you help with the disposition of medical equipment?',
-                    'answer'   => 'Yes, we can help discard obsolete medical waste, tech equipment, or restore capital if you wish to sell your machinery.',
+                    'question' => 'How long does shipping take?',
+                    'answer' => 'Shipping time depends on the item and destination. In-stock items generally ship quickly. If an item requires special handling or confirmation, our team will contact you with the best shipping option.',
                 ],
                 [
-                    'question' => 'What is the MedRad Smart System?',
-                    'answer'   => 'The MedRad Smart System is an asset management software based on the cloud. It is used to manage the span of medical equipment in order to assist healthcare facilities maintenance schedules.',
+                    'question' => 'Do you offer store pickup?',
+                    'answer' => 'If store pickup is available, you can choose Pick Up From Store at checkout. We’ll notify you when your order is ready for pickup.',
                 ],
                 [
-                    'question' => 'Do biomedical medical technicians support outpatient centers?',
-                    'answer'   => 'Mr-Biomed’s technicians assist outpatient centers by calibrating and troubleshooting faster and more precisely than on-site BMEs.',
+                    'question' => 'Can I request a quote for bulk orders or high-value items?',
+                    'answer' => 'Absolutely. Use the Request a Quote option for bulk purchases, multiple items, or special requirements. We’ll respond with pricing, availability, and delivery options.',
                 ],
                 [
-                    'question' => 'What are the best medical equipment companies in Dallas, TX?',
-                    'answer'   => 'Mr Biomed Tech Services offers the best medical equipment in Dallas, TX, ranging from infusion pumps, ventilators, and imaging systems to large-scale machinery.',
+                    'question' => 'Do you offer warranties?',
+                    'answer' => 'Many items have warranty options (depending on product type and condition). Warranty details are shown on the product page or included in your quote/invoice.',
+                ],
+                [
+                    'question' => 'What if I can’t find my product or part on the website?',
+                    'answer' => 'No problem. Click Request Custom Parts (or contact us) and share your device model/part number. We’ll try to source the exact part or recommend a compatible alternative.',
+                ],
+                [
+                    'question' => 'How can I contact support?',
+                    'answer' => 'You can reach us via phone, email, or the quick chat form on the website. Share your requirements and we’ll respond as soon as possible.',
+                ],
+            ],
+            'parts' => [
+                [
+                    'question' => 'How do I make sure a part is compatible with my device?',
+                    'answer' => 'The best way is to search using your device model or part number. If you’re unsure, send us a photo of the label or serial/model info—we’ll help confirm compatibility.',
+                ],
+                [
+                    'question' => 'Do you sell genuine (OEM) parts?',
+                    'answer' => 'We offer genuine/OEM and trusted compatible replacements depending on availability. Each listing clearly indicates compatibility and condition.',
+                ],
+                [
+                    'question' => 'What if I can’t find my part on the website?',
+                    'answer' => 'Use the Request Custom Parts button. Share your device model and required part—we’ll source it or suggest an alternative.',
+                ],
+                [
+                    'question' => 'Do parts come with warranty?',
+                    'answer' => 'Many parts include warranty options. Warranty details (if available) are shown on the product page or provided with your quote.',
+                ],
+                [
+                    'question' => 'How fast do you ship?',
+                    'answer' => 'Shipping time depends on stock status and location. In-stock parts typically ship quickly. If you need urgent delivery, contact support and we’ll check the fastest option.',
+                ],
+                [
+                    'question' => 'Can you help with installation or troubleshooting?',
+                    'answer' => 'Yes. Our team can guide you with basic checks and can also schedule service, calibration, or repair if needed.',
                 ],
             ],
 
-            'location' => [
-                // add later
-            ],
-
-            'service' => [
+            'products' => [
                 [
-                    'question' => 'How does renting medical equipment in Texas benefit my healthcare facility?',
-                    'answer'   => 'Renting surgical and medical equipment with Mr Biomed Tech in Texas gets you in touch with industry-leading manufacturers and biomedical equipment specialists who have experience in handling all kinds of surgical and medical machinery.',
+                    'question' => 'What types of biomedical parts and equipment do you offer?',
+                    'answer' => 'We stock a wide range of biomedical parts, equipment, and accessories for medical facilities, including refurbished and new components.',
                 ],
                 [
-                    'question' => 'Can I test the rental medical equipment in Texas before committing to a purchase?',
-                    'answer'   => 'Mr Biomed Tech’s try-before-you-buy policy gives healthcare facilities a fair shot at seeing what machinery is best suited for their patients’ needs.',
+                    'question' => 'Do you provide warranties on parts and equipment?',
+                    'answer' => 'Yes! All our biomedical parts and equipment come with a parts warranty to ensure quality and peace of mind.',
                 ],
                 [
-                    'question' => 'How do I find the best medical equipment rental companies in Texas?',
-                    'answer'   => 'The best biomedical equipment rental company is Mr Biomed Tech who services areas all across Texas, including Garland, San Antonio, Austin, Dallas, and Houston.',
+                    'question' => 'Can I get medical equipment repaired or maintained by you?',
+                    'answer' => 'Absolutely — we offer professional maintenance and repair services for a variety of biomedical devices.',
                 ],
                 [
-                    'question' => 'Do you offer used medical equipment rental near me?',
-                    'answer'   => 'Used biomedical equipment rental is available at Mr Biomed Tech in Texas. We offer a variety of biomed equipment selections from renowned manufacturers. All our products are refurbished for ready-to-use working conditions.',
+                    'question' => 'Do you offer custom parts or specialized solutions?',
+                    'answer' => 'Yes. We can help source or custom‑design parts based on your specific biomedical needs. Contact us for details.',
                 ],
                 [
-                    'question' => 'What does a biomedical equipment technician do?',
-                    'answer'   => 'A biomedical equipment technician has the interdisciplinary knowledge to calibrate, repair, and maintain a wide variety of surgical and medical technology for hospitals and other healthcare facilities.',
+                    'question' => 'How long does delivery take after I place an order?',
+                    'answer' => 'Delivery timelines depend on the item and your location — most in‑stock parts ship quickly, and we’ll provide tracking once your order is processed.',
                 ],
                 [
-                    'question' => 'How fast can Mr Biomed Tech repair biomedical equipment?',
-                    'answer'   => 'Mr Biomed Tech offers 24/7 biomedical equipment repair services all over Texas in case of any healthcare emergencies.',
+                    'question' => 'Can I request a quote before buying?',
+                    'answer' => 'Yes. Simply fill out our Get A Quote form or contact us for a detailed quote before placing your order.',
                 ],
                 [
-                    'question' => 'Can biomedical technicians train hospital staff?',
-                    'answer'   => 'The biomedical technicians at Mr Biomed Tech Services offer training to hospital staff to prevent misuse of machinery and so clinicians can identify regulatory issues.',
+                    'question' => 'What payment methods do you accept?',
+                    'answer' => 'We accept secure online payments via card, and can also arrange invoice billing for qualifying institutional customers.',
                 ],
                 [
-                    'question' => 'What types of equipment does Mr Biomed Tech sell?',
-                    'answer'   => 'Mr Biomed Tech sells equipment ranging from hospital beds and stretchers to autoclave machines and other sterilization devices, as well as defibrillators, SCD pumps, X-rays, etc.',
+                    'question' => 'Where are you located and how can I contact you?',
+                    'answer' => 'Visit us at 555 N. 5th Street Suite 109B, Garland, TX 75040 or call +1 (469) 767‑8853. You can also email Service@mbmts.com for support.',
                 ],
                 [
-                    'question' => 'How do you sterilize surgical equipment properly?',
-                    'answer'   => 'To sterilize surgical equipment requires a methodical decontamination process to avoid pathogenic transfer. You can rent or purchase a sterilization device, such as an autoclave, from Mr Biomed Tech Services in Texas.',
+                    'question' => 'Do you support rental or leasing of biomedical equipment?',
+                    'answer' => 'Yes — flexible rental and leasing options are available for selected biomedical equipment. Contact us for terms.',
                 ],
                 [
-                    'question' => 'How does a medical equipment management strategy reduce costs for hospitals?',
-                    'answer'   => 'A medical equipment management strategy is employed by Mr Biomed Tech to assist hospitals in keeping track of preventative maintenance of machinery, spare parts inventory, and staying up to date on device lifecycles. It ultimately ensures the investment in your medical equipment.',
+                    'question' => 'What if I need help selecting the right part or equipment?',
+                    'answer' => 'Our expert team is here to help you choose the right solution — just contact us and we’ll assist you based on your facility’s needs.',
                 ],
             ],
 
@@ -117,7 +147,7 @@ class FaqSeeder extends Seeder
                 Faq::updateOrCreate(
                     [
                         'page_name' => $pageName,
-                        'question'  => $faq['question'],
+                        'question' => $faq['question'],
                     ],
                     [
                         'answer' => $faq['answer'],

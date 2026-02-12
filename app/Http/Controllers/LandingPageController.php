@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
 use App\Models\Category;
 use App\Models\City;
-use App\Models\Faq;
 use App\Models\LandingPage;
-use App\Models\OemContent;
-use App\Models\Offer;
 use App\Models\Product;
-use App\Models\RepairService;
-use App\Models\RepairServiceSubPage;
 use App\Models\State;
 use App\Traits\UploadImageTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 
 class LandingPageController extends Controller
 {
@@ -40,7 +32,7 @@ class LandingPageController extends Controller
             abort(403, 'You do not have permission to view this page.');
         } catch (\Throwable $e) {
             // Log any other errors
-            Log::error('LandingPage index error: ' . $e->getMessage(), [
+            Log::error('LandingPage index error: '.$e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
 
@@ -51,16 +43,8 @@ class LandingPageController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
-        // Validation rules
+        // Validation rules for meta fields only
         $rules = [
-            'hero_heading' => 'required|string|max:255',
-            'hero_sd' => 'nullable|string',
-            'hero_slider_images.*' => 'nullable|file|image|max:10240',
-            'hero_image_alt' => 'nullable|string|max:255',
-            'content_heading' => 'required|string|max:255',
-            'content_description' => 'nullable|string',
-            'content_slider_images.*' => 'nullable|file|image|max:10240',
-            'content_image_alt' => 'nullable|string|max:255',
             'meta_title' => 'nullable|string|max:255',
             'meta_keywords' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
@@ -71,7 +55,7 @@ class LandingPageController extends Controller
         try {
             DB::beginTransaction();
 
-            // Fetch first entry or create new
+            // Fetch first landing page or create new
             $landingPage = LandingPage::first();
 
             if (! $landingPage) {
@@ -83,48 +67,26 @@ class LandingPageController extends Controller
                 $landingPage->updated_by = auth()->id();
             }
 
-            // Fill normal fields
-            $landingPage->fill($request->except([
-                'hero_slider_images',
-                'content_slider_images',
-            ]));
-
-            // Handle Hero Slider Images
-            if ($request->hasFile('hero_slider_images')) {
-                $existingHeroImages = $landingPage->hero_slider_images;
-                $existingHeroImages = is_array($existingHeroImages) ? $existingHeroImages : [];
-                $landingPage->hero_slider_images = $this->uploadMultipleImages(
-                    $existingHeroImages,
-                    $request->file('hero_slider_images'),
-                    'landing-page/hero-slider'
-                );
-            }
-
-            // Handle Content Slider Images
-            if ($request->hasFile('content_slider_images')) {
-                $existingContentImages = $landingPage->content_slider_images;
-                $existingContentImages = is_array($existingContentImages) ? $existingContentImages : [];
-                $landingPage->content_slider_images = $this->uploadMultipleImages(
-                    $existingContentImages,
-                    $request->file('content_slider_images'),
-                    'landing-page/content-slider'
-                );
-            }
+            // Fill only the validated meta fields
+            $landingPage->fill($validated);
 
             $landingPage->save();
 
             DB::commit();
 
-            $message = $landingPage->wasRecentlyCreated ? 'Landing page created successfully.' : 'Landing page updated successfully.';
+            $message = $landingPage->wasRecentlyCreated
+                ? 'Landing page created successfully.'
+                : 'Landing page updated successfully.';
 
             return redirect()->back()->with('success', $message);
+
         } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
             // If user is not authorized
             abort(403, 'You do not have permission to view this page.');
         } catch (\Throwable $e) {
             DB::rollBack();
 
-            Log::error('LandingPage storeOrUpdate error: ' . $e->getMessage(), [
+            Log::error('LandingPage storeOrUpdate error: '.$e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
                 'request' => $request->all(),
             ]);
@@ -150,7 +112,7 @@ class LandingPageController extends Controller
             $landingPage = LandingPage::findOrFail($request->landing_page_id);
             $column = $request->column;
             $imageToRemove = $request->image;
-            $path = rtrim($request->path, '/') . '/'; // ensure trailing slash
+            $path = rtrim($request->path, '/').'/'; // ensure trailing slash
 
             // Get existing images as array
             $images = $landingPage->{$column};
@@ -168,8 +130,8 @@ class LandingPageController extends Controller
             $landingPage->save();
 
             // Delete file from storage
-            if (Storage::disk('public')->exists($path . $imageToRemove)) {
-                Storage::disk('public')->delete($path . $imageToRemove);
+            if (Storage::disk('public')->exists($path.$imageToRemove)) {
+                Storage::disk('public')->delete($path.$imageToRemove);
             }
 
             return response()->json([
@@ -177,7 +139,7 @@ class LandingPageController extends Controller
                 'message' => 'Image removed successfully.',
             ]);
         } catch (\Throwable $e) {
-            Log::error('removeSliderImage error: ' . $e->getMessage(), [
+            Log::error('removeSliderImage error: '.$e->getMessage(), [
                 'request' => $request->all(),
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -257,10 +219,10 @@ class LandingPageController extends Controller
     {
         try {
             // Validate state_id is numeric
-            if (!is_numeric($state_id)) {
+            if (! is_numeric($state_id)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Invalid state ID.'
+                    'message' => 'Invalid state ID.',
                 ], 400);
             }
 
@@ -272,14 +234,14 @@ class LandingPageController extends Controller
 
             return response()->json([
                 'success' => true,
-                'cities' => $cities
+                'cities' => $cities,
             ], 200);
         } catch (Exception $e) {
-            Log::error('Error fetching cities: ' . $e->getMessage());
+            Log::error('Error fetching cities: '.$e->getMessage());
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error fetching cities'
+                'message' => 'Error fetching cities',
             ], 500);
         }
     }
@@ -291,10 +253,10 @@ class LandingPageController extends Controller
     {
         try {
             // Validate country_id is numeric
-            if (!is_numeric($country_id)) {
+            if (! is_numeric($country_id)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Invalid country ID.'
+                    'message' => 'Invalid country ID.',
                 ], 400);
             }
 
@@ -306,14 +268,14 @@ class LandingPageController extends Controller
 
             return response()->json([
                 'success' => true,
-                'states' => $states
+                'states' => $states,
             ], 200);
         } catch (Exception $e) {
-            Log::error('Error fetching states: ' . $e->getMessage());
+            Log::error('Error fetching states: '.$e->getMessage());
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error fetching states'
+                'message' => 'Error fetching states',
             ], 500);
         }
     }
@@ -347,7 +309,7 @@ class LandingPageController extends Controller
                 $q->where('name', 'like', "%{$search}%");
 
                 // OR products belonging to matched categories
-                if (!empty($categoryIds)) {
+                if (! empty($categoryIds)) {
                     $q->orWhereIn('category_id', $categoryIds);
                 }
             });
@@ -356,7 +318,7 @@ class LandingPageController extends Controller
         $products = $query->latest()->take(16)->get();
 
         return response()->json([
-            'html' => view('partials.best-products', compact('products'))->render()
+            'html' => view('partials.best-products', compact('products'))->render(),
         ]);
     }
 
@@ -371,9 +333,9 @@ class LandingPageController extends Controller
         }
 
         // Agar category nahi mili, to empty collection return karo
-        if (!$category) {
+        if (! $category) {
             return response()->json([
-                'html' => view('partials.latest-products', ['products' => collect()])->render()
+                'html' => view('partials.latest-products', ['products' => collect()])->render(),
             ]);
         }
 
@@ -385,7 +347,7 @@ class LandingPageController extends Controller
             ->get();
 
         return response()->json([
-            'html' => view('partials.latest-products', compact('products'))->render()
+            'html' => view('partials.latest-products', compact('products'))->render(),
         ]);
     }
 }

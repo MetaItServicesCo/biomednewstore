@@ -7,9 +7,8 @@
                 <h2 class="contact-heading mb-3">Contact Us</h2>
 
                 <p class="contact-desc mb-4">
-                    Want to learn more about how you can maximize the potential of your healthcare facility by enlisting
-                    biomedical equipment services from Mr Biomed Tech? We offer support all across Texas. Call, email,
-                    or visit us to discuss rentals, repairs, purchasing, or equipment disposition today.
+                    Need a quote, help choosing the right item, checking part availability, or scheduling service?
+                    Contact our team and we’ll guide you quickly.
                 </p>
 
                 <div class="contact-info mb-3">
@@ -45,9 +44,8 @@
                     </h3>
 
                     <p class="form-desc mb-4">
-                        Our Texas-based biomedical technicians are ready to answer your questions, provide you with
-                        quotes, or schedule a consultation. Let's have a conversation. We’re on call 24/7 and can get
-                        you in touch with a team member right away!
+                        Share your requirements and we’ll help with product recommendations, quotes, or service
+                        scheduling.
                     </p>
 
                     <form class="contact-us-form" action="{{ route('contact.us.form') }}" method="POST">

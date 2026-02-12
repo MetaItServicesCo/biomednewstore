@@ -4,16 +4,17 @@ use App\Models\Faq;
 use App\Models\GeneralSetting;
 use App\Models\State;
 use Illuminate\Support\Facades\Cache;
+use App\Models\ProductFeedback;
+use App\Models\Product;
 
-if (!function_exists('theme')) {
+if (! function_exists('theme')) {
     function theme()
     {
         return app(App\Core\Theme::class);
     }
 }
 
-
-if (!function_exists('getName')) {
+if (! function_exists('getName')) {
     /**
      * Get product name
      *
@@ -25,14 +26,10 @@ if (!function_exists('getName')) {
     }
 }
 
-
-if (!function_exists('addHtmlAttribute')) {
+if (! function_exists('addHtmlAttribute')) {
     /**
      * Add HTML attributes by scope
      *
-     * @param $scope
-     * @param $name
-     * @param $value
      *
      * @return void
      */
@@ -42,13 +39,10 @@ if (!function_exists('addHtmlAttribute')) {
     }
 }
 
-
-if (!function_exists('addHtmlAttributes')) {
+if (! function_exists('addHtmlAttributes')) {
     /**
      * Add multiple HTML attributes by scope
      *
-     * @param $scope
-     * @param $attributes
      *
      * @return void
      */
@@ -58,13 +52,10 @@ if (!function_exists('addHtmlAttributes')) {
     }
 }
 
-
-if (!function_exists('addHtmlClass')) {
+if (! function_exists('addHtmlClass')) {
     /**
      * Add HTML class by scope
      *
-     * @param $scope
-     * @param $value
      *
      * @return void
      */
@@ -74,12 +65,10 @@ if (!function_exists('addHtmlClass')) {
     }
 }
 
-
-if (!function_exists('printHtmlAttributes')) {
+if (! function_exists('printHtmlAttributes')) {
     /**
      * Print HTML attributes for the HTML template
      *
-     * @param $scope
      *
      * @return string
      */
@@ -89,13 +78,10 @@ if (!function_exists('printHtmlAttributes')) {
     }
 }
 
-
-if (!function_exists('printHtmlClasses')) {
+if (! function_exists('printHtmlClasses')) {
     /**
      * Print HTML classes for the HTML template
      *
-     * @param $scope
-     * @param $full
      *
      * @return string
      */
@@ -105,14 +91,10 @@ if (!function_exists('printHtmlClasses')) {
     }
 }
 
-
-if (!function_exists('getSvgIcon')) {
+if (! function_exists('getSvgIcon')) {
     /**
      * Get SVG icon content
      *
-     * @param $path
-     * @param $classNames
-     * @param $folder
      *
      * @return string
      */
@@ -122,12 +104,10 @@ if (!function_exists('getSvgIcon')) {
     }
 }
 
-
-if (!function_exists('setModeSwitch')) {
+if (! function_exists('setModeSwitch')) {
     /**
      * Set dark mode enabled status
      *
-     * @param $flag
      *
      * @return void
      */
@@ -137,8 +117,7 @@ if (!function_exists('setModeSwitch')) {
     }
 }
 
-
-if (!function_exists('isModeSwitchEnabled')) {
+if (! function_exists('isModeSwitchEnabled')) {
     /**
      * Check dark mode status
      *
@@ -150,12 +129,10 @@ if (!function_exists('isModeSwitchEnabled')) {
     }
 }
 
-
-if (!function_exists('setModeDefault')) {
+if (! function_exists('setModeDefault')) {
     /**
      * Set the mode to dark or light
      *
-     * @param $mode
      *
      * @return void
      */
@@ -165,8 +142,7 @@ if (!function_exists('setModeDefault')) {
     }
 }
 
-
-if (!function_exists('getModeDefault')) {
+if (! function_exists('getModeDefault')) {
     /**
      * Get current mode
      *
@@ -178,12 +154,10 @@ if (!function_exists('getModeDefault')) {
     }
 }
 
-
-if (!function_exists('setDirection')) {
+if (! function_exists('setDirection')) {
     /**
      * Set style direction
      *
-     * @param $direction
      *
      * @return void
      */
@@ -193,8 +167,7 @@ if (!function_exists('setDirection')) {
     }
 }
 
-
-if (!function_exists('getDirection')) {
+if (! function_exists('getDirection')) {
     /**
      * Get style direction
      *
@@ -206,8 +179,7 @@ if (!function_exists('getDirection')) {
     }
 }
 
-
-if (!function_exists('isRtlDirection')) {
+if (! function_exists('isRtlDirection')) {
     /**
      * Check if style direction is RTL
      *
@@ -219,12 +191,10 @@ if (!function_exists('isRtlDirection')) {
     }
 }
 
-
-if (!function_exists('extendCssFilename')) {
+if (! function_exists('extendCssFilename')) {
     /**
      * Extend CSS file name with RTL or dark mode
      *
-     * @param $path
      *
      * @return void
      */
@@ -234,8 +204,7 @@ if (!function_exists('extendCssFilename')) {
     }
 }
 
-
-if (!function_exists('includeFavicon')) {
+if (! function_exists('includeFavicon')) {
     /**
      * Include favicon from settings
      *
@@ -247,8 +216,7 @@ if (!function_exists('includeFavicon')) {
     }
 }
 
-
-if (!function_exists('includeFonts')) {
+if (! function_exists('includeFonts')) {
     /**
      * Include the fonts from settings
      *
@@ -260,12 +228,10 @@ if (!function_exists('includeFonts')) {
     }
 }
 
-
-if (!function_exists('getGlobalAssets')) {
+if (! function_exists('getGlobalAssets')) {
     /**
      * Get the global assets
      *
-     * @param $type
      *
      * @return array
      */
@@ -275,12 +241,10 @@ if (!function_exists('getGlobalAssets')) {
     }
 }
 
-
-if (!function_exists('addVendors')) {
+if (! function_exists('addVendors')) {
     /**
      * Add multiple vendors to the page by name. Refer to settings KT_THEME_VENDORS
      *
-     * @param $vendors
      *
      * @return void
      */
@@ -290,12 +254,10 @@ if (!function_exists('addVendors')) {
     }
 }
 
-
-if (!function_exists('addVendor')) {
+if (! function_exists('addVendor')) {
     /**
      * Add single vendor to the page by name. Refer to settings KT_THEME_VENDORS
      *
-     * @param $vendor
      *
      * @return void
      */
@@ -305,12 +267,10 @@ if (!function_exists('addVendor')) {
     }
 }
 
-
-if (!function_exists('addJavascriptFile')) {
+if (! function_exists('addJavascriptFile')) {
     /**
      * Add custom javascript file to the page
      *
-     * @param $file
      *
      * @return void
      */
@@ -320,12 +280,10 @@ if (!function_exists('addJavascriptFile')) {
     }
 }
 
-
-if (!function_exists('addCssFile')) {
+if (! function_exists('addCssFile')) {
     /**
      * Add custom CSS file to the page
      *
-     * @param $file
      *
      * @return void
      */
@@ -335,12 +293,10 @@ if (!function_exists('addCssFile')) {
     }
 }
 
-
-if (!function_exists('getVendors')) {
+if (! function_exists('getVendors')) {
     /**
      * Get vendor files from settings. Refer to settings KT_THEME_VENDORS
      *
-     * @param $type
      *
      * @return array
      */
@@ -350,8 +306,7 @@ if (!function_exists('getVendors')) {
     }
 }
 
-
-if (!function_exists('getCustomJs')) {
+if (! function_exists('getCustomJs')) {
     /**
      * Get custom js files from the settings
      *
@@ -363,8 +318,7 @@ if (!function_exists('getCustomJs')) {
     }
 }
 
-
-if (!function_exists('getCustomCss')) {
+if (! function_exists('getCustomCss')) {
     /**
      * Get custom css files from the settings
      *
@@ -376,13 +330,10 @@ if (!function_exists('getCustomCss')) {
     }
 }
 
-
-if (!function_exists('getHtmlAttribute')) {
+if (! function_exists('getHtmlAttribute')) {
     /**
      * Get HTML attribute based on the scope
      *
-     * @param $scope
-     * @param $attribute
      *
      * @return array
      */
@@ -392,12 +343,10 @@ if (!function_exists('getHtmlAttribute')) {
     }
 }
 
-
-if (!function_exists('isUrl')) {
+if (! function_exists('isUrl')) {
     /**
      * Get HTML attribute based on the scope
      *
-     * @param $url
      *
      * @return mixed
      */
@@ -407,28 +356,24 @@ if (!function_exists('isUrl')) {
     }
 }
 
-
-if (!function_exists('image')) {
+if (! function_exists('image')) {
     /**
      * Get image url by path
      *
-     * @param $path
      *
      * @return string
      */
     function image($path)
     {
-        return asset('assets/media/' . $path);
+        return asset('assets/media/'.$path);
     }
 }
 
-
-if (!function_exists('getIcon')) {
+if (! function_exists('getIcon')) {
     /**
      * Get icon
      *
-     * @param $path
-     *
+     * @param  $path
      * @return string
      */
     function getIcon($name, $class = '', $type = '', $tag = 'span')
@@ -437,7 +382,7 @@ if (!function_exists('getIcon')) {
     }
 }
 
-if (!function_exists('split_heading')) {
+if (! function_exists('split_heading')) {
     /**
      * Split heading into two parts based on [bracketed] text
      *
@@ -449,33 +394,31 @@ if (!function_exists('split_heading')) {
     {
 
         // Handle null or non-string inputs safely
-        if (empty($text) || !is_string($text)) {
+        if (empty($text) || ! is_string($text)) {
             return [
-                'first_text'  => '',
+                'first_text' => '',
                 'second_text' => '',
             ];
         }
-
 
         $pattern = '/(.*?)\[(.*?)\]/';
 
         if (preg_match($pattern, $text, $matches)) {
             return [
-                'first_text'  => trim($matches[1]),
+                'first_text' => trim($matches[1]),
                 'second_text' => trim($matches[2]),
             ];
         }
 
         // fallback — if no brackets found
         return [
-            'first_text'  => $text,
+            'first_text' => $text,
             'second_text' => '',
         ];
     }
 }
 
-
-if (!function_exists('setting')) {
+if (! function_exists('setting')) {
     function setting($key, $default = null)
     {
         $settings = Cache::rememberForever('app_settings', function () {
@@ -488,28 +431,32 @@ if (!function_exists('setting')) {
     }
 }
 
-
-if (!function_exists('cleanPhone')) {
+if (! function_exists('cleanPhone')) {
     function cleanPhone($number)
     {
-        if (!$number) return '';
+        if (! $number) {
+            return '';
+        }
+
         // Remove everything except digits and +
         return preg_replace('/[^0-9+]/', '', $number);
     }
 }
 
-if (!function_exists('highlightBracketText')) {
+if (! function_exists('highlightBracketText')) {
 
     /**
      * Highlight each [text] using different colors.
      *
-     * @param string $text
-     * @param array $colors
+     * @param  string  $text
+     * @param  array  $colors
      * @return string
      */
     function highlightBracketText($text, $colors = ['#0168a4'])
     {
-        if (!$text) return '';
+        if (! $text) {
+            return '';
+        }
 
         // Escape full text first
         $escaped = e($text);
@@ -529,18 +476,20 @@ if (!function_exists('highlightBracketText')) {
     }
 }
 
-if (!function_exists('plainBracketText')) {
+if (! function_exists('plainBracketText')) {
 
     /**
      * Convert [text] into plain text by removing brackets and keeping the content inside.
      * Also trims extra spaces.
      *
-     * @param string $text
+     * @param  string  $text
      * @return string
      */
     function plainBracketText($text)
     {
-        if (!$text) return '';
+        if (! $text) {
+            return '';
+        }
 
         // Remove brackets but keep the content inside
         $plain = preg_replace('/\[(.*?)\]/', '$1', $text);
@@ -551,8 +500,6 @@ if (!function_exists('plainBracketText')) {
         return trim($plain);
     }
 }
-
-
 
 // if (!function_exists('merge_images')) {
 
@@ -631,15 +578,13 @@ if (!function_exists('plainBracketText')) {
 //     }
 // }
 
-
-
-if (!function_exists('getFaqs')) {
+if (! function_exists('getFaqs')) {
 
     /**
      * Get FAQs by page name
      *
      * @param  string  $pageName
-     * @param  int     $limit
+     * @param  int  $limit
      * @return \Illuminate\Support\Collection
      */
     function getFaqs($pageName)
@@ -652,16 +597,15 @@ if (!function_exists('getFaqs')) {
     }
 }
 
-
 if (! function_exists('city_labels')) {
     function city_labels(): array
     {
         return [
-            'dallas'       => 'Dallas TX',
-            'garland'      => 'Garland TX',
-            'houston'      => 'Houston TX',
-            'austin'       => 'Austin TX',
-            'san-antonio'  => 'San-Antonio TX',
+            'dallas' => 'Dallas TX',
+            'garland' => 'Garland TX',
+            'houston' => 'Houston TX',
+            'austin' => 'Austin TX',
+            'san-antonio' => 'San-Antonio TX',
         ];
     }
 }
@@ -673,11 +617,9 @@ if (! function_exists('city_label')) {
     }
 }
 
-if (!function_exists('getServicesList')) {
+if (! function_exists('getServicesList')) {
     /**
      * Get the list of services in ascending order
-     *
-     * @return array
      */
     function getServicesList(): array
     {
@@ -699,13 +641,10 @@ if (!function_exists('getServicesList')) {
     }
 }
 
-
-if (!function_exists('getConsultancyServicesList')) {
+if (! function_exists('getConsultancyServicesList')) {
     /**
      * Get the list of consultancy/service options in alphabetical order
      * with "Other Inquiry" always at the end
-     *
-     * @return array
      */
     function getConsultancyServicesList(): array
     {
@@ -736,8 +675,7 @@ if (!function_exists('getConsultancyServicesList')) {
     }
 }
 
-
-if (!function_exists('getPriorityCountries')) {
+if (! function_exists('getPriorityCountries')) {
     function getPriorityCountries()
     {
         return [
@@ -749,7 +687,7 @@ if (!function_exists('getPriorityCountries')) {
     }
 }
 
-if (!function_exists('getPriorityStates')) {
+if (! function_exists('getPriorityStates')) {
     function getPriorityStates()
     {
         $priorityCountries = getPriorityCountries();
@@ -762,5 +700,40 @@ if (!function_exists('getPriorityStates')) {
                 ->orderBy('name')
                 ->get(['id', 'name', 'country_id']);
         });
+    }
+}
+
+if (! function_exists('getProductRating')) {
+    function getProductRating($product)
+    {
+        $productId = $product->id ?? null;
+
+        // 🔹 Step 1: ID nahi hai, slug se product find karo
+        if (empty($productId) && !empty($product->slug)) {
+            $dbProduct = Product::where('slug', $product->slug)
+                ->select('id', 'rating')
+                ->first();
+
+            if ($dbProduct) {
+                $productId = $dbProduct->id;
+
+                // product object me rating bhi inject kar do (future use)
+                $product->rating = $dbProduct->rating;
+            }
+        }
+
+        // 🔹 Step 2: Agar product ID mil gai → feedback check
+        if (!empty($productId)) {
+            $avgRating = ProductFeedback::where('product_id', $productId)
+                ->where('status', 'approved')
+                ->avg('rating');
+
+            if ($avgRating !== null) {
+                return (int) round($avgRating);
+            }
+        }
+
+        // 🔹 Step 3: Fallback → product table ki default rating
+        return (int) ($product->rating ?? 0);
     }
 }

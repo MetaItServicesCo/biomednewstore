@@ -149,8 +149,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('about-us') ? 'active' : '' }}"
-                            href="{{ route('about-us') }}">
+                        <a class="nav-link"
+                            href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about">
                             About mbmts
                         </a>
                     </li>
@@ -177,7 +177,7 @@
 
                         </div>
 
-                        <a href="{{ route('contact-us') }}" class="btn contact-btn mt-1 px-3 py-">
+                        <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/contact" class="btn contact-btn mt-1 px-3 py-">
                             CONTACT
                         </a>
                     </li>

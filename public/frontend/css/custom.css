@@ -319,7 +319,12 @@
      gap: 15px;
  }
 
-
+ @media(max-width:1024px) {
+     .blue-block li {
+         margin-left: 30px;
+         gap: 15px;
+     }
+ }
 
  .nav-link {
      font-weight: 600;
@@ -1327,7 +1332,7 @@
  }
 
  .gold {
-     color: #E9A426;
+     color: #E9A426 !important;
  }
 
  .product-title {
@@ -3044,11 +3049,10 @@
      transform: scale(1.08);
  }
 
- .custom-card img {
+ .custtom-imgg {
      height: 196px;
      border-radius: 12px;
-
-
+     width: 100%;
  }
 
  .custom-card .card-content-box {
@@ -4988,7 +4992,7 @@
      background: #0071A8;
      color: #FFFFFF;
      border: none;
-     width: 72px;
+     /* width: 72px; */
      height: 26px;
      border-radius: 6px;
      font-weight: 600;

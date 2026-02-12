@@ -8,14 +8,14 @@
 
                  <div class="card-image-box">
                      <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
-                         alt="{{ $product->image_alt ?? '' }}" class="img-fluid">
+                         alt="{{ $product->image_alt ?? '' }}" class="img-fluid custtom-imgg">
                  </div>
 
 
                  <div class="card-content-box p-3 pt-2">
                      <div class="stars p- pt-2 pb-0">
                          @php
-                             $rating = $product->rating ?? 0; // rating 0-5
+                             $rating = getProductRating($product); // helper call
                          @endphp
 
                          @for ($i = 1; $i <= 5; $i++)

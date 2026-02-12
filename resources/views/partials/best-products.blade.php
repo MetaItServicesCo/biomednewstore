@@ -19,7 +19,7 @@
                 <!-- Stars -->
                 <div class="stars">
                     @php
-                        $rating = $product->rating ?? 0; // rating 0-5
+                        $rating = getProductRating($product); // helper se rating (1–5)
                     @endphp
 
                     @for ($i = 1; $i <= 5; $i++)

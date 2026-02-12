@@ -306,11 +306,8 @@
         </div>
     @else
         <section class="product-detail-banner">
-            <h1>Part <span>Detail page</span> </h1>
+            <h1>{{ $part->name ?? '' }}</h1>
         </section>
-
-
-
 
         <section>
 
@@ -391,16 +388,18 @@
 
                         <!-- Rating -->
                         <div class="rating mt-4">
+                            @php
+                                $rating = getProductRating($part);
+                            @endphp
+
                             @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= ($part->rating ?? 0))
+                                @if ($i <= $rating)
                                     <i class="fa-solid fa-star"></i>
                                 @else
                                     <i class="fa-regular fa-star"></i>
                                 @endif
                             @endfor
                         </div>
-
-
                         <hr>
 
                         <!-- Options -->
