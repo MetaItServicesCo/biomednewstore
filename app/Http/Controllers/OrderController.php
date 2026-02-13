@@ -16,10 +16,14 @@ use App\Mail\OrderPaymentFailedMail;
 use Illuminate\Support\Facades\Mail;
 use App\DataTables\OrderDataTable;
 use Illuminate\Support\Str;
-use Square\Environment;
+use Square\Environments;
 use Square\SquareClient;
-use Square\Models\Money;
-use Square\Models\CreatePaymentRequest;
+use Square\Payments\Requests\CreatePaymentRequest;
+use Square\Payments\Requests\GetPaymentsRequest;
+use Square\Types\Money;
+use Square\Types\Currency;
+use Square\Exceptions\SquareApiException;
+use Square\Exceptions\SquareException;
 
 
 class OrderController extends Controller
@@ -194,30 +198,33 @@ class OrderController extends Controller
             }
 
             $environment = $squareConfig['environment'] === 'production'
-                ? Environment::PRODUCTION
-                : Environment::SANDBOX;
+                ? Environments::Production->value
+                : Environments::Sandbox->value;
 
-            $client = new SquareClient([
-                'accessToken' => $squareConfig['access_token'],
-                'environment' => $environment,
+            $client = new SquareClient(
+                $squareConfig['access_token'],
+                null,
+                ['baseUrl' => $environment]
+            );
+
+            $money = new Money([
+                'amount' => (int) round($total * 100),
+                'currency' => Currency::Usd->value,
             ]);
 
-            $money = new Money();
-            $money->setAmount((int) round($total * 100));
-            $money->setCurrency('USD');
+            $paymentRequest = new CreatePaymentRequest([
+                'sourceId' => $validated['square_token'],
+                'idempotencyKey' => Str::uuid()->toString(),
+                'amountMoney' => $money,
+                'locationId' => $squareConfig['location_id'],
+                'note' => 'Order Payment',
+            ]);
 
-            $paymentRequest = new CreatePaymentRequest(
-                $validated['square_token'],
-                Str::uuid()->toString(),
-                $money
-            );
-            $paymentRequest->setLocationId($squareConfig['location_id']);
-            $paymentRequest->setNote('Order Payment');
-
-            $response = $client->getPaymentsApi()->createPayment($paymentRequest);
-            if ($response->isError()) {
-                $errors = $response->getErrors();
-                $message = $errors[0]->getDetail() ?? 'Square payment failed';
+            $response = $client->payments->create($paymentRequest);
+            $payment = $response->getPayment();
+            if (!$payment) {
+                $errors = $response->getErrors() ?? [];
+                $message = $errors[0]?->getDetail() ?? 'Square payment failed';
 
                 return response()->json([
                     'success' => false,
@@ -225,13 +232,16 @@ class OrderController extends Controller
                 ], 500);
             }
 
-            $payment = $response->getResult()->getPayment();
-
             return response()->json([
                 'success' => true,
                 'payment_id' => $payment->getId(),
                 'status' => $payment->getStatus(),
             ]);
+        } catch (SquareApiException | SquareException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating Square payment: ' . $e->getMessage(),
+            ], 500);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -276,26 +286,28 @@ class OrderController extends Controller
             }
 
             $environment = $squareConfig['environment'] === 'production'
-                ? Environment::PRODUCTION
-                : Environment::SANDBOX;
+                ? Environments::Production->value
+                : Environments::Sandbox->value;
 
-            $client = new SquareClient([
-                'accessToken' => $squareConfig['access_token'],
-                'environment' => $environment,
-            ]);
+            $client = new SquareClient(
+                $squareConfig['access_token'],
+                null,
+                ['baseUrl' => $environment]
+            );
 
-            $response = $client->getPaymentsApi()->getPayment($validated['payment_id']);
-            if ($response->isError()) {
-                $errors = $response->getErrors();
-                $message = $errors[0]->getDetail() ?? 'Square payment verification failed';
+            $response = $client->payments->get(new GetPaymentsRequest([
+                'paymentId' => $validated['payment_id'],
+            ]));
+            $payment = $response->getPayment();
+            if (!$payment) {
+                $errors = $response->getErrors() ?? [];
+                $message = $errors[0]?->getDetail() ?? 'Square payment verification failed';
 
                 return response()->json([
                     'success' => false,
                     'message' => $message,
                 ], 500);
             }
-
-            $payment = $response->getResult()->getPayment();
 
             $cart = $validated['cart'];
             $subtotal = 0;
@@ -340,7 +352,7 @@ class OrderController extends Controller
                         'order_id' => $order->id,
                         'product_id' => $item['id'],
                         'product_name' => $item['name'],
-                        'product_image' => $item['image'] ?? null,
+                    'product_image' => $item['image'] ?? '',
                         'price' => $item['price'],
                         'quantity' => $item['qty'],
                         'subtotal' => $itemSubtotal,
@@ -398,7 +410,7 @@ class OrderController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item['id'],
                     'product_name' => $item['name'],
-                    'product_image' => $item['image'] ?? null,
+                    'product_image' => $item['image'] ?? '',
                     'price' => $item['price'],
                     'quantity' => $item['qty'],
                     'subtotal' => $itemSubtotal,
@@ -426,6 +438,11 @@ class OrderController extends Controller
                 'message' => 'Validation error',
                 'errors' => $e->errors(),
             ], 422);
+        } catch (SquareApiException | SquareException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -580,7 +597,7 @@ class OrderController extends Controller
                         'order_id' => $order->id,
                         'product_id' => $item['id'],
                         'product_name' => $item['name'],
-                        'product_image' => $item['image'] ?? null,
+                    'product_image' => $item['image'] ?? '',
                         'price' => $item['price'],
                         'quantity' => $item['qty'],
                         'subtotal' => $itemSubtotal,
@@ -652,7 +669,7 @@ class OrderController extends Controller
                         'order_id' => $order->id,
                         'product_id' => $item['id'],
                         'product_name' => $item['name'],
-                        'product_image' => $item['image'] ?? null,
+                    'product_image' => $item['image'] ?? '',
                         'price' => $item['price'],
                         'quantity' => $item['qty'],
                         'subtotal' => $itemSubtotal,
