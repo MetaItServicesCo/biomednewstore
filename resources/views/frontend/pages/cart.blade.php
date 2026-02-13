@@ -369,10 +369,7 @@
     <section class="cart-banner">
         <h1>Shopping <span>Cart</span> </h1>
     </section>
-
-
-
-
+    
     <section>
 
         <section class="cart-section py-5">

@@ -28,6 +28,12 @@
                 max-width: 526px;
             }
 
+            @media(max-width:768px) {
+                .search-bar input.form-control {
+                    max-width: 415px;
+                }
+            }
+
             .search-bar button {
                 border-radius: 4px;
                 width: 70px;
@@ -86,8 +92,8 @@
 
             /* Shop Icon */
             .shop-icon img.list-icon-img {
-                width: 38px;
-                height: 36px;
+                width: 50px;
+                height: 50px;
                 transition: all 0.3s ease;
             }
 
@@ -425,7 +431,7 @@
     <section class="search-wishlist-section py-5">
         <div class="container mt-4">
             <div class="row justify-content-center align-items-center g-3">
-                <div class="list-wraper d-flex align-items-center gap-3 flex-wrap mt-4">
+                <div class="list-wraper d-flex align-items-center gap-3 flex-wra mt-4">
 
                     <!-- Search Input + Button -->
                     <div class="search-bar d-flex gap-2">
@@ -435,11 +441,7 @@
                         </button>
                     </div>
 
-                    <!-- Wishlist -->
-                    <div class="wishlist d-flex align-items-center gap-2 pe-3 border-end">
-                        {{-- <i class="fa-regular fa-heart fa-lg mt-1 wishlist-icon"></i>
-                        <span class=" ">Add to Wishlist</span> --}}
-                    </div>
+
 
                     <!-- Shop Icon -->
                     <div class="shop-icon ms-1">
@@ -537,42 +539,53 @@
                         </div> --}}
                         <div class="row g-4 p-2">
                             @foreach ($recentProducts as $recentProduct)
-                                <!-- Wrap the entire product in a link -->
-                                <a href="{{ route('product-detail', $recentProduct->slug) }}"
-                                    class="d-flex text-decoration-none text-dark">
-                                    <div class="col-lg-5 col-md-12 col-5">
-                                        <img src="{{ $recentProduct->thumbnail ? asset('storage/products/thumbnails/' . $recentProduct->thumbnail) : '' }}"
-                                            alt="{{ $recentProduct->image_alt ?? $recentProduct->name }}"
-                                            class="recent-pro">
+                                <div class="col-12">
+                                    <a href="{{ route('product-detail', $recentProduct->slug) }}"
+                                        class="text-decoration-none text-dark">
 
-                                    </div>
-                                    <div class="col-lg-7 col-md-12 col-7 ">
-                                        <div class="px-2">
-                                            <h6 class="recent-title">
-                                                {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
-                                            </h6>
-                                            <div class="recent-price">
-                                                @if ($recentProduct->price && $recentProduct->price > 0)
-                                                    <span
-                                                        class="old-price">${{ number_format($recentProduct->price, 2) }}</span>
-                                                @endif
-                                                <span
-                                                    class="new-price">${{ number_format($recentProduct->sale_price, 2) }}</span>
-                                            </div>
-                                            <div class="stars">
-                                                @php
-                                                    $rating = getProductRating($recentProduct);
-                                                @endphp
+                                        <div class="row align-items-center">
 
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    <i class="fa-solid fa-star {{ $i <= $rating ? 'active' : '' }}"></i>
-                                                @endfor
+                                            <!-- Image -->
+                                            <div class="col-lg-5 col-md-12 col-5">
+                                                <img src="{{ $recentProduct->thumbnail ? asset('storage/products/thumbnails/' . $recentProduct->thumbnail) : '' }}"
+                                                    alt="{{ $recentProduct->image_alt ?? $recentProduct->name }}"
+                                                    class="recent-pro img-fluid">
                                             </div>
+
+                                            <!-- Content -->
+                                            <div class="col-lg-7 col-md-12 col-7">
+                                                <div class="px-2">
+                                                    <h6 class="recent-title">
+                                                        {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
+                                                    </h6>
+
+                                                    <div class="recent-price">
+                                                        @if ($recentProduct->price && $recentProduct->price > 0)
+                                                            <span class="old-price">
+                                                                ${{ number_format($recentProduct->price, 2) }}
+                                                            </span>
+                                                        @endif
+                                                        <span class="new-price">
+                                                            ${{ number_format($recentProduct->sale_price, 2) }}
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="stars">
+                                                        @php $rating = getProductRating($recentProduct); @endphp
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            <i
+                                                                class="fa-solid fa-star {{ $i <= $rating ? 'active' : '' }}"></i>
+                                                        @endfor
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                             @endforeach
                         </div>
+
                     </div>
 
                 </div>

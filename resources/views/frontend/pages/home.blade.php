@@ -369,7 +369,7 @@
 
         @media(max-width:767px) {
             .pro-section {
-                margin-top: 850px;
+                margin-top: 700px;
             }
 
             .sub-heading {

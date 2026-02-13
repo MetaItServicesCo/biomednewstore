@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/css') }}/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
 
     <!-- Select2 CSS -->
 
@@ -60,7 +62,7 @@
 
     {{-- Schema Section --}}
     @yield('page_schema')
-    
+
     @stack('frontend-styles')
 
     @livewireStyles

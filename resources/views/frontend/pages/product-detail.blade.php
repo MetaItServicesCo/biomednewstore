@@ -11,7 +11,7 @@
 
 @push('frontend-styles')
     <style>
-        .product-title {
+        .product-titlee {
             font-size: 28px;
             font-weight: 600;
             font-family: Inter;
@@ -317,13 +317,14 @@
 
         /* Card */
         .related-card {
-            width: 260px;
+            width: 100%;
+            max-width: 260px;
             height: 394px;
             border: 1px solid #0071A8;
             border-radius: 13px;
             overflow: hidden;
             background: #ffffff;
-            margin: auto;
+            margin: 0 auto;
         }
 
         .related-card img {

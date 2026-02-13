@@ -12,12 +12,13 @@
             /*===================== product detail banner  ============================*/
             .cart-banner {
                 background: linear-gradient(90deg, #006A9E 45%, #A5CDE0);
-                height: 220px;
+                height: 100%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 text-align: center;
-                margin-top: 180px;
+                margin-top: 140px;
+                padding: 30px;
             }
 
             .cart-banner h1 {
@@ -63,9 +64,18 @@
                 }
             }
 
-            @media (max-width: 480px) {
+            @media (max-width: 767px) {
                 .product-detail-banner h1 {
                     font-size: 28px;
+                }
+
+                .cart-banner h1 {
+                    font-size: 27px !important;
+
+                }
+
+                .cart-banner p {
+                    font-size: 12px !important;
                 }
             }
 
@@ -74,12 +84,13 @@
 
             .part-banner {
                 background: #006A9E;
-                height: 174px;
+                height: 100%;
                 display: flex;
                 align-items: center;
-                /* justify-content: center;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        text-align: center; */
+                justify-content: center;
+                text-align: center;
                 margin-top: 30px;
+                padding: 30px;
             }
 
             .part-banner h1 {
@@ -99,6 +110,19 @@
                 letter-spacing: 0;
                 font-family: Arial;
                 max-width: 732px;
+                margin: 0 auto;
+            }
+
+            @media(max-width:767px) {
+                .part-banner h1 {
+                    font-size: 28px !important;
+
+                }
+
+                .part-banner p {
+                    font-size: 12px !important;
+
+                }
             }
 
             /* ================= end =============================== */

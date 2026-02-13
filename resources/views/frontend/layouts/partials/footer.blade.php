@@ -342,12 +342,12 @@
         }
 
         .contact-left h3 {
-            font-size: 25px !important;
+            font-size: 22px !important;
 
         }
 
         .contact-left p {
-            font-size: 10px !important;
+            font-size: 8px !important;
 
         }
 
@@ -683,26 +683,28 @@
         <div class="container text-center ">
             <div class="footer-links-wrapper">
                 <div class="footer-links mb-1">
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/BioMed-Service" class="text-decoration-none mx-2">Mr Biomed
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/BioMed-Service"
+                        class="text-decoration-none mx-2">Mr Biomed
                         Service</a><span class="separator">|</span>
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/locations" class="text-decoration-none mx-2">Locations</a><span
-                        class="separator">|</span>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/locations"
+                        class="text-decoration-none mx-2">Locations</a><span class="separator">|</span>
                     {{-- <a href="#" class="text-decoration-none mx-2">Product Store</a><span
                         class="separator">|</span> --}}
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about" class="text-decoration-none mx-2">About Mbmts</a><span
-                        class="separator">|</span>
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/blogs" class="text-decoration-none mx-2">Blog</a><span
-                        class="separator">|</span>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about" class="text-decoration-none mx-2">About
+                        Mbmts</a><span class="separator">|</span>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/blogs"
+                        class="text-decoration-none mx-2">Blog</a><span class="separator">|</span>
                     {{-- <a href="#" class="text-decoration-none mx-2">Career</a><span class="separator">|</span> --}}
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/terms-and-conditions" class="text-decoration-none mx-2">Terms & Conditions</a><span
-                        class="separator">|</span>
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/privacy-policy" class="text-decoration-none mx-2">Privacy Policy</a><span
-                        class="separator">|</span>
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/disclaimer" class="text-decoration-none mx-2">Disclaimer</a><span
-                        class="separator">|</span>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/terms-and-conditions"
+                        class="text-decoration-none mx-2">Terms & Conditions</a><span class="separator">|</span>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/privacy-policy"
+                        class="text-decoration-none mx-2">Privacy Policy</a><span class="separator">|</span>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/disclaimer"
+                        class="text-decoration-none mx-2">Disclaimer</a><span class="separator">|</span>
                     <a href="{{ route('feedback') }}" class="text-decoration-none mx-2">FeedBack</a><span
                         class="separator">|</span>
-                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/faqs" class="text-decoration-none mx-2">FAQs</a>
+                    <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/faqs"
+                        class="text-decoration-none mx-2">FAQs</a>
                 </div>
             </div>
             <p class="copyright mb-0 t">

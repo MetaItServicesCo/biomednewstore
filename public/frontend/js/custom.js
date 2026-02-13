@@ -1430,3 +1430,44 @@ window.updateCartCount = function (cart) {
     // Hide if empty
     counter.style.display = count > 0 ? 'flex' : 'none';
 };
+
+
+// ======================== latestProductSwiper ===================
+// Only initialize on mobile/tablet to avoid conflicts with desktop grid
+document.addEventListener('DOMContentLoaded', () => {
+    let latestSwiper = null;
+    const latestSwiperEl = document.querySelector(".latestProductSwiper");
+    if (latestSwiperEl && window.innerWidth < 992) {
+        const latestSlides = latestSwiperEl.querySelectorAll(".swiper-slide").length;
+        // Loop only when we have more slides than the current slidesPerView
+        const latestSlidesPerView = window.innerWidth >= 768 ? 2 : 1;
+        const shouldLoop = latestSlides > latestSlidesPerView;
+
+        latestSwiper = new Swiper(".latestProductSwiper", {
+            loop: shouldLoop,
+            spaceBetween: 15,
+            slidesPerView: 1, // default mobile
+            speed: 1000, // slide transition speed
+            autoplay: {
+                delay: 3000, // 3 sec per slide
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true, // hover par pause
+            },
+            navigation: false,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                0: { // mobile
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+                768: { // tablet / md
+                    slidesPerView: 2,
+                    spaceBetween: 15,
+                }
+            },
+        });
+    }
+});
