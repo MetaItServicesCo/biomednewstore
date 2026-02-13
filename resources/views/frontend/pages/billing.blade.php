@@ -727,6 +727,7 @@
         }
 
         /* ================ END PAYMENT MODAL ================== */
+    </style>
 @endpush
 
 @section('frontend-content')
@@ -1049,7 +1050,6 @@
 @endsection
 
 @push('frontend-scripts')
-    <!-- Stripe JS -->
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         $(document).ready(function() {
@@ -1282,7 +1282,7 @@
             // =====================
             // Next Button Click
             // =====================
-            $('.next-btn').on('click', function() {
+            $(document).on('click', '.next-btn', function() {
                 console.log('Next button clicked');
                 if (!validateForm()) {
                     console.log('Validation failed');
