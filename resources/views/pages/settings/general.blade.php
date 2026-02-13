@@ -21,6 +21,16 @@
                                     value="{{ setting('site_name') }}">
                             </div>
                             <div class="mb-3">
+                                <label>Payment Gateway</label>
+                                <select name="payment_gateway" class="form-control">
+                                    @php
+                                        $selectedGateway = setting('payment_gateway') ?: env('PAYMENT_GATEWAY') ?: 'square';
+                                    @endphp
+                                    <option value="stripe" {{ $selectedGateway === 'stripe' ? 'selected' : '' }}>Stripe</option>
+                                    <option value="square" {{ $selectedGateway === 'square' ? 'selected' : '' }}>Square</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label>Logo</label>
                                 <input type="file" name="site_logo" class="form-control">
                                 @if (setting('site_logo'))

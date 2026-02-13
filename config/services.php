@@ -53,4 +53,11 @@ return [
         'secret' => env('STRIPE_SECRET_KEY'),
     ],
 
+    'square' => [
+        'application_id' => env('SQUARE_APPLICATION_ID'),
+        'access_token' => env('SQUARE_ACCESS_TOKEN'),
+        'location_id' => env('SQUARE_LOCATION_ID'),
+        'environment' => env('SQUARE_ENV', 'sandbox'),
+    ],
+
 ];

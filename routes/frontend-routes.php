@@ -88,4 +88,6 @@ Route::get('/parts/{slug}', [ProductController::class, 'partDetail'])->name('par
 Route::post('/order/save', [OrderController::class, 'saveOrder'])->name('order.save');
 Route::post('/order/payment-intent', [OrderController::class, 'createPaymentIntent'])->name('order.payment-intent');
 Route::post('/order/confirm-payment', [OrderController::class, 'confirmPayment'])->name('order.confirm-payment');
+Route::post('/order/square-payment', [OrderController::class, 'createSquarePayment'])->name('order.square-payment');
+Route::post('/order/square-confirm-payment', [OrderController::class, 'confirmSquarePayment'])->name('order.square-confirm-payment');
 Route::get('/order/{orderId}', [OrderController::class, 'getOrder'])->name('order.details');

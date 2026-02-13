@@ -15,6 +15,11 @@ use App\Mail\OrderConfirmationMail;
 use App\Mail\OrderPaymentFailedMail;
 use Illuminate\Support\Facades\Mail;
 use App\DataTables\OrderDataTable;
+use Illuminate\Support\Str;
+use Square\Environment;
+use Square\SquareClient;
+use Square\Models\Money;
+use Square\Models\CreatePaymentRequest;
 
 
 class OrderController extends Controller
@@ -150,6 +155,281 @@ class OrderController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Create Square Payment
+     */
+    public function createSquarePayment(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'square_token' => 'required|string',
+                'cart' => 'required|array|min:1',
+                'cart.*.id' => 'required|integer',
+                'cart.*.name' => 'required|string',
+                'cart.*.price' => 'required|numeric|min:0',
+                'cart.*.qty' => 'required|integer|min:1',
+                'shipping_method' => 'required|in:standard,pickup',
+            ]);
+
+            $cart = $validated['cart'];
+            $subtotal = 0;
+            foreach ($cart as $item) {
+                $subtotal += ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+            }
+
+            $shipping = $validated['shipping_method'] === 'pickup' ? 0 : 40.0;
+            $gst = $subtotal * 0.1;
+            $total = $subtotal + $shipping + $gst;
+
+            $squareConfig = config('services.square');
+            if (empty($squareConfig['access_token']) || empty($squareConfig['location_id'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Square credentials are not configured',
+                ], 500);
+            }
+
+            $environment = $squareConfig['environment'] === 'production'
+                ? Environment::PRODUCTION
+                : Environment::SANDBOX;
+
+            $client = new SquareClient([
+                'accessToken' => $squareConfig['access_token'],
+                'environment' => $environment,
+            ]);
+
+            $money = new Money();
+            $money->setAmount((int) round($total * 100));
+            $money->setCurrency('USD');
+
+            $paymentRequest = new CreatePaymentRequest(
+                $validated['square_token'],
+                Str::uuid()->toString(),
+                $money
+            );
+            $paymentRequest->setLocationId($squareConfig['location_id']);
+            $paymentRequest->setNote('Order Payment');
+
+            $response = $client->getPaymentsApi()->createPayment($paymentRequest);
+            if ($response->isError()) {
+                $errors = $response->getErrors();
+                $message = $errors[0]->getDetail() ?? 'Square payment failed';
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $message,
+                ], 500);
+            }
+
+            $payment = $response->getResult()->getPayment();
+
+            return response()->json([
+                'success' => true,
+                'payment_id' => $payment->getId(),
+                'status' => $payment->getStatus(),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating Square payment: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Confirm Square Payment and Save Order
+     */
+    public function confirmSquarePayment(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'payment_id' => 'required|string',
+                'email' => 'required|email',
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'company' => 'nullable|string|max:255',
+                'street_address' => 'required|string|max:255',
+                'street_address_2' => 'nullable|string|max:255',
+                'state_id' => 'nullable|exists:states,id',
+                'city_id' => 'nullable|exists:cities,id',
+                'postal_code' => 'required|string|max:20',
+                'country_id' => 'required|exists:countries,id',
+                'phone_number' => 'required|string|max:20',
+                'cart' => 'required|array|min:1',
+                'cart.*.id' => 'required|integer',
+                'cart.*.name' => 'required|string',
+                'cart.*.price' => 'required|numeric|min:0',
+                'cart.*.qty' => 'required|integer|min:1',
+                'shipping_method' => 'required|in:standard,pickup',
+            ]);
+
+            $squareConfig = config('services.square');
+            if (empty($squareConfig['access_token'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Square credentials are not configured',
+                ], 500);
+            }
+
+            $environment = $squareConfig['environment'] === 'production'
+                ? Environment::PRODUCTION
+                : Environment::SANDBOX;
+
+            $client = new SquareClient([
+                'accessToken' => $squareConfig['access_token'],
+                'environment' => $environment,
+            ]);
+
+            $response = $client->getPaymentsApi()->getPayment($validated['payment_id']);
+            if ($response->isError()) {
+                $errors = $response->getErrors();
+                $message = $errors[0]->getDetail() ?? 'Square payment verification failed';
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $message,
+                ], 500);
+            }
+
+            $payment = $response->getResult()->getPayment();
+
+            $cart = $validated['cart'];
+            $subtotal = 0;
+            foreach ($cart as $item) {
+                $subtotal += ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+            }
+
+            $shipping = $validated['shipping_method'] === 'pickup' ? 0 : 40.0;
+            $gst = $subtotal * 0.1;
+            $total = $subtotal + $shipping + $gst;
+
+            if ($payment->getStatus() === 'COMPLETED') {
+                $order = Order::create([
+                    'order_id' => $this->generateUniqueOrderId(),
+                    'user_id' => Auth::check() ? Auth::id() : null,
+                    'email' => $validated['email'],
+                    'first_name' => $validated['first_name'],
+                    'last_name' => $validated['last_name'],
+                    'company' => $validated['company'],
+                    'street_address' => $validated['street_address'],
+                    'street_address_2' => $validated['street_address_2'],
+                    'state_id' => $validated['state_id'],
+                    'city_id' => $validated['city_id'],
+                    'postal_code' => $validated['postal_code'],
+                    'country_id' => $validated['country_id'],
+                    'phone_number' => $validated['phone_number'],
+                    'subtotal' => $subtotal,
+                    'shipping' => $shipping,
+                    'gst' => $gst,
+                    'total' => $total,
+                    'shipping_method' => $validated['shipping_method'],
+                    'payment_status' => 'completed',
+                    'order_status' => 'processing',
+                    'stripe_payment_intent_id' => $payment->getId(),
+                    'paid_at' => now(),
+                ]);
+
+                foreach ($cart as $item) {
+                    $itemSubtotal = ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $item['id'],
+                        'product_name' => $item['name'],
+                        'product_image' => $item['image'] ?? null,
+                        'price' => $item['price'],
+                        'quantity' => $item['qty'],
+                        'subtotal' => $itemSubtotal,
+                    ]);
+                }
+
+                session()->forget('cart');
+
+                try {
+                    Mail::to($order->email)->queue(new OrderConfirmationMail($order->load('items')));
+                } catch (\Exception $e) {
+                    Log::error('Failed to send order confirmation email', [
+                        'order_id' => $order->id,
+                        'email' => $order->email,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Payment successful',
+                    'order_id' => $order->order_id,
+                ]);
+            }
+
+            $order = Order::create([
+                'order_id' => $this->generateUniqueOrderId(),
+                'user_id' => Auth::check() ? Auth::id() : null,
+                'email' => $validated['email'],
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'company' => $validated['company'],
+                'street_address' => $validated['street_address'],
+                'street_address_2' => $validated['street_address_2'],
+                'state_id' => $validated['state_id'],
+                'city_id' => $validated['city_id'],
+                'postal_code' => $validated['postal_code'],
+                'country_id' => $validated['country_id'],
+                'phone_number' => $validated['phone_number'],
+                'subtotal' => $subtotal,
+                'shipping' => $shipping,
+                'gst' => $gst,
+                'total' => $total,
+                'shipping_method' => $validated['shipping_method'],
+                'payment_status' => 'failed',
+                'order_status' => 'pending',
+                'stripe_payment_intent_id' => $payment->getId(),
+                'payment_error_message' => 'Payment was not completed',
+            ]);
+
+            foreach ($cart as $item) {
+                $itemSubtotal = ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['id'],
+                    'product_name' => $item['name'],
+                    'product_image' => $item['image'] ?? null,
+                    'price' => $item['price'],
+                    'quantity' => $item['qty'],
+                    'subtotal' => $itemSubtotal,
+                ]);
+            }
+
+            try {
+                Mail::to($order->email)->queue(new OrderPaymentFailedMail($order->load('items'), 'Payment was not completed'));
+            } catch (\Exception $e) {
+                Log::error('Failed to send payment failed email', [
+                    'order_id' => $order->id,
+                    'email' => $order->email,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment failed',
+                'error' => 'Payment was not completed',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
             ], 500);
         }
     }

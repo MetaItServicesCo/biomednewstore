@@ -58,6 +58,7 @@ class GeneralSettingController extends Controller
             'favicon'   => 'nullable|image|mimes:ico,png,jpg|max:512',
             'phone'     => 'nullable|string',
             'email'     => 'nullable|email',
+            'payment_gateway' => 'nullable|in:stripe,square',
         ]);
 
         DB::beginTransaction();
@@ -140,6 +141,7 @@ class GeneralSettingController extends Controller
         if (str_contains($key, 'smtp')) return 'smtp';
         if (in_array($key, ['facebook', 'instagram', 'twitter', 'linkedin'])) return 'social';
         if (in_array($key, ['site_logo', 'favicon', 'site_name'])) return 'general';
+        if (in_array($key, ['payment_gateway'])) return 'payment';
         if (in_array($key, ['phone', 'email', 'whatsapp', 'address'])) return 'contact';
         return 'general';
     }

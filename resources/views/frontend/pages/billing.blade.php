@@ -627,6 +627,18 @@
             display: block;
         }
 
+        #square-card-errors {
+            color: #e74c3c;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+
+        #square-card-errors.show {
+            display: block;
+        }
+
         .payment-amount {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
@@ -745,6 +757,7 @@
         $gst_percent = 8.25 / 100; // 8.25%
         $gst = $subtotal * $gst_percent;
         $total = $subtotal + $shipping + $gst;
+        $paymentGateway = setting('payment_gateway') ?: env('PAYMENT_GATEWAY') ?: 'square';
     @endphp
     <section class="cart-banner ">
         <div class="container d-flex flex-wrap flex-md-nowrap justify-content-between">
@@ -1047,41 +1060,101 @@
             </div>
         </div>
     </div>
+
+    <div id="squarePaymentModal" class="payment-modal-overlay">
+        <div class="payment-modal">
+            <div class="payment-modal-header">
+                <h2>💳 Payment Details</h2>
+                <button type="button" class="payment-modal-close" id="closeSquarePaymentModal">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <div class="payment-amount">
+                <div class="payment-amount-label">Total Amount Due</div>
+                <div class="payment-amount-value" id="squareModalTotalAmount">${{ number_format($total, 2) }}</div>
+            </div>
+
+            <div class="payment-info-section">
+                <label for="square-card-element">Card Information</label>
+                <div id="square-card-element"></div>
+                <div id="square-card-errors"></div>
+            </div>
+
+            <div class="payment-info-section">
+                <div style="font-size: 12px; color: #999; padding: 10px; background: #f9f9f9; border-radius: 6px;">
+                    <i class="fa fa-info-circle"></i> Your payment is secure and encrypted
+                </div>
+            </div>
+
+            <div class="payment-modal-footer">
+                <button type="button" class="payment-modal-footer button btn-cancel" id="cancelSquarePaymentModal">
+                    Cancel
+                </button>
+                <button type="button" class="payment-modal-footer button btn-pay" id="squareConfirmPaymentBtn">
+                    Pay Now
+                </button>
+            </div>
+
+            <div class="security-badge">
+                <i class="fa fa-lock"></i>
+                Secured by Square
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('frontend-scripts')
+    @php
+        $squareEnv = config('services.square.environment') === 'production' ? 'production' : 'sandbox';
+        $squareScript = $squareEnv === 'production'
+            ? 'https://web.squarecdn.com/v1/square.js'
+            : 'https://sandbox.web.squarecdn.com/v1/square.js';
+    @endphp
+    @if ($paymentGateway === 'square')
+        <script src="{{ $squareScript }}"></script>
+    @endif
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         $(document).ready(function() {
             console.log('Script loaded and document ready');
 
+            const paymentGateway = '{{ $paymentGateway }}';
+
             // Check if Stripe key is available
             const stripeKey = '{{ config("services.stripe.key") }}';
-            console.log('Stripe key:', stripeKey);
-            if (!stripeKey || stripeKey.trim() === '') {
-                alert('Stripe public key is not configured. Please check your .env file.');
-                return;
+            let stripe = null;
+            let elements = null;
+            let cardElement = null;
+
+            if (paymentGateway === 'stripe') {
+                console.log('Stripe key:', stripeKey);
+                if (!stripeKey || stripeKey.trim() === '') {
+                    alert('Stripe public key is not configured. Please check your .env file.');
+                    return;
+                }
+
+                stripe = Stripe(stripeKey);
+                elements = stripe.elements();
+                cardElement = elements.create('card');
+                cardElement.mount('#card-element');
+
+                cardElement.on('change', function(event) {
+                    const displayError = document.getElementById('card-errors');
+                    if (event.error) {
+                        displayError.textContent = event.error.message;
+                        displayError.classList.add('show');
+                    } else {
+                        displayError.textContent = '';
+                        displayError.classList.remove('show');
+                    }
+                });
             }
 
-            // Initialize Stripe
-            const stripe = Stripe(stripeKey);
-            const elements = stripe.elements();
-
-            // Create card element
-            const cardElement = elements.create('card');
-            cardElement.mount('#card-element');
-
-            // Handle card errors
-            cardElement.on('change', function(event) {
-                const displayError = document.getElementById('card-errors');
-                if (event.error) {
-                    displayError.textContent = event.error.message;
-                    displayError.classList.add('show');
-                } else {
-                    displayError.textContent = '';
-                    displayError.classList.remove('show');
-                }
-            });
+            const squareApplicationId = '{{ config("services.square.application_id") }}';
+            const squareLocationId = '{{ config("services.square.location_id") }}';
+            let squarePayments = null;
+            let squareCard = null;
 
             const stateSelect = $('#state_id');
             const citySelect = $('#city_id');
@@ -1102,6 +1175,26 @@
                 citySelect.empty().append('<option value="">Select City</option>');
                 citySelect.prop('required', false);
                 cityLabel.text('City');
+            }
+
+            async function initSquareCard() {
+                if (squareCard) {
+                    return;
+                }
+
+                if (!squareApplicationId || !squareLocationId || typeof Square === 'undefined') {
+                    alert('Square configuration is missing. Please check your .env file.');
+                    return;
+                }
+
+                try {
+                    squarePayments = Square.payments(squareApplicationId, squareLocationId);
+                    squareCard = await squarePayments.card();
+                    await squareCard.attach('#square-card-element');
+                } catch (error) {
+                    console.log('Square initialization failed:', error);
+                    $('#square-card-errors').text('Unable to initialize Square payment form.').addClass('show');
+                }
             }
 
             // =====================
@@ -1289,32 +1382,32 @@
                     return;
                 }
                 console.log('Validation passed, showing payment modal');
+                if (paymentGateway === 'stripe') {
+                    $('#paymentModal').addClass('show');
 
-                // Show payment modal
-                $('#paymentModal').addClass('show');
-
-                // Ensure Stripe elements are properly mounted after modal is shown
-                setTimeout(function() {
-                    try {
-                        // Check if element is already mounted, if not, mount it
-                        if (cardElement._implementation && cardElement._implementation._mounted) {
-                            // Already mounted, no need to do anything
-                            console.log('Card element already mounted');
-                        } else {
-                            // Mount the card element
-                            cardElement.mount('#card-element');
-                            console.log('Card element mounted');
-                        }
-                    } catch (error) {
-                        console.log('Stripe element mounting:', error);
-                        // Fallback: just try to mount
+                    setTimeout(function() {
                         try {
-                            cardElement.mount('#card-element');
-                        } catch (mountError) {
-                            console.log('Mount fallback failed:', mountError);
+                            if (cardElement && cardElement._implementation && cardElement._implementation._mounted) {
+                                console.log('Card element already mounted');
+                            } else if (cardElement) {
+                                cardElement.mount('#card-element');
+                                console.log('Card element mounted');
+                            }
+                        } catch (error) {
+                            console.log('Stripe element mounting:', error);
+                            try {
+                                if (cardElement) {
+                                    cardElement.mount('#card-element');
+                                }
+                            } catch (mountError) {
+                                console.log('Mount fallback failed:', mountError);
+                            }
                         }
-                    }
-                }, 200);
+                    }, 200);
+                } else {
+                    $('#squarePaymentModal').addClass('show');
+                    initSquareCard();
+                }
             });
 
             // =====================
@@ -1325,13 +1418,15 @@
 
                 // Clear payment information
                 try {
-                    // Clear card element
-                    cardElement.clear();
+                    if (cardElement && typeof cardElement.clear === 'function') {
+                        cardElement.clear();
+                    }
 
-                    // Clear any error messages
                     const displayError = document.getElementById('card-errors');
-                    displayError.textContent = '';
-                    displayError.classList.remove('show');
+                    if (displayError) {
+                        displayError.textContent = '';
+                        displayError.classList.remove('show');
+                    }
 
                     // Reset modal total amount to current calculation
                     const selectedMethod = $('input[name="shipping_method"]:checked').val();
@@ -1354,14 +1449,53 @@
                 }
             }
 
+            function closeSquarePaymentModal() {
+                $('#squarePaymentModal').removeClass('show');
+
+                try {
+                    const displayError = document.getElementById('square-card-errors');
+                    if (displayError) {
+                        displayError.textContent = '';
+                        displayError.classList.remove('show');
+                    }
+
+                    const selectedMethod = $('input[name="shipping_method"]:checked').val();
+                    const subtotal = {{ $subtotal }};
+                    const gst = {{ $gst }};
+                    let shipping = 0;
+                    let total = 0;
+
+                    if (selectedMethod === 'standard') {
+                        shipping = 40.0;
+                    } else if (selectedMethod === 'pickup') {
+                        shipping = 0.0;
+                    }
+
+                    total = subtotal + shipping + gst;
+                    $('#squareModalTotalAmount').text('$' + total.toFixed(2));
+                } catch (error) {
+                    console.log('Error clearing Square payment info:', error);
+                }
+            }
+
             $('#closePaymentModal, #cancelPaymentModal').on('click', function() {
                 closePaymentModal();
+            });
+
+            $('#closeSquarePaymentModal, #cancelSquarePaymentModal').on('click', function() {
+                closeSquarePaymentModal();
             });
 
             // Close modal when clicking outside
             $('#paymentModal').on('click', function(e) {
                 if (e.target.id === 'paymentModal') {
                     closePaymentModal();
+                }
+            });
+
+            $('#squarePaymentModal').on('click', function(e) {
+                if (e.target.id === 'squarePaymentModal') {
+                    closeSquarePaymentModal();
                 }
             });
 
@@ -1404,6 +1538,7 @@
 
                 // Update modal total amount
                 $('#modalTotalAmount').text('$' + total.toFixed(2));
+                $('#squareModalTotalAmount').text('$' + total.toFixed(2));
             });
 
             // Trigger initial shipping method check
@@ -1414,6 +1549,10 @@
             // =====================
             $('#confirmPaymentBtn').on('click', function() {
                 processPayment();
+            });
+
+            $('#squareConfirmPaymentBtn').on('click', function() {
+                processSquarePayment();
             });
 
             // =====================
@@ -1437,6 +1576,38 @@
 
                 // Create payment intent directly (no order creation yet)
                 createPaymentIntent(data);
+            }
+
+            async function processSquarePayment() {
+                $('#squareConfirmPaymentBtn').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+
+                if (!squareCard) {
+                    await initSquareCard();
+                }
+
+                if (!squareCard) {
+                    $('#squareConfirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    return;
+                }
+
+                const result = await squareCard.tokenize();
+                if (result.status !== 'OK') {
+                    const displayError = document.getElementById('square-card-errors');
+                    displayError.textContent = result.errors?.[0]?.message || 'Square payment tokenization failed.';
+                    displayError.classList.add('show');
+                    $('#squareConfirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    return;
+                }
+
+                const formData = new FormData(document.getElementById('shipping_form'));
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                data.cart = JSON.parse($('#cart_data').val());
+                data.square_token = result.token;
+
+                createSquarePayment(data);
             }
 
             // =====================
@@ -1522,6 +1693,63 @@
                     error: function() {
                         alert('Error confirming payment');
                         $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    }
+                });
+            }
+
+            function createSquarePayment(formData) {
+                $.ajax({
+                    url: "{{ route('order.square-payment') }}",
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success && response.status === 'COMPLETED') {
+                            confirmSquarePayment(response.payment_id, formData);
+                            return;
+                        }
+
+                        const displayError = document.getElementById('square-card-errors');
+                        displayError.textContent = response.message || 'Square payment failed.';
+                        displayError.classList.add('show');
+                        $('#squareConfirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    },
+                    error: function(xhr) {
+                        const displayError = document.getElementById('square-card-errors');
+                        displayError.textContent = xhr.responseJSON?.message || 'Error creating Square payment';
+                        displayError.classList.add('show');
+                        $('#squareConfirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    }
+                });
+            }
+
+            function confirmSquarePayment(paymentId, formData) {
+                formData.payment_id = paymentId;
+
+                $.ajax({
+                    url: "{{ route('order.square-confirm-payment') }}",
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = "{{ route('order.details', ':id') }}".replace(':id', response.order_id);
+                        } else {
+                            const displayError = document.getElementById('square-card-errors');
+                            displayError.textContent = response.message || 'Square payment confirmation failed.';
+                            displayError.classList.add('show');
+                            $('#squareConfirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                        }
+                    },
+                    error: function(xhr) {
+                        const displayError = document.getElementById('square-card-errors');
+                        displayError.textContent = xhr.responseJSON?.message || 'Error confirming Square payment';
+                        displayError.classList.add('show');
+                        $('#squareConfirmPaymentBtn').prop('disabled', false).text('Pay Now');
                     }
                 });
             }
