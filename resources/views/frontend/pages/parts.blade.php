@@ -140,6 +140,29 @@
             font-size: 18px;
         }
 
+        /* Clear Parts Search Button */
+        .btn-clear-parts-search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+
+        .btn-clear-parts-search:hover {
+            color: #D43838;
+        }
+
+        .btn-clear-parts-search i {
+            font-size: 18px;
+        }
+
         /* Buttons */
         .filtter-btn {
             height: 58px;
@@ -284,6 +307,9 @@
                 <div class="searchh-wrapper">
                     <i class="fa fa-search search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search parts">
+                    <button type="button" id="clearPartsSearchBtn" class="btn-clear-parts-search" style="display: none;">
+                        <i class="fa fa-times"></i>
+                    </button>
                 </div>
 
                 <!-- Right Buttons -->
@@ -388,6 +414,27 @@
             const loader = document.getElementById('partsLoader');
             const container = document.getElementById('partsContainer');
             const pagination = document.getElementById('parts-pagination-container');
+            const searchInput = document.querySelector('.search-input');
+            const clearPartsSearchBtn = document.getElementById('clearPartsSearchBtn');
+
+            // Show/hide clear button based on input value
+            function toggleClearButton() {
+                if (searchInput.value.trim() !== '') {
+                    clearPartsSearchBtn.style.display = 'block';
+                } else {
+                    clearPartsSearchBtn.style.display = 'none';
+                }
+            }
+
+            // Clear search input
+            clearPartsSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                clearPartsSearchBtn.style.display = 'none';
+                fetchParts();
+            });
+
+            // Monitor input changes
+            searchInput.addEventListener('input', toggleClearButton);
 
             function showLoader() {
                 loader.style.display = 'block';

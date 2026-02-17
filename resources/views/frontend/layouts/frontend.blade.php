@@ -118,6 +118,13 @@
     <script src="{{ asset('frontend/js') }}/custom.js"></script>
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
 
+    <script>
+        // Scroll to top on page load
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
+
     @stack('frontend-scripts')
     <!--end::Javascript-->
 

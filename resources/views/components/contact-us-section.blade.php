@@ -68,7 +68,7 @@
                         <!-- State & City -->
                         <div class="d-flex gap-3 mb-2">
                             <div class="mb-3">
-                                <select name="state" class="form-select formm-select" name="state" id="form_state">
+                                <select name="state" class="form-select formm-select" id="form_state">
                                     <option value="">{{ __('Select State') }}</option>
 
                                     @foreach ($footerStates ?? [] as $state)
@@ -87,7 +87,7 @@
 
                         <div class="mb-3">
                             <select name="service" class="form-select formmm-select">
-                                <option value="" disabled selected>Services Dropdown</option>
+                                <option value="" disabled selected>Select Services</option>
                                 @foreach (getServicesList() as $service)
                                     <option value="{{ $service }}">{{ $service }}</option>
                                 @endforeach

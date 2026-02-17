@@ -324,30 +324,23 @@ class LandingPageController extends Controller
 
     public function latestProductsFilter(Request $request)
     {
-        $slug = $request->slug;
+        $type = $request->type; // 'all', 'product', or 'part'
 
-        // Find category by slug
-        $category = null;
-        if ($slug) {
-            $category = Category::where('slug', $slug)->first();
+        $query = Product::where('is_active', true)->latest();
+
+        // Filter by type
+        if ($type === 'product') {
+            $query->where('product_type', 'product');
+        } elseif ($type === 'part') {
+            $query->where('product_type', 'part');
         }
+        // If 'all', no filter needed
 
-        // Agar category nahi mili, to empty collection return karo
-        if (! $category) {
-            return response()->json([
-                'html' => view('partials.latest-products', ['products' => collect()])->render(),
-            ]);
-        }
-
-        // Category mil gayi, uske products fetch karo
-        $products = Product::where('is_active', true)->where('product_type', 'product')
-            ->where('category_id', $category->id)
-            ->latest()
-            ->take(4)
-            ->get();
+        // Get all products (we'll handle limiting on frontend)
+        $products = $query->get();
 
         return response()->json([
-            'html' => view('partials.latest-products', compact('products'))->render(),
+            'products' => $products,
         ]);
     }
 }

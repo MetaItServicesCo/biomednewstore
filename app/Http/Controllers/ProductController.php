@@ -52,7 +52,16 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
             'discount_percent' => 'nullable|integer|min:0|max:100',
-            'sale_price' => 'nullable|numeric|min:0',
+            'sale_price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value && $request->price && $value > $request->price) {
+                        $fail('Sale price cannot be greater than the original price.');
+                    }
+                },
+            ],
             'stock_qty' => 'nullable|integer|min:0',
             'in_stock' => 'required|boolean',
             'is_active' => 'required|boolean',
@@ -87,8 +96,12 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->discount_percent = $request->discount_percent;
 
-            // Sale Price
-            $product->sale_price = $request->sale_price;
+            // Auto-calculate Sale Price based on discount
+            if ($request->price && $request->discount_percent) {
+                $product->sale_price = $request->price - ($request->price * $request->discount_percent / 100);
+            } else {
+                $product->sale_price = $request->price;
+            }
 
             $product->stock_qty = $request->stock_qty ?? 0;
             $product->in_stock = $request->in_stock;
@@ -184,7 +197,16 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
             'discount_percent' => 'nullable|integer|min:0|max:100',
-            'sale_price' => 'nullable|numeric|min:0',
+            'sale_price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value && $request->price && $value > $request->price) {
+                        $fail('Sale price cannot be greater than the original price.');
+                    }
+                },
+            ],
             'stock_qty' => 'nullable|integer|min:0',
             'in_stock' => 'required|boolean',
             'is_active' => 'required|boolean',
@@ -219,8 +241,12 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->discount_percent = $request->discount_percent;
 
-            // Sale Price
-            $product->sale_price = $request->sale_price;
+            // Auto-calculate Sale Price based on discount
+            if ($request->price && $request->discount_percent) {
+                $product->sale_price = $request->price - ($request->price * $request->discount_percent / 100);
+            } else {
+                $product->sale_price = $request->price;
+            }
 
             $product->stock_qty = $request->stock_qty ?? 0;
             $product->in_stock = $request->in_stock;
