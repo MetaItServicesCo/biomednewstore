@@ -186,8 +186,7 @@
                         <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/contact"
                             class="btn contact-btn mb-2 px-3 py-">
                             CONTACT
-                        </a>
-                    </li>
+                        </a> </li>
 
                     {{-- <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                         @guest
