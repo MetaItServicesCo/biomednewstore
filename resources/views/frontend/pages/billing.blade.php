@@ -749,7 +749,7 @@
 
 <section class="cart-banner">
     <div class="container d-flex flex-wrap flex-md-nowrap justify-content-between">
-        <h1><span>Shipping</span>Address</h1>
+        <h1><span>Shipping</span> Address</h1>
         <div class="checkout-steps-wrapper">
             <!-- Base line -->
             <div class="steps-line"></div>

@@ -12,7 +12,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-top: 180px;
+            margin-top: 100px;
         }
 
         .cart-banner h1 {
@@ -353,7 +353,6 @@
             transform: scale(1.04)
         }
 
-        /* PayPal Logo */
         .paypal-btn img {
             width: 370px;
             max-width: 120%;
@@ -369,7 +368,7 @@
     <section class="cart-banner">
         <h1>Shopping <span>Cart</span> </h1>
     </section>
-    
+
     <section>
 
         <section class="cart-section py-5">
@@ -571,7 +570,7 @@
             const cart = @json($cart); // cart object with product IDs as keys
 
             const SHIPPING_COST = 40.00;
-            const GST_RATE = 8.25/100; // 8.25%
+            const GST_RATE = 8.25 / 100; // 8.25%
 
             // Function to update summary
             function updateSummary() {

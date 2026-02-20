@@ -144,6 +144,13 @@
 
                     <li class="nav-item">
                         <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} "
+                            href="{{ route('feedback') }}">
+                            FeedBack
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} "
                             href="{{ route('parts') }}">
                             Parts
                         </a>
@@ -157,7 +164,7 @@
 
 
                     <li class="nav-item ms-auto d-flex flex-column align-items-center mt-2 mt-lg-0">
-                        <div class="d-flex align-items-center gap-4  contact-icons-wrapper me-2 mt-2">
+                        <div class="d-flex align-items-center gap-3  contact-icons-wrapper me-2 mt-4">
 
                             <a href="{{ route('login') }}" target="_blank" class="">
                                 <img src="{{ asset('frontend/images/login-img.png') }}" class="icon-image">
@@ -177,7 +184,7 @@
                         </div>
 
                         <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/contact"
-                            class="btn contact-btn mt-1 px-3 py-">
+                            class="btn contact-btn mb-2 px-3 py-">
                             CONTACT
                         </a>
                     </li>

@@ -365,6 +365,10 @@
 
                 margin: 15px auto !important;
             }
+
+            .small {
+                max-width: 190px !important;
+            }
         }
 
         @media(max-width:767px) {
@@ -396,6 +400,11 @@
 
                 font-size: 13px !important;
 
+            }
+
+
+            .small {
+                max-width: 190px !important;
             }
         }
 
