@@ -963,16 +963,10 @@
 
                         <div class="summary-toggle mt-3">
                             <span>Estimate Shipping and Tax</span>
-                            <i class="fa fa-chevron-down"></i>
                         </div>
                         <p class="summary-text  mt-3">
                             Enter your destination to get a shipping estimate.
                         </p>
-
-                        <div class="summary-toggle  mt-3">
-                            <span>Apply Discount Code</span>
-                            <i class="fa fa-chevron-down"></i>
-                        </div>
 
                         <hr>
 
@@ -1057,31 +1051,37 @@
 
             // Check if Stripe key is available
             const stripeKey = '{{ config("services.stripe.key") }}';
-            console.log('Stripe key:', stripeKey);
-            if (!stripeKey || stripeKey.trim() === '') {
-                alert('Stripe public key is not configured. Please check your .env file.');
-                return;
-            }
+            console.log('Stripe key:', stripeKey ? 'Configured' : 'Not configured');
+            
+            // Initialize Stripe only if key is available
+            let stripe = null;
+            let elements = null;
+            let cardElement = null;
 
-            // Initialize Stripe
-            const stripe = Stripe(stripeKey);
-            const elements = stripe.elements();
+            if (stripeKey && stripeKey.trim() !== '') {
+                try {
+                    stripe = Stripe(stripeKey);
+                    elements = stripe.elements();
+                    cardElement = elements.create('card');
+                    cardElement.mount('#card-element');
 
-            // Create card element
-            const cardElement = elements.create('card');
-            cardElement.mount('#card-element');
-
-            // Handle card errors
-            cardElement.on('change', function(event) {
-                const displayError = document.getElementById('card-errors');
-                if (event.error) {
-                    displayError.textContent = event.error.message;
-                    displayError.classList.add('show');
-                } else {
-                    displayError.textContent = '';
-                    displayError.classList.remove('show');
+                    // Handle card errors
+                    cardElement.on('change', function(event) {
+                        const displayError = document.getElementById('card-errors');
+                        if (event.error) {
+                            displayError.textContent = event.error.message;
+                            displayError.classList.add('show');
+                        } else {
+                            displayError.textContent = '';
+                            displayError.classList.remove('show');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Stripe initialization error:', error);
                 }
-            });
+            } else {
+                console.warn('Stripe public key not configured. Payment processing will be disabled.');
+            }
 
             const stateSelect = $('#state_id');
             const citySelect = $('#city_id');
@@ -1290,11 +1290,22 @@
                 }
                 console.log('Validation passed, showing payment modal');
 
+                // Check if Stripe is configured
+                if (!stripe || !cardElement) {
+                    alert('Payment system is not configured. Please contact support or try again later.');
+                    return;
+                }
+
                 // Show payment modal
                 $('#paymentModal').addClass('show');
 
                 // Ensure Stripe elements are properly mounted after modal is shown
                 setTimeout(function() {
+                    if (!cardElement) {
+                        console.error('Card element not available');
+                        return;
+                    }
+
                     try {
                         // Check if element is already mounted, if not, mount it
                         if (cardElement._implementation && cardElement._implementation._mounted) {
@@ -1325,13 +1336,17 @@
 
                 // Clear payment information
                 try {
-                    // Clear card element
-                    cardElement.clear();
+                    // Clear card element if it exists
+                    if (cardElement) {
+                        cardElement.clear();
+                    }
 
                     // Clear any error messages
                     const displayError = document.getElementById('card-errors');
-                    displayError.textContent = '';
-                    displayError.classList.remove('show');
+                    if (displayError) {
+                        displayError.textContent = '';
+                        displayError.classList.remove('show');
+                    }
 
                     // Reset modal total amount to current calculation
                     const selectedMethod = $('input[name="shipping_method"]:checked').val();
@@ -1420,6 +1435,13 @@
             // Process Payment
             // =====================
             function processPayment() {
+                // Check if Stripe is initialized
+                if (!stripe || !cardElement) {
+                    alert('Payment system is not configured. Please contact support.');
+                    $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    return;
+                }
+
                 // Show loading on button
                 $('#confirmPaymentBtn').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
 

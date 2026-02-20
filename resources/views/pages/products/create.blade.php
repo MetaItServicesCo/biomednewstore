@@ -183,9 +183,10 @@
                                 <label for="sale_price"
                                     class="form-label fw-semibold">{{ __('Sale Price ($)') }}</label>
                                 <input type="number" step="0.01" min="0" id="sale_price"
-                                    name="sale_price"
-                                    class="form-control form-control-lg @error('sale_price') is-invalid @enderror"
+                                    name="sale_price" readonly
+                                    class="form-control form-control-lg bg-light @error('sale_price') is-invalid @enderror"
                                     value="{{ old('sale_price', $data->sale_price ?? '') }}">
+                                <small class="text-muted">Auto-calculated based on price and discount</small>
                                 @error('sale_price')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
@@ -381,7 +382,12 @@
                                 <label for="thumbnail"
                                     class="form-label fw-semibold">{{ __('Thumbnail Image') }}</label>
                                 <input type="file" id="thumbnail" name="thumbnail"
-                                    class="form-control form-control-lg @error('thumbnail') is-invalid @enderror">
+                                    class="form-control form-control-lg @error('thumbnail') is-invalid @enderror"
+                                    accept="image/*">
+                                
+                                <!-- Preview container for newly selected thumbnail -->
+                                <div class="mt-3" id="thumbnail-preview-container"></div>
+                                
                                 @if (isset($data->thumbnail) && $data->thumbnail)
                                     <img src="{{ asset('storage/products/thumbnails/' . $data->thumbnail) }}"
                                         alt="Thumbnail" class="img-thumbnail mt-2" width="100">
@@ -397,7 +403,11 @@
                                     class="form-label fw-semibold">{{ __('Gallery Images') }}</label>
                                 <input type="file" id="gallery_images" name="gallery_images[]"
                                     class="form-control form-control-lg @error('gallery_images') is-invalid @enderror"
-                                    multiple>
+                                    multiple accept="image/*">
+                                
+                                <!-- Preview container for newly selected images -->
+                                <div class="d-flex flex-wrap mt-3" id="gallery-preview-container"></div>
+                                
                                 @if (isset($data->gallery_images) && $data->gallery_images)
                                     @php
                                         $galleryImages = json_decode($data->gallery_images, true);
@@ -516,37 +526,176 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const MAX_FILE_SIZE = 300 * 1024; // 300KB in bytes
+                let selectedGalleryFiles = []; // Store selected gallery files
 
-                // Thumbnail validation
+                // Thumbnail validation and preview
                 const thumbnailInput = document.getElementById('thumbnail');
-                if (thumbnailInput) {
-                    if (!document.getElementById('thumbnail_error')) {
-                        let thumbError = document.createElement('div');
-                        thumbError.id = 'thumbnail_error';
-                        thumbError.classList.add('text-danger', 'mt-1');
-                        thumbnailInput.parentNode.appendChild(thumbError);
-                    }
+                const thumbnailPreviewContainer = document.getElementById('thumbnail-preview-container');
+                
+                if (thumbnailInput && thumbnailPreviewContainer) {
+                    thumbnailInput.addEventListener('change', function(e) {
+                        thumbnailPreviewContainer.innerHTML = ''; // Clear previous preview
+                        
+                        const file = e.target.files[0];
+                        if (!file) return;
 
-                    thumbnailInput.addEventListener('change', function() {
-                        validateFile(thumbnailInput, 'thumbnail_error');
+                        // Validate file size
+                        if (file.size > MAX_FILE_SIZE) {
+                            // Show preview with error message
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                const previewDiv = document.createElement('div');
+                                previewDiv.className = 'text-center me-2 mb-2';
+                                previewDiv.innerHTML = `
+                                    <img src="${event.target.result}" alt="Thumbnail Preview" class="img-thumbnail border-danger" width="60">
+                                    <br>
+                                    <small class="text-dark d-block mt-1" style="font-size: 0.7rem; font-weight: 600;">
+                                        File too large!
+                                    </small>
+                                    <small class="text-dark d-block" style="font-size: 0.65rem;">
+                                        ${(file.size / 1024).toFixed(2)} KB (Max: 300 KB)
+                                    </small>
+                                    <span class="text-danger d-block mt-1" style="cursor:pointer; font-size:0.75rem;" onclick="document.getElementById('thumbnail').value=''; document.getElementById('thumbnail-preview-container').innerHTML='';">
+                                        Remove
+                                    </span>
+                                `;
+                                thumbnailPreviewContainer.appendChild(previewDiv);
+                            };
+                            reader.readAsDataURL(file);
+                            return;
+                        }
+
+                        // Show preview
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const previewDiv = document.createElement('div');
+                            previewDiv.className = 'text-center me-2 mb-2';
+                            previewDiv.innerHTML = `
+                                <img src="${event.target.result}" alt="Thumbnail Preview" class="img-thumbnail" width="60">
+                                <br>
+                                <small class="text-muted d-block" style="font-size: 0.65rem;">${file.name}</small>
+                                <small class="text-success d-block" style="font-size: 0.65rem;">${(file.size / 1024).toFixed(2)} KB</small>
+                                <span class="text-danger d-block mt-1" style="cursor:pointer; font-size:0.75rem;" onclick="document.getElementById('thumbnail').value=''; document.getElementById('thumbnail-preview-container').innerHTML='';">
+                                    Remove
+                                </span>
+                            `;
+                            thumbnailPreviewContainer.appendChild(previewDiv);
+                        };
+                        reader.readAsDataURL(file);
                     });
                 }
 
-                // Gallery images validation
+                // Gallery images validation and preview
                 const galleryInput = document.getElementById('gallery_images');
-                if (galleryInput) {
-                    if (!document.getElementById('gallery_images_error')) {
-                        let galleryError = document.createElement('div');
-                        galleryError.id = 'gallery_images_error';
-                        galleryError.classList.add('text-danger', 'mt-1');
-                        galleryInput.parentNode.appendChild(galleryError);
-                    }
+                const galleryPreviewContainer = document.getElementById('gallery-preview-container');
+                
+                if (galleryInput && galleryPreviewContainer) {
+                    galleryInput.addEventListener('change', function(e) {
+                        const files = Array.from(e.target.files);
+                        galleryPreviewContainer.innerHTML = ''; // Clear previous previews
+                        selectedGalleryFiles = []; // Reset selected files
+                        
+                        if (files.length === 0) return;
 
-                    galleryInput.addEventListener('change', function() {
-                        validateFile(galleryInput, 'gallery_images_error');
+                        files.forEach((file, index) => {
+                            const previewDiv = document.createElement('div');
+                            previewDiv.className = 'text-center me-2 mb-2 position-relative';
+                            previewDiv.setAttribute('data-file-index', index);
+
+                            // Check file size
+                            if (file.size > MAX_FILE_SIZE) {
+                                // Invalid file - show preview with error
+                                const reader = new FileReader();
+                                reader.onload = function(event) {
+                                    previewDiv.innerHTML = `
+                                        <img src="${event.target.result}" alt="Gallery Preview" class="img-thumbnail border-danger" width="60">
+                                        <br>
+                                        <small class="text-dark d-block mt-1" style="font-size: 0.65rem; font-weight: 600;">
+                                            File too large!
+                                        </small>
+                                        <small class="text-dark d-block" style="font-size: 0.6rem;">
+                                            ${(file.size / 1024).toFixed(2)} KB (Max: 300 KB)
+                                        </small>
+                                        <span class="text-danger d-block mt-1" style="cursor:pointer; font-size:0.7rem;" onclick="removeGalleryPreview(${index})">
+                                            Remove
+                                        </span>
+                                    `;
+                                };
+                                reader.readAsDataURL(file);
+                                selectedGalleryFiles.push(null); // Mark as invalid
+                            } else {
+                                // Valid file - show preview
+                                const reader = new FileReader();
+                                reader.onload = function(event) {
+                                    previewDiv.innerHTML = `
+                                        <img src="${event.target.result}" alt="Gallery Preview" class="img-thumbnail" width="60">
+                                        <br>
+                                        <small class="text-muted d-block" style="font-size: 0.6rem; word-break: break-word; max-width: 60px;">
+                                            ${file.name}
+                                        </small>
+                                        <small class="text-success d-block" style="font-size: 0.65rem;">
+                                            ${(file.size / 1024).toFixed(2)} KB
+                                        </small>
+                                        <span class="text-danger d-block mt-1" style="cursor:pointer; font-size:0.7rem;" onclick="removeGalleryPreview(${index})">
+                                            Remove
+                                        </span>
+                                    `;
+                                };
+                                reader.readAsDataURL(file);
+                                selectedGalleryFiles.push(file); // Store valid file
+                            }
+
+                            galleryPreviewContainer.appendChild(previewDiv);
+                        });
                     });
                 }
 
+                // Global function to remove gallery preview
+                window.removeGalleryPreview = function(index) {
+                    // Remove from array
+                    selectedGalleryFiles[index] = null;
+                    
+                    // Remove preview div
+                    const previewDiv = document.querySelector(`[data-file-index="${index}"]`);
+                    if (previewDiv) {
+                        previewDiv.remove();
+                    }
+
+                    // Update file input with remaining valid files
+                    updateGalleryInput();
+                };
+
+                // Update the file input with valid files only
+                function updateGalleryInput() {
+                    const validFiles = selectedGalleryFiles.filter(f => f !== null);
+                    
+                    if (validFiles.length === 0) {
+                        galleryInput.value = ''; // Clear input if no valid files
+                        return;
+                    }
+
+                    // Create new FileList with valid files
+                    const dataTransfer = new DataTransfer();
+                    validFiles.forEach(file => {
+                        dataTransfer.items.add(file);
+                    });
+                    galleryInput.files = dataTransfer.files;
+                }
+
+                // Prevent form submission if there are invalid gallery images
+                const form = galleryInput.closest('form');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        const hasInvalidFiles = selectedGalleryFiles.some(f => f === null && selectedGalleryFiles.length > 0);
+                        
+                        if (hasInvalidFiles) {
+                            e.preventDefault();
+                            toastr.error('Please remove all invalid images (files larger than 300 KB) before submitting.');
+                            return false;
+                        }
+                    });
+                }
             });
         </script>
 

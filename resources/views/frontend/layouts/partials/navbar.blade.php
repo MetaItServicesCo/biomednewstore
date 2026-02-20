@@ -159,13 +159,6 @@
                     <li class="nav-item ms-auto d-flex flex-column align-items-center mt-2 mt-lg-0">
                         <div class="d-flex align-items-center gap-4  contact-icons-wrapper me-2 mt-2">
 
-                            <a href="{{ route('login') }}" target="_blank" class="d-flex">
-                                <img src="{{ asset('frontend/images/nav-ico1.png') }}" class="icon-arrow">
-                                <img src="{{ asset('frontend/images/nav-ico2.png') }}" class="icon-image">
-
-                            </a>
-
-
                             <a href="{{ route('cart') }}" class="cart-icon-wrapper position-relative">
                                 <img src="{{ asset('frontend/images/nav-ico.png') }}" class="icon-shop">
 

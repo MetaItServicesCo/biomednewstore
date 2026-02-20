@@ -53,8 +53,16 @@
         <!--end::Input group--->
         <div class="fv-row mb-3">
             <!--begin::Password-->
-            <input type="password" placeholder="Password" name="password" autocomplete="off"
-                class="form-control bg-transparent" value="" />
+            <div class="position-relative">
+                <input type="password" placeholder="Password" name="password" autocomplete="off"
+                    class="form-control bg-transparent" value="" id="login_password" />
+                <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" 
+                      onclick="togglePasswordVisibility('login_password', this)" 
+                      style="cursor: pointer;">
+                    <i class="bi bi-eye-slash fs-2"></i>
+                    <i class="bi bi-eye fs-2 d-none"></i>
+                </span>
+            </div>
             <!--end::Password-->
         </div>
         <!--end::Input group--->
@@ -90,5 +98,70 @@
         <!--end::Sign up-->
     </form>
     <!--end::Form-->
+
+    <script>
+        function togglePasswordVisibility(inputId, iconButton) {
+            const input = document.getElementById(inputId);
+            const eyeSlash = iconButton.querySelector('.bi-eye-slash');
+            const eye = iconButton.querySelector('.bi-eye');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeSlash.classList.add('d-none');
+                eye.classList.remove('d-none');
+            } else {
+                input.type = 'password';
+                eyeSlash.classList.remove('d-none');
+                eye.classList.add('d-none');
+            }
+        }
+
+        // Remove duplicate error messages
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observer to watch for error messages being added
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1 && node.classList && node.classList.contains('fv-plugins-message-container')) {
+                            // Check if there's already an error message in this field
+                            const parent = node.parentElement;
+                            const errorMessages = parent.querySelectorAll('.fv-plugins-message-container');
+                            
+                            // If more than one error message, remove duplicates
+                            if (errorMessages.length > 1) {
+                                for (let i = 1; i < errorMessages.length; i++) {
+                                    errorMessages[i].remove();
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+
+            // Start observing the form
+            const form = document.getElementById('kt_sign_in_form');
+            if (form) {
+                observer.observe(form, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+
+            // Prevent duplicate success alerts on login
+            let alertShown = false;
+            const originalSwalFire = Swal.fire;
+            Swal.fire = function(...args) {
+                // Check if this is a success alert
+                if (args[0] && args[0].icon === 'success' && args[0].text && args[0].text.includes('logged in')) {
+                    if (alertShown) {
+                        // Already shown, skip this one
+                        return Promise.resolve({ isConfirmed: true });
+                    }
+                    alertShown = true;
+                }
+                return originalSwalFire.apply(this, args);
+            };
+        });
+    </script>
 
 </x-auth-layout>

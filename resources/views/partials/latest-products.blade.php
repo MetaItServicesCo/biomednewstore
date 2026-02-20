@@ -34,14 +34,13 @@
 
                          @if (!empty($product->price) && $product->price > 0)
                              <span
-                                 class="old-price text-decoration-line-through text-muted small">${{ number_format($product->price) }}</span>
+                                 class="old-price text-decoration-line-through text-muted small">${{ number_format($product->price, 2) }}</span>
                          @endif
                          @if (!empty($product->sale_price) && $product->sale_price > 0)
                              <span
-                                 class="new-price fw-bolder fs-5 text-primary">${{ number_format($product->sale_price) }}</span>
+                                 class="new-price fw-bolder fs-5 text-primary">${{ number_format($product->sale_price, 2) }}</span>
                          @endif
-                         <a href="javascript:void(0)" class="btn buy-now-btn btn-sm"
-                             data-slug="{{ $product->slug ?? '' }}">Buy Now</a>
+                         <a href="{{ route('product-detail', $product->slug ?? '') }}" class="btn buy-now-btn btn-sm">Buy Now</a>
                      </div>
                  </div>
              </div>

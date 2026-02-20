@@ -43,6 +43,29 @@
             filter: brightness(1.2);
         }
 
+        /* Clear Search Button */
+        .btn-clear-search {
+            position: absolute;
+            right: 85px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+
+        .btn-clear-search:hover {
+            color: #EF1616;
+        }
+
+        .btn-clear-search i {
+            font-size: 18px;
+        }
+
         /* Wishlist */
         .wishlist {
             display: flex;
@@ -427,8 +450,11 @@
                 <div class="list-wraper d-flex align-items-center gap-3 flex-wrap mt-4">
 
                     <!-- Search Input + Button -->
-                    <div class="search-bar d-flex gap-2">
+                    <div class="search-bar d-flex gap-2 position-relative">
                         <input type="text" id="searchInput" class="form-control me-2" placeholder="Search products...">
+                        <button type="button" id="clearSearchBtn" class="btn-clear-search" style="display: none;">
+                            <i class="fa fa-times"></i>
+                        </button>
                         <button id="searchBtn">
                             <i class="fa fa-search"></i>
                         </button>
@@ -660,11 +686,32 @@
             const productsContainer = document.getElementById('productsContainer');
             const paginationContainer = document.getElementById('products-pagination-container');
             const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
 
             const rangeMin = document.querySelector('.range-min');
             const rangeMax = document.querySelector('.range-max');
             const priceFrom = document.getElementById('priceFrom');
             const priceTo = document.getElementById('priceTo');
+
+            // Show/hide clear button based on input value
+            function toggleClearButton() {
+                if (searchInput.value.trim() !== '') {
+                    clearSearchBtn.style.display = 'block';
+                } else {
+                    clearSearchBtn.style.display = 'none';
+                }
+            }
+
+            // Clear search input
+            clearSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                searchText = '';
+                clearSearchBtn.style.display = 'none';
+                fetchProducts();
+            });
+
+            // Monitor input changes
+            searchInput.addEventListener('input', toggleClearButton);
 
             function showLoader() {
                 loader.style.display = 'block';

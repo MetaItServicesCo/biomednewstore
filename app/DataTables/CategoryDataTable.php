@@ -60,7 +60,8 @@ class CategoryDataTable extends DataTable
     {
         return $model->newQuery()
             ->select('categories.*')           // be explicit
-            ->with(['createdBy', 'updatedBy']);
+            ->with(['createdBy', 'updatedBy'])
+            ->orderBy('categories.created_at', 'desc');
     }
 
     /**

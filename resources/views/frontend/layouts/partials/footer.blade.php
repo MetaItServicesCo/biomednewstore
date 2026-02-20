@@ -682,7 +682,8 @@
     <div class="footer-links-copyright">
         <div class="container text-center ">
             <div class="footer-links-wrapper">
-                <div class="footer-links mb-1">
+                
+                <!-- <div class="footer-links mb-1">
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/BioMed-Service" class="text-decoration-none mx-2">Mr Biomed
                         Service</a><span class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/locations" class="text-decoration-none mx-2">Locations</a><span
@@ -703,7 +704,7 @@
                     <a href="{{ route('feedback') }}" class="text-decoration-none mx-2">FeedBack</a><span
                         class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/faqs" class="text-decoration-none mx-2">FAQs</a>
-                </div>
+                </div> -->
             </div>
             <p class="copyright mb-0 t">
                 Copyright © {{ date('Y') }} | {{ setting('site_name', 'Mr Biomed Tech Services') }} ® | All right
