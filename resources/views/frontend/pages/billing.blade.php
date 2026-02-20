@@ -727,7 +727,12 @@
             }
         }
 
+<<<<<<< HEAD
        <!-- ================ END PAYMENT MODAL ================== -->
+=======
+        /* ================ END PAYMENT MODAL ================== */
+    </style>
+>>>>>>> 2f62e0da3f8c9964ecbbca619361c12200dce0fe
 @endpush
 
 @section('frontend-content')
@@ -1010,9 +1015,16 @@
 @endsection
 
 @push('frontend-scripts')
+<<<<<<< HEAD
 <!-- Stripe JS -->
 <script src="https://js.stripe.com/v3/"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
+=======
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('Script loaded and document ready');
+>>>>>>> 2f62e0da3f8c9964ecbbca619361c12200dce0fe
 
 <script>
 $(document).ready(function() {
@@ -1119,6 +1131,257 @@ $(document).ready(function() {
                 resetState();
                 stateSelect.append('<option value="">No State Found</option>');
             }
+<<<<<<< HEAD
+=======
+
+            // =====================
+            // Next Button Click
+            // =====================
+            $(document).on('click', '.next-btn', function() {
+                console.log('Next button clicked');
+                if (!validateForm()) {
+                    console.log('Validation failed');
+                    return;
+                }
+                console.log('Validation passed, showing payment modal');
+
+                // Show payment modal
+                $('#paymentModal').addClass('show');
+
+                // Ensure Stripe elements are properly mounted after modal is shown
+                setTimeout(function() {
+                    try {
+                        // Check if element is already mounted, if not, mount it
+                        if (cardElement._implementation && cardElement._implementation._mounted) {
+                            // Already mounted, no need to do anything
+                            console.log('Card element already mounted');
+                        } else {
+                            // Mount the card element
+                            cardElement.mount('#card-element');
+                            console.log('Card element mounted');
+                        }
+                    } catch (error) {
+                        console.log('Stripe element mounting:', error);
+                        // Fallback: just try to mount
+                        try {
+                            cardElement.mount('#card-element');
+                        } catch (mountError) {
+                            console.log('Mount fallback failed:', mountError);
+                        }
+                    }
+                }, 200);
+            });
+
+            // =====================
+            // Close Payment Modal
+            // =====================
+            function closePaymentModal() {
+                $('#paymentModal').removeClass('show');
+
+                // Clear payment information
+                try {
+                    // Clear card element
+                    cardElement.clear();
+
+                    // Clear any error messages
+                    const displayError = document.getElementById('card-errors');
+                    displayError.textContent = '';
+                    displayError.classList.remove('show');
+
+                    // Reset modal total amount to current calculation
+                    const selectedMethod = $('input[name="shipping_method"]:checked').val();
+                    const subtotal = {{ $subtotal }};
+                    const gst = {{ $gst }};
+                    let shipping = 0;
+                    let total = 0;
+
+                    if (selectedMethod === 'standard') {
+                        shipping = 40.0;
+                    } else if (selectedMethod === 'pickup') {
+                        shipping = 0.0;
+                    }
+
+                    total = subtotal + shipping + gst;
+                    $('#modalTotalAmount').text('$' + total.toFixed(2));
+
+                } catch (error) {
+                    console.log('Error clearing payment info:', error);
+                }
+            }
+
+            $('#closePaymentModal, #cancelPaymentModal').on('click', function() {
+                closePaymentModal();
+            });
+
+            // Close modal when clicking outside
+            $('#paymentModal').on('click', function(e) {
+                if (e.target.id === 'paymentModal') {
+                    closePaymentModal();
+                }
+            });
+
+            // =====================
+            // Shipping Method Change
+            // =====================
+            $('input[name="shipping_method"]').on('change', function() {
+                const selectedMethod = $(this).val();
+                const subtotal = {{ $subtotal }};
+                const gst = {{ $gst }};
+                let shipping = 0;
+                let total = 0;
+
+                if (selectedMethod === 'standard') {
+                    shipping = 40.0;
+                    $('#shippingRow').show();
+                    $('#shippingNote').show();
+                    $('#shippingAmount').text('$' + shipping.toFixed(2));
+                } else if (selectedMethod === 'pickup') {
+                    shipping = 0.0;
+                    $('#shippingRow').hide();
+                    $('#shippingNote').hide();
+                }
+
+                // Update total calculation
+                total = subtotal + shipping + gst;
+
+                // Update the total display
+                $('.summary-total span:last-child').text('$' + total.toFixed(2));
+
+                // Update the shipping option display
+                $('.form-check .fw-semibold').each(function() {
+                    const method = $(this).closest('.form-check').find('input[type="radio"]').val();
+                    if (method === 'standard') {
+                        $(this).text('$' + total.toFixed(2));
+                    } else if (method === 'pickup') {
+                        $(this).text('$0.00');
+                    }
+                });
+
+                // Update modal total amount
+                $('#modalTotalAmount').text('$' + total.toFixed(2));
+            });
+
+            // Trigger initial shipping method check
+            $('input[name="shipping_method"]:checked').trigger('change');
+
+            // =====================
+            // Pay Now Button Click
+            // =====================
+            $('#confirmPaymentBtn').on('click', function() {
+                processPayment();
+            });
+
+            // =====================
+            // Process Payment
+            // =====================
+            function processPayment() {
+                // Show loading on button
+                $('#confirmPaymentBtn').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+
+                // Get form data
+                const formData = new FormData(document.getElementById('shipping_form'));
+
+                // Convert FormData to JSON
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+
+                // Add cart data
+                data.cart = JSON.parse($('#cart_data').val());
+
+                // Create payment intent directly (no order creation yet)
+                createPaymentIntent(data);
+            }
+
+            // =====================
+            // Create Payment Intent
+            // =====================
+            function createPaymentIntent(formData) {
+                $.ajax({
+                    url: "{{ route('order.payment-intent') }}",
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Confirm card payment
+                            stripe.confirmCardPayment(response.client_secret, {
+                                payment_method: {
+                                    card: cardElement,
+                                    billing_details: {
+                                        name: $('#first_name').val() + ' ' + $('#last_name').val(),
+                                        email: $('#email').val(),
+                                        phone: $('#phone_number').val(),
+                                        address: {
+                                            line1: $('#street_address').val(),
+                                            line2: $('#street_address_2').val(),
+                                            city: $('#city_id option:selected').text(),
+                                            state: $('#state_id option:selected').text(),
+                                            postal_code: $('#postal_code').val(),
+                                            country: $('#country_id option:selected').data('code'),
+                                        }
+                                    }
+                                }
+                            }).then(function(result) {
+                                if (result.error) {
+                                    // Payment failed
+                                    const displayError = document.getElementById('card-errors');
+                                    displayError.textContent = result.error.message;
+                                    displayError.classList.add('show');
+                                    $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                                } else {
+                                    if (result.paymentIntent.status === 'succeeded') {
+                                        // Payment successful, confirm payment and create order
+                                        confirmPayment(result.paymentIntent.id, formData);
+                                    }
+                                }
+                            });
+                        } else {
+                            alert('Error creating payment intent');
+                            $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                        }
+                    },
+                    error: function() {
+                        alert('Error creating payment intent');
+                        $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    }
+                });
+            }
+
+            // =====================
+            // Confirm Payment
+            // =====================
+            function confirmPayment(paymentIntentId, formData) {
+                // Add payment intent ID to form data
+                formData.payment_intent_id = paymentIntentId;
+
+                $.ajax({
+                    url: "{{ route('order.confirm-payment') }}",
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Redirect to thank you page
+                            window.location.href = "{{ route('order.details', ':id') }}".replace(':id', response.order_id);
+                        } else {
+                            alert('Payment confirmation failed');
+                            $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                        }
+                    },
+                    error: function() {
+                        alert('Error confirming payment');
+                        $('#confirmPaymentBtn').prop('disabled', false).text('Pay Now');
+                    }
+                });
+            }
+
+>>>>>>> 2f62e0da3f8c9964ecbbca619361c12200dce0fe
         });
     });
 
