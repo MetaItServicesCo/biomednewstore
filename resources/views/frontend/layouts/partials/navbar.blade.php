@@ -156,11 +156,11 @@
                             FeedBack
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about">
                             About
                         </a>
-                    </li>
+                    </li> --}}
 
 
                     <li class="nav-item ms-auto d-flex flex-column align-items-center mt-2 mt-lg-0">
