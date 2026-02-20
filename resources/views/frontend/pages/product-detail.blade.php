@@ -392,57 +392,81 @@
 
                         <div class="image-slider">
                             <!-- Main Image -->
-                            <img id="mainImage"
-                                src="{{ $product->thumbnail ?? false ? asset('storage/products/thumbnails/' . $product->thumbnail) : asset('frontend/images/offer-img.png') }}"
-                                class="main-img">
+                            @if($product->thumbnail)
+                                <img id="mainImage"
+                                    src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
+                                    alt="{{ $product->image_alt ?? $product->name }}"
+                                    class="main-img">
+                            @else
+                                <div class="no-image-placeholder main-img">
+                                    <i class="fa fa-image"></i>
+                                    <p>No Image Available</p>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="thumb-slider-container">
+                            @php
+                                $hasImages = false;
+                                $galleryImages = [];
 
-                            <!-- Prev Button -->
-                            <button class="thumb-prev">&#10094;</button>
+                                // Check if thumbnail exists
+                                if ($product->thumbnail) {
+                                    $hasImages = true;
+                                }
 
-                            <!-- Thumbnails -->
-                            <div class="thumb-wrapper">
-                                <div class="thumbs-track" id="thumbsTrack">
-                                    {{-- Main thumbnail first --}}
-                                    @if ($product->thumbnail ?? false)
-                                        <img src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
-                                            class="thumb" onclick="thumbClicked(this.src)">
-                                    @endif
-                                    {{-- Then gallery images --}}
-                                    @php
-                                        $galleryImages = [];
+                                // Check gallery images
+                                if (!empty($product->gallery_images)) {
+                                    if (is_array($product->gallery_images)) {
+                                        $galleryImages = $product->gallery_images;
+                                    } else {
+                                        $galleryImages = json_decode($product->gallery_images, true);
+                                    }
+                                    if (!empty($galleryImages)) {
+                                        $hasImages = true;
+                                    }
+                                }
+                            @endphp
 
-                                        if (!empty($product->gallery_images ?? null)) {
-                                            if (is_array($product->gallery_images)) {
-                                                $galleryImages = $product->gallery_images;
-                                            } else {
-                                                $galleryImages = json_decode($product->gallery_images, true); // decode JSON string to array
-                                            }
-                                        }
-                                    @endphp
+                            @if($hasImages)
+                                <!-- Prev Button -->
+                                <button class="thumb-prev">&#10094;</button>
 
-                                    @if (!empty($galleryImages))
-                                        @foreach ($galleryImages as $img)
-                                            @if (!empty($img))
-                                                <img src="{{ asset('storage/products/gallery/' . $img) }}" class="thumb"
-                                                    onclick="thumbClicked(this.src)">
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                <!-- Thumbnails -->
+                                <div class="thumb-wrapper">
+                                    <div class="thumbs-track" id="thumbsTrack">
+                                        {{-- Main thumbnail first --}}
+                                        @if ($product->thumbnail)
+                                            <img src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
+                                                alt="{{ $product->image_alt ?? $product->name }}"
+                                                class="thumb" onclick="thumbClicked(this.src)">
+                                        @endif
+
+                                        {{-- Then gallery images --}}
+                                        @if (!empty($galleryImages))
+                                            @foreach ($galleryImages as $img)
+                                                @if (!empty($img))
+                                                    <img src="{{ asset('storage/products/gallery/' . $img) }}" 
+                                                        alt="{{ $product->image_alt ?? $product->name }}"
+                                                        class="thumb"
+                                                        onclick="thumbClicked(this.src)">
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
+
+                                <!-- Next Button -->
+                                <button class="thumb-next">&#10095;</button>
+                            @endif
+                        </div>
+
+                        @if($hasImages)
+                            <!-- Pagination -->
+                            <div class="pagination-wrapper">
+                                <div class="pagination-bar" id="paginationBar"></div>
                             </div>
-
-
-                            <!-- Next Button -->
-                            <button class="thumb-next">&#10095;</button>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-bar" id="paginationBar"></div>
-                        </div>
+                        @endif
 
                     </div>
                     <div class="col-lg-6">
@@ -734,7 +758,12 @@
     {{-- ================= pruduct sectiion ============= --}}
     <div class="pro-section">
         <x-our-latest-products />
+    </div>
 
+    {{-- Image Modal --}}
+    <div class="image-modal" id="imageModal">
+        <span class="image-modal-close" id="modalClose"></span>
+        <img class="image-modal-content" id="modalImage" src="" alt="Product Image">
     </div>
 
 @endsection
@@ -743,7 +772,44 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
+            // ============= Image Modal Functionality =============
             const mainImage = document.getElementById("mainImage");
+            const imageModal = document.getElementById("imageModal");
+            const modalImage = document.getElementById("modalImage");
+            const modalClose = document.getElementById("modalClose");
+
+            // Open modal when main image is clicked
+            if (mainImage && imageModal && modalImage) {
+                mainImage.addEventListener("click", function() {
+                    imageModal.classList.add("active");
+                    modalImage.src = this.src;
+                });
+            }
+
+            // Close modal when close button is clicked
+            if (modalClose && imageModal) {
+                modalClose.addEventListener("click", function() {
+                    imageModal.classList.remove("active");
+                });
+            }
+
+            // Close modal when clicking outside the image
+            if (imageModal) {
+                imageModal.addEventListener("click", function(e) {
+                    if (e.target === imageModal) {
+                        imageModal.classList.remove("active");
+                    }
+                });
+            }
+
+            // Close modal with Escape key
+            document.addEventListener("keydown", function(e) {
+                if (e.key === "Escape" && imageModal && imageModal.classList.contains("active")) {
+                    imageModal.classList.remove("active");
+                }
+            });
+
+            // ============= Thumbnail Slider Functionality =============
             const thumbTrack = document.getElementById("thumbsTrack");
             const paginationBar = document.getElementById("paginationBar");
             const prevBtn = document.querySelector(".thumb-prev");

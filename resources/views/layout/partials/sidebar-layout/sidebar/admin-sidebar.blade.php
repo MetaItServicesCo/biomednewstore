@@ -212,18 +212,6 @@
             </div>
         </div>
 
-        <div class="menu-sub menu-sub-accordion">
-            <div class="menu-item">
-                <a class="menu-link {{ request()->routeIs('admin.services-request.form.*') ? 'active' : '' }}"
-                    href="{{ route('admin.services-request.form.list') }}">
-                    <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
-                    </span>
-                    <span class="menu-title">Service Request</span>
-                </a>
-            </div>
-        </div>
-
     </div>
 
     @can('read general settings')
