@@ -324,11 +324,14 @@
             height: 400px;
             object-fit: contain;
             background-color: #f8f9fa;
-            cursor: pointer;
+            cursor: zoom-in;
             transition: opacity 0.3s;
         }
         .main-img:hover {
             opacity: 0.9;
+        }
+        .thumb {
+            cursor: zoom-in;
         }
         /* Image Modal */
         .image-modal {
@@ -346,12 +349,17 @@
         .image-modal.active {
             display: flex;
         }
+        .image-modal-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-top: 150px;
+        }
         .image-modal-content {
-            max-width: 100%;
-            max-height: 70%;
-            margin-top: 130px;
+            max-width: 90vw;
+            max-height: 70vh;
             object-fit: contain;
             animation: zoomIn 0.3s;
+            display: block;
         }
         @keyframes zoomIn {
             from {
@@ -365,8 +373,8 @@
         }
         .image-modal-close {
             position: absolute;
-            top: 153px;
-            right: 33%;
+            top: -20px;
+            right: -20px;
             width: 45px;
             height: 45px;
             background-color: #fff;
@@ -376,7 +384,7 @@
             justify-content: center;
             cursor: pointer;
             transition: background-color 0.3s;
-            z-index: 10000;
+            z-index: 10001;
         }
         .image-modal-close::before,
         .image-modal-close::after {
@@ -866,8 +874,10 @@
 
     {{-- Image Modal --}}
     <div class="image-modal" id="imageModal">
-        <span class="image-modal-close" id="modalClose"></span>
-        <img class="image-modal-content" id="modalImage" src="" alt="Product Image">
+        <div class="image-modal-wrapper">
+            <span class="image-modal-close" id="modalClose"></span>
+            <img class="image-modal-content" id="modalImage" src="" alt="Product Image">
+        </div>
     </div>
 
 @endsection
