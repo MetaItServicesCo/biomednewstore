@@ -472,6 +472,22 @@
             transform: translateY(0);
         }
     }
+
+    .bottom-line {
+        width: 60%;
+        margin: 20px auto;
+
+        border: 0 !important;
+        /* 🔥 remove hr border */
+        height: 2px;
+
+        background-color: #d19421 !important;
+        /* exact color */
+        opacity: 1 !important;
+        /* 🔥 bootstrap fix */
+
+        border-radius: 4px;
+    }
 </style>
 
 
@@ -681,20 +697,17 @@
 
     <div class="footer-links-copyright">
         <div class="container text-center ">
-            <div class="footer-links-wrapper">
+            {{-- <div class="footer-links-wrapper">
                 <div class="footer-links mb-1">
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/BioMed-Service"
                         class="text-decoration-none mx-2">Mr Biomed
                         Service</a><span class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/locations"
                         class="text-decoration-none mx-2">Locations</a><span class="separator">|</span>
-                    {{-- <a href="#" class="text-decoration-none mx-2">Product Store</a><span
-                        class="separator">|</span> --}}
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about" class="text-decoration-none mx-2">About
                         Mbmts</a><span class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/blogs"
                         class="text-decoration-none mx-2">Blog</a><span class="separator">|</span>
-                    {{-- <a href="#" class="text-decoration-none mx-2">Career</a><span class="separator">|</span> --}}
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/terms-and-conditions"
                         class="text-decoration-none mx-2">Terms & Conditions</a><span class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/privacy-policy"
@@ -706,7 +719,8 @@
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/faqs"
                         class="text-decoration-none mx-2">FAQs</a>
                 </div>
-            </div>
+            </div> --}}
+            <hr class="bottom-line">
             <p class="copyright mb-0 t">
                 Copyright © {{ date('Y') }} | {{ setting('site_name', 'Mr Biomed Tech Services') }} ® | All right
                 reserved
