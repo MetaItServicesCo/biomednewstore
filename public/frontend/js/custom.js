@@ -6,16 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (servicesBtn && panel) {
         // Button click → toggle panel
         servicesBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // 👈 bahir wale click se roko
+            e.stopPropagation(); // Stop propagation to prevent outside click
             panel.classList.toggle('active');
         });
 
-        // Panel ke andar click → panel close na ho
+        // Click inside panel → don't close panel
         panel.addEventListener('click', (e) => {
             e.stopPropagation();
         });
 
-        // Bahir kahin bhi click → panel hide
+        // Click anywhere outside → hide panel
         document.addEventListener('click', () => {
             panel.classList.remove('active');
         });
@@ -414,7 +414,7 @@ function initReviewSlider() {
 
     const sliderEl = document.querySelector(".reviewSwiper");
 
-    // Agar page me slider exist nahi karta → function stop
+    // If slider doesn't exist on page → stop function
     if (!sliderEl) return;
 
     var swiper = new Swiper(".reviewSwiper", {
@@ -500,12 +500,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     if (seeMoreBtn) {
-        // ⭐ FINAL UPDATED LOGIC — Show All at Once ⭐
-        seeMoreBtn.addEventListener("click", () => {
+        // Show All at Once Logic
+        seeMoreBtn.addEventListener('click', () => {
             const hiddenItems = faqItems.filter(item => item.style.display === "none");
 
             if (hiddenItems.length > 0) {
-                // 👉 Show ALL hidden FAQs at once
+                // Show ALL hidden FAQs at once
                 hiddenItems.forEach(item => item.style.display = "block");
 
                 currentVisible = totalFAQs;
@@ -513,7 +513,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 seeMoreBtn.style.backgroundColor = lessBg;
 
             } else {
-                // 👉 Hide all except first 4
+                // Hide all except first 4
                 faqItems.forEach((item, index) => {
                     if (index >= visibleCount) {
                         item.style.display = "none";
@@ -850,15 +850,15 @@ function loadCities(stateSelectId, citySelectId) {
             .then(response => {
 
                 // API error
-                if (!response.status) {
+                if (!response.success) {
                     citySelect.innerHTML = `<option value="" disabled selected>No City Found</option>`;
                     return;
                 }
 
-                const cities = response.data || {};
+                const cities = response.cities || [];
 
                 // No cities case
-                if (Object.keys(cities).length === 0) {
+                if (cities.length === 0) {
                     citySelect.innerHTML = '<option value="" disabled selected>No City Found</option>';
                     return;
                 }
@@ -866,10 +866,10 @@ function loadCities(stateSelectId, citySelectId) {
                 // Cities found
                 citySelect.innerHTML = '<option value="">Select City</option>';
 
-                Object.entries(cities).forEach(([id, name]) => {
+                cities.forEach(city => {
                     const option = document.createElement('option');
-                    option.value = id;
-                    option.textContent = name;
+                    option.value = city.id;
+                    option.textContent = city.name;
                     citySelect.appendChild(option);
                 });
             })

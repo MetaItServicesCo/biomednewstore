@@ -310,6 +310,9 @@
                 <div class="searchh-wrapper">
                     <i class="fa fa-search search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search parts">
+                    <button type="button" id="clearPartsSearchBtn" class="btn-clear-parts-search" style="display: none;">
+                        <i class="fa fa-times"></i>
+                    </button>
                 </div>
 
                 <!-- Right Buttons -->
@@ -414,6 +417,27 @@
             const loader = document.getElementById('partsLoader');
             const container = document.getElementById('partsContainer');
             const pagination = document.getElementById('parts-pagination-container');
+            const searchInput = document.querySelector('.search-input');
+            const clearPartsSearchBtn = document.getElementById('clearPartsSearchBtn');
+
+            // Show/hide clear button based on input value
+            function toggleClearButton() {
+                if (searchInput.value.trim() !== '') {
+                    clearPartsSearchBtn.style.display = 'block';
+                } else {
+                    clearPartsSearchBtn.style.display = 'none';
+                }
+            }
+
+            // Clear search input
+            clearPartsSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                clearPartsSearchBtn.style.display = 'none';
+                fetchParts();
+            });
+
+            // Monitor input changes
+            searchInput.addEventListener('input', toggleClearButton);
 
             function showLoader() {
                 loader.style.display = 'block';

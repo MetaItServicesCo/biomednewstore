@@ -291,6 +291,38 @@
             color: #FFD700;
             /* Gold color for selected stars */
         }
+
+        /* No Image Placeholder */
+        .no-image-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            min-height: 400px;
+            color: #999;
+        }
+
+        .no-image-placeholder i {
+            font-size: 80px;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        .no-image-placeholder p {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0;
+            color: #999;
+        }
+
+        .main-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
     </style>
 @endpush
 
@@ -317,57 +349,81 @@
 
                         <div class="image-slider">
                             <!-- Main Image -->
-                            <img id="mainImage"
-                                src="{{ $part->thumbnail ?? false ? asset('storage/products/thumbnails/' . $part->thumbnail) : asset('frontend/images/offer-img.png') }}"
-                                class="main-img">
+                            @if($part->thumbnail)
+                                <img id="mainImage"
+                                    src="{{ asset('storage/products/thumbnails/' . $part->thumbnail) }}"
+                                    alt="{{ $part->image_alt ?? $part->name }}"
+                                    class="main-img">
+                            @else
+                                <div class="no-image-placeholder main-img">
+                                    <i class="fa fa-image"></i>
+                                    <p>No Image Available</p>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="thumb-slider-container">
+                            @php
+                                $hasImages = false;
+                                $galleryImages = [];
 
-                            <!-- Prev Button -->
-                            <button class="thumb-prev">&#10094;</button>
+                                // Check if thumbnail exists
+                                if ($part->thumbnail) {
+                                    $hasImages = true;
+                                }
 
-                            <!-- Thumbnails -->
-                            <div class="thumb-wrapper">
-                                <div class="thumbs-track" id="thumbsTrack">
-                                    {{-- Main thumbnail first --}}
-                                    @if ($part->thumbnail ?? false)
-                                        <img src="{{ asset('storage/products/thumbnails/' . $part->thumbnail) }}"
-                                            class="thumb" onclick="thumbClicked(this.src)">
-                                    @endif
-                                    {{-- Then gallery images --}}
-                                    @php
-                                        $galleryImages = [];
+                                // Check gallery images
+                                if (!empty($part->gallery_images)) {
+                                    if (is_array($part->gallery_images)) {
+                                        $galleryImages = $part->gallery_images;
+                                    } else {
+                                        $galleryImages = json_decode($part->gallery_images, true);
+                                    }
+                                    if (!empty($galleryImages)) {
+                                        $hasImages = true;
+                                    }
+                                }
+                            @endphp
 
-                                        if (!empty($part->gallery_images ?? null)) {
-                                            if (is_array($part->gallery_images)) {
-                                                $galleryImages = $part->gallery_images;
-                                            } else {
-                                                $galleryImages = json_decode($part->gallery_images, true); // decode JSON string to array
-                                            }
-                                        }
-                                    @endphp
+                            @if($hasImages)
+                                <!-- Prev Button -->
+                                <button class="thumb-prev">&#10094;</button>
 
-                                    @if (!empty($galleryImages))
-                                        @foreach ($galleryImages as $img)
-                                            @if (!empty($img))
-                                                <img src="{{ asset('storage/products/gallery/' . $img) }}" class="thumb"
-                                                    onclick="thumbClicked(this.src)">
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                <!-- Thumbnails -->
+                                <div class="thumb-wrapper">
+                                    <div class="thumbs-track" id="thumbsTrack">
+                                        {{-- Main thumbnail first --}}
+                                        @if ($part->thumbnail)
+                                            <img src="{{ asset('storage/products/thumbnails/' . $part->thumbnail) }}"
+                                                alt="{{ $part->image_alt ?? $part->name }}"
+                                                class="thumb" onclick="thumbClicked(this.src)">
+                                        @endif
+
+                                        {{-- Then gallery images --}}
+                                        @if (!empty($galleryImages))
+                                            @foreach ($galleryImages as $img)
+                                                @if (!empty($img))
+                                                    <img src="{{ asset('storage/products/gallery/' . $img) }}" 
+                                                        alt="{{ $part->image_alt ?? $part->name }}"
+                                                        class="thumb"
+                                                        onclick="thumbClicked(this.src)">
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
+
+                                <!-- Next Button -->
+                                <button class="thumb-next">&#10095;</button>
+                            @endif
+                        </div>
+
+                        @if($hasImages)
+                            <!-- Pagination -->
+                            <div class="pagination-wrapper">
+                                <div class="pagination-bar" id="paginationBar"></div>
                             </div>
-
-
-                            <!-- Next Button -->
-                            <button class="thumb-next">&#10095;</button>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-bar" id="paginationBar"></div>
-                        </div>
+                        @endif
 
                     </div>
                     <div class="col-lg-6">

@@ -727,12 +727,7 @@
             }
         }
 
-<<<<<<< HEAD
        <!-- ================ END PAYMENT MODAL ================== -->
-=======
-        /* ================ END PAYMENT MODAL ================== */
-    </style>
->>>>>>> 2f62e0da3f8c9964ecbbca619361c12200dce0fe
 @endpush
 
 @section('frontend-content')
@@ -1015,7 +1010,6 @@
 @endsection
 
 @push('frontend-scripts')
-<<<<<<< HEAD
 <!-- Stripe JS -->
 <script src="https://js.stripe.com/v3/"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -1024,7 +1018,9 @@
     <script>
         $(document).ready(function() {
             console.log('Script loaded and document ready');
->>>>>>> 2f62e0da3f8c9964ecbbca619361c12200dce0fe
+<!-- Stripe JS -->
+<script src="https://js.stripe.com/v3/"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script>
 $(document).ready(function() {
@@ -1131,8 +1127,6 @@ $(document).ready(function() {
                 resetState();
                 stateSelect.append('<option value="">No State Found</option>');
             }
-<<<<<<< HEAD
-=======
 
             // =====================
             // Next Button Click
@@ -1381,7 +1375,6 @@ $(document).ready(function() {
                 });
             }
 
->>>>>>> 2f62e0da3f8c9964ecbbca619361c12200dce0fe
         });
     });
 

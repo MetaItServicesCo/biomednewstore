@@ -1,5 +1,10 @@
 @php
-    $categories = $latestProductCategories ?? [];
+    // Fixed tabs: All, Products, Parts
+    $tabs = [
+        ['label' => 'All', 'type' => 'all'],
+        ['label' => 'Products', 'type' => 'product'],
+        ['label' => 'Parts', 'type' => 'part'],
+    ];
 @endphp
 
 <section class="products-series-section py-5">
@@ -115,8 +120,10 @@
             const btn = e.target.closest('button.filter-btn');
             if (!btn) return;
 
-            const slug = btn.dataset.slug;
-            if (!slug) return;
+            const type = btn.dataset.type;
+            if (!type) return;
+
+            currentType = type;
 
             tabsWrapper.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -129,7 +136,7 @@
             </div>
         `;
 
-            fetch(`${filterUrl}?slug=${slug}`, {
+            fetch(`${filterUrl}?type=${type}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json'
@@ -192,7 +199,6 @@
                 </div>
             `;
                 });
-
         });
 
     });
