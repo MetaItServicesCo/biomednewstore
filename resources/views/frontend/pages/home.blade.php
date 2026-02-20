@@ -3,11 +3,14 @@
 {{-- @section('title', 'Home') --}}
 @section('meta_title', $data->meta_title ?? 'Mr. Biomed Tech Services | Reliable Biomedical Solutions')
 @section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', $data->meta_description ?? 'Mr. Biomed Tech Services delivers biomedical solutions—installation to repair. Visit 555 N 5th St, Garland, TX. Call +1 469-767-8853. Fast & reliable.')
+@section('meta_description',
+    $data->meta_description ??
+    'Mr. Biomed Tech Services delivers biomedical
+    solutions—installation to repair. Visit 555 N 5th St, Garland, TX. Call +1 469-767-8853. Fast & reliable.')
 
 
 @section('page_schema')
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -158,7 +161,8 @@
 
         /* Service Card */
         .service-card {
-            width: 347px;
+            width: 100%;
+            max-width: 347px;
             height: 486px;
             border: 3px solid #076FA1;
             padding: 20px;
@@ -169,6 +173,7 @@
             border-radius: 30px;
             box-shadow: 0px 4px 14.8px #5BC3C4;
             position: relative;
+            margin: 0 auto;
         }
 
         /* Card Title */
@@ -186,7 +191,8 @@
         .service-card hr {
             border: none;
             border-bottom: 4px solid #020202;
-            width: 284px;
+            width: 100%;
+            max-width: 284px;
             margin: 0px auto;
         }
 
@@ -359,11 +365,15 @@
 
                 margin: 15px auto !important;
             }
+
+            .small {
+                max-width: 190px !important;
+            }
         }
 
         @media(max-width:767px) {
             .pro-section {
-                margin-top: 850px;
+                margin-top: 700px;
             }
 
             .sub-heading {
@@ -390,6 +400,11 @@
 
                 font-size: 13px !important;
 
+            }
+
+
+            .small {
+                max-width: 190px !important;
             }
         }
 
@@ -589,12 +604,12 @@
                 <div class="col-lg-6 fade-right">
                     <div class="row g-5">
                         <div class="col-12">
-                            <img src="{{ asset('frontend/images/recent-news-img.png') }}" class="img-fluid about-img"
+                            <img src="{{ asset('frontend/images/better-img.jpg') }}" class="img-fluid about-img"
                                 alt="about image">
 
                         </div>
                         <div class="col-12 ">
-                            <img src="{{ asset('frontend/images/rental/rental-img.jpg') }}" class="img-fluid about-img"
+                            <img src="{{ asset('frontend/images/tech.jpg') }}" class="img-fluid about-img"
                                 alt="about image">
                         </div>
                     </div>

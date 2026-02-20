@@ -57,7 +57,7 @@
         <div class="container-fluid d-flex align-items-center p-0 position-relative">
 
             <!-- Logo -->
-            <a class="navbar-brand px-3 " href="#">
+            <a class="navbar-brand px-3 " href="{{ route('home') }}">
                 <img src="{{ asset('storage/' . setting('site_logo', 'frontend/images/logo.png')) }}" height=""
                     alt="{{ setting('site_name') }}" class="img-fluid nav-logo">
             </a>
@@ -142,28 +142,34 @@
                         </div>
                     </li>
 
+                  
+
                     <li class="nav-item">
-                        <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} " href="{{ route('parts') }}">
+                        <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} "
+                            href="{{ route('parts') }}">
                             Parts
                         </a>
                     </li>
-
+  <li class="nav-item">
+                        <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} "
+                            href="{{ route('feedback') }}">
+                            FeedBack
+                        </a>
+                    </li>
                     <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about">
-                            About mbmts
+                        <a class="nav-link" href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about">
+                            About
                         </a>
                     </li>
 
 
                     <li class="nav-item ms-auto d-flex flex-column align-items-center mt-2 mt-lg-0">
-                        <div class="d-flex align-items-center gap-4  contact-icons-wrapper me-2 mt-2">
+                        <div class="d-flex align-items-center gap-3  contact-icons-wrapper me-2 mt-4">
 
-                            <a href="{{ route('login') }}" target="_blank" class="d-flex">
-                                <img src="{{ asset('frontend/images/nav-ico1.png') }}" class="icon-arrow">
-                                <img src="{{ asset('frontend/images/nav-ico2.png') }}" class="icon-image">
+                            {{-- <a href="{{ route('login') }}" target="_blank" class="">
+                                <img src="{{ asset('frontend/images/login-img.png') }}" class="icon-image">
 
-                            </a>
+                            </a> --}}
 
 
                             <a href="{{ route('cart') }}" class="cart-icon-wrapper position-relative">
@@ -177,10 +183,10 @@
 
                         </div>
 
-                        <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/contact" class="btn contact-btn mt-1 px-3 py-">
+                        <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/contact"
+                            class="btn contact-btn mb-2 px-3 py-">
                             CONTACT
-                        </a>
-                    </li>
+                        </a> </li>
 
                     {{-- <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                         @guest

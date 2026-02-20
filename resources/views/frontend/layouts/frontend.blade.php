@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/css') }}/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
 
     <!-- Select2 CSS -->
 
@@ -55,12 +57,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
 
-    <link rel="stylesheet" href="{{ asset('frontend/css') }}/custom.css" />
+    {{-- <link rel="stylesheet" href="{{ asset('frontend/css') }}/custom.css" /> --}}
+    <link rel="stylesheet" href="{{ asset('frontend/css/custom.css') }}?v={{ filemtime(public_path('frontend/css/custom.css')) }}" />
+    
     <!--end::Custom Stylesheets-->
 
     {{-- Schema Section --}}
     @yield('page_schema')
-    
+
     @stack('frontend-styles')
 
     @livewireStyles
@@ -115,8 +119,16 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <script src="{{ asset('frontend/js') }}/custom.js"></script>
+    {{-- <script src="{{ asset('frontend/js') }}/custom.js"></script> --}}
+    <script src="{{ asset('frontend/js/custom.js') }}?v={{ filemtime(public_path('frontend/js/custom.js')) }}"></script>
+
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
+    <script>
+        // Scroll to top on page load
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
 
     @stack('frontend-scripts')
     <!--end::Javascript-->

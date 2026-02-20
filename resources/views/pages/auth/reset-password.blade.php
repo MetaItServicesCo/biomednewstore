@@ -30,9 +30,11 @@
             <div class="mb-1">
                 <!--begin::Input wrapper-->
                 <div class="position-relative mb-3">
-                    <input class="form-control bg-transparent" type="password" placeholder="Password" name="password" autocomplete="off"/>
+                    <input class="form-control bg-transparent" type="password" placeholder="Password" name="password" autocomplete="off" id="reset_password"/>
 
-                    <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+                    <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" 
+                          onclick="togglePasswordVisibility('reset_password', this)"
+                          style="cursor: pointer;">
                         <i class="bi bi-eye-slash fs-2"></i>
                         <i class="bi bi-eye fs-2 d-none"></i>
                     </span>
@@ -61,7 +63,16 @@
         <!--end::Input group--->
         <div class="fv-row mb-8">
             <!--begin::Repeat Password-->
-            <input placeholder="Repeat Password" name="password_confirmation" type="password" autocomplete="off" class="form-control bg-transparent"/>
+            <div class="position-relative">
+                <input placeholder="Repeat Password" name="password_confirmation" type="password" autocomplete="off" 
+                       class="form-control bg-transparent" id="reset_password_confirmation"/>
+                <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" 
+                      onclick="togglePasswordVisibility('reset_password_confirmation', this)"
+                      style="cursor: pointer;">
+                    <i class="bi bi-eye-slash fs-2"></i>
+                    <i class="bi bi-eye fs-2 d-none"></i>
+                </span>
+            </div>
             <!--end::Repeat Password-->
         </div>
         <!--end::Input group--->
@@ -91,5 +102,23 @@
         <!--end::Actions-->
     </form>
     <!--end::Form-->
+
+    <script>
+        function togglePasswordVisibility(inputId, iconButton) {
+            const input = document.getElementById(inputId);
+            const eyeSlash = iconButton.querySelector('.bi-eye-slash');
+            const eye = iconButton.querySelector('.bi-eye');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeSlash.classList.add('d-none');
+                eye.classList.remove('d-none');
+            } else {
+                input.type = 'password';
+                eyeSlash.classList.remove('d-none');
+                eye.classList.add('d-none');
+            }
+        }
+    </script>
 
 </x-auth-layout>

@@ -12,7 +12,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-top: 180px;
+            margin-top: 100px;
         }
 
         .cart-banner h1 {
@@ -353,7 +353,6 @@
             transform: scale(1.04)
         }
 
-        /* PayPal Logo */
         .paypal-btn img {
             width: 370px;
             max-width: 120%;
@@ -369,9 +368,6 @@
     <section class="cart-banner">
         <h1>Shopping <span>Cart</span> </h1>
     </section>
-
-
-
 
     <section>
 
@@ -444,9 +440,6 @@
                                                                 data-id="{{ $item['id'] ?? 0 }}">
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </div>
-                                                            <div class="item-ico edit-item"
-                                                                data-slug="{{ $item['slug'] ?? '#' }}"><i
-                                                                    class="fa fa-pen"></i></div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -477,18 +470,12 @@
 
                                 <h5>Summary</h5>
 
-                                <div class="summary-toggle mt-3">
+                                <div class="mt-3">
                                     <span>Estimate Shipping and Tax</span>
-                                    <i class="fa fa-chevron-down"></i>
                                 </div>
-                                <p class="summary-text  mt-3">
+                                <p class="summary-text mt-3">
                                     Enter your destination to get a shipping estimate.
                                 </p>
-
-                                <div class="summary-toggle  mt-3">
-                                    <span>Apply Discount Code</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </div>
 
                                 <hr>
 
@@ -574,7 +561,7 @@
             const cart = @json($cart); // cart object with product IDs as keys
 
             const SHIPPING_COST = 40.00;
-            const GST_RATE = 8.25/100; // 8.25%
+            const GST_RATE = 8.25 / 100; // 8.25%
 
             // Function to update summary
             function updateSummary() {
@@ -810,15 +797,6 @@
                             console.error(err);
                             toastr.error('Something went wrong');
                         });
-                });
-            });
-
-            // Edit / redirect to product detail
-            document.querySelectorAll('.edit-item').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const slug = this.dataset.slug; // we'll store slug here
-                    // Redirect to product page
-                    window.location.href = `/product/${slug}`;
                 });
             });
 

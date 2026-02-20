@@ -15,7 +15,11 @@
     <meta property="og:title" content="" />
     <link rel="canonical" href="{{ url()->current() }}" />
 
-    {!! includeFavicon() !!}
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('storage/' . setting('favicon', 'assets/media/logos/favicon.ico')) }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('storage/' . setting('favicon', 'assets/media/logos/favicon.ico')) }}">
+    <link rel="shortcut icon" href="{{ asset('storage/' . setting('favicon', 'assets/media/logos/favicon.ico')) }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('storage/' . setting('favicon', 'assets/media/logos/favicon.ico')) }}">
 
     <!--begin::Fonts-->
     {!! includeFonts() !!}
@@ -38,6 +42,10 @@
         {!! sprintf('<link rel="stylesheet" href="%s">', asset($path)) !!}
     @endforeach
     <!--end::Custom Stylesheets-->
+    
+    <!--begin::Search Clear Button Styles-->
+    <link rel="stylesheet" href="{{ asset('assets/css/custom/search-clear.css') }}">
+    <!--end::Search Clear Button Styles-->
 
     @livewireStyles
 </head>
@@ -70,9 +78,13 @@
     @endforeach
     <!--end::Custom Javascript-->
     <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js') }}"></script>
+    
+    <!--begin::Search Clear Button Handler-->
+    <script src="{{ asset('assets/js/custom/search-clear.js') }}"></script>
+    <!--end::Search Clear Button Handler-->
 
     @stack('scripts')
-    <!--end::Javascript-->
+    <!--end::Javascript--> 
     @if (session('success'))
         <script>
             toastr.success("{{ session('success') }}");

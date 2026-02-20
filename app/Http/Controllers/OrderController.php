@@ -102,7 +102,7 @@ class OrderController extends Controller
             }
 
             $shipping = ($request->input('shipping_method', 'standard') === 'pickup') ? 0.0 : 40.0;
-            $gst = $subtotal * 0.1; // GST is kept as per business requirement
+            $gst = $subtotal * 0.0825; // GST is kept as per business requirement
             $total = $subtotal + $shipping + $gst;
 
             // Create order
@@ -186,7 +186,7 @@ class OrderController extends Controller
             }
 
             $shipping = $validated['shipping_method'] === 'pickup' ? 0 : 40.0;
-            $gst = $subtotal * 0.1;
+            $gst = $subtotal * 0.0825;
             $total = $subtotal + $shipping + $gst;
 
             $squareConfig = config('services.square');
@@ -316,7 +316,7 @@ class OrderController extends Controller
             }
 
             $shipping = $validated['shipping_method'] === 'pickup' ? 0 : 40.0;
-            $gst = $subtotal * 0.1;
+            $gst = $subtotal * 0.0825;
             $total = $subtotal + $shipping + $gst;
 
             if ($payment->getStatus() === 'COMPLETED') {
@@ -483,7 +483,7 @@ class OrderController extends Controller
             }
 
             $shipping = $request->shipping_method === 'pickup' ? 0 : 40.0;
-            $gst = $subtotal * 0.1;
+            $gst = $subtotal * 0.0825;
             $total = $subtotal + $shipping + $gst;
 
             $stripeSecret = config('services.stripe.secret');
@@ -560,7 +560,7 @@ class OrderController extends Controller
                 }
 
                 $shipping = $request->shipping_method === 'pickup' ? 0 : 40.0;
-                $gst = $subtotal * 0.1;
+                $gst = $subtotal * 0.0825;
                 $total = $subtotal + $shipping + $gst;
 
                 // Create order
@@ -632,7 +632,7 @@ class OrderController extends Controller
                 }
 
                 $shipping = $request->shipping_method === 'pickup' ? 0 : 40.0;
-                $gst = $subtotal * 0.1;
+                $gst = $subtotal * 0.0825;
                 $total = $subtotal + $shipping + $gst;
 
                 // Create order with failed payment status

@@ -16,6 +16,10 @@
                     <input type="text" data-kt-user-table-filter="search"
                         class="form-control form-control-solid w-250px ps-13" placeholder="{{ __('Search Category') }}"
                         id="categorySearchInput" />
+                    <button type="button" class="btn btn-sm btn-icon btn-clear-search position-absolute end-0 me-2" 
+                        id="clearCategorySearch" style="display: none;" title="Clear search">
+                        <i class="fa fa-times fs-4"></i>
+                    </button>
                 </div>
                 <!--end::Search-->
             </div>
@@ -186,8 +190,30 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('categorySearchInput');
+                const clearBtn = document.getElementById('clearCategorySearch');
+
+                // Toggle clear button visibility
+                function toggleClearButton() {
+                    if (searchInput.value.trim() !== '') {
+                        clearBtn.style.display = 'block';
+                    } else {
+                        clearBtn.style.display = 'none';
+                    }
+                }
+
+                // Clear search
+                clearBtn.addEventListener('click', function() {
+                    searchInput.value = '';
+                    clearBtn.style.display = 'none';
+                    window.LaravelDataTables['category-table'].search('').draw();
+                });
+
+                // Monitor input changes
+                searchInput.addEventListener('input', toggleClearButton);
+
                 // Search Filter
-                document.getElementById('categorySearchInput').addEventListener('keyup', function() {
+                searchInput.addEventListener('keyup', function() {
                     window.LaravelDataTables['category-table'].search(this.value).draw();
                 });
             });

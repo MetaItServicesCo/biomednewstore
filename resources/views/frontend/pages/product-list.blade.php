@@ -3,442 +3,469 @@
 {{-- @section('title', 'Home') --}}
 @section('meta_title', 'Buy Biomedical Equipment & Parts | Mr. Biomed Online Store')
 @section('meta_keywords', $data->meta_keywords ?? '')
-@section('meta_description', 'Find biomedical equipment, parts & accessories at Mr. Biomed\'s online store—affordable prices, quality products. Visit: 555 N 5th St, Garland TX.')
+@section('meta_description',
+    'Find biomedical equipment, parts & accessories at Mr. Biomed\'s online store—affordable
+    prices, quality products. Visit: 555 N 5th St, Garland TX.')
 
-@push('frontend-styles')
-    <style>
-        .search-wishlist-section {
-            background: linear-gradient(90deg, #006A9E, #A5CDE0);
-            margin-top: 180px;
-            height: 211px;
-        }
+    @push('frontend-styles')
+        <style>
+            .search-wishlist-section {
+                background: linear-gradient(90deg, #006A9E, #A5CDE0);
+                margin-top: 180px;
+                height: 211px;
+            }
 
-        /* Search Bar */
-        .search-bar {
-            display: flex;
-            flex-grow: 1;
-        }
-
-        .search-bar input.form-control {
-            border-radius: 7px;
-            height: 58px;
-            background-color: #DEE9FF;
-            max-width: 526px;
-        }
-
-        .search-bar button {
-            border-radius: 4px;
-            width: 70px;
-            height: 58px;
-            background-color: #EF1616;
-            color: #ffffff;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .search-bar button:hover {
-            filter: brightness(1.2);
-        }
-
-        /* Wishlist */
-        .wishlist {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-right: 15px;
-            border-right: 1px solid rgba(255, 255, 255, 0.5);
-            margin-left: 80px;
-            height: 40px;
-            width: 170px;
-        }
-
-        .wishlist span {
-            font-family: Ubuntu, sans-serif;
-            font-weight: 500;
-            color: #000000;
-            line-height: 24px;
-            letter-spacing: 0;
-            font-size: 16px;
-            /* max-width: 111px; */
-        }
-
-        .wishlist-icon {
-            cursor: pointer;
-            color: #EF1616;
-            transition: transform 0.3s, color 0.3s;
-            margin-right: 5px;
-        }
-
-        .wishlist-icon:hover {
-            transform: scale(1.2);
-        }
-
-        .wishlist-icon.active {
-            color: #a00202;
-        }
-
-
-
-        /* Shop Icon */
-        .shop-icon img.list-icon-img {
-            width: 38px;
-            height: 36px;
-            transition: all 0.3s ease;
-        }
-
-        .shop-icon img.list-icon-img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px #ffffff70;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
+            /* Search Bar */
             .search-bar {
-                flex: 1 1 100%;
-                margin-bottom: 10px;
+                display: flex;
+                flex-grow: 1;
             }
 
-            .wishlist,
-            .shop-icon {
-                flex: 1 1 auto;
-                text-align: center;
-                border-right: none;
-                padding-right: 0;
-                margin-top: 10px;
+            .search-bar input.form-control {
+                border-radius: 7px;
+                height: 58px;
+                background-color: #DEE9FF;
+                max-width: 526px;
             }
-        }
 
-        .list-wraper {
-            max-width: 960px;
-        }
+            @media(max-width:768px) {
+                .search-bar input.form-control {
+                    max-width: 415px;
+                }
+            }
 
-        /* ===================== product list ===================== */
-        .filter-main-title {
-            background: #F1564F;
-            color: #ffffff;
-            padding: 18px;
-            font-weight: 600;
-            font-size: 24px;
-            font-family: Inter;
-            line-height: 100%;
-            height: 58px;
+            .search-bar button {
+                border-radius: 4px;
+                width: 70px;
+                height: 58px;
+                background-color: #EF1616;
+                color: #ffffff;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
 
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
+            .search-bar button:hover {
+                filter: brightness(1.2);
+            }
 
-        }
-
-        .filter-range-title {
-            background: #F1564F;
-            color: #fff;
-            padding: 18px;
-            font-weight: 700;
-            font-size: 19px;
-            font-family: Inter;
-            line-height: 100%;
-            height: 58px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-
-        .filter-recent-title {
-            background: #F1564F;
-            color: #fff;
-            padding: 18px;
-            font-weight: 700;
-            font-size: 19px;
-            font-family: Inter;
-            line-height: 100%;
-            height: 58px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-
-        .filter-title {
-            background: #F1564F;
-            color: #fff;
-            padding: 18px;
-            font-weight: 700;
-            font-size: 19px;
-            font-family: Inter;
-            line-height: 100%;
-            height: 58px;
-
-
-        }
-
-        .filter-main-box {
-            border: 1px solid #0000001A;
-            box-shadow: 0px 1px 4px #00000040;
-            border-radius: 10px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            margin-bottom: 50px;
-        }
-
-        .filter-range-box {
-            border: 1px solid #0000001A;
-            box-shadow: 0px 1px 4px #00000040;
-            border-radius: 10px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            margin-bottom: 50px;
-        }
-
-        .filter-box {
-            /* border: 1px solid #eee; */
-            margin-bottom: 20px;
-            /* padding: 10px; */
-
-        }
-
-        .filter-item {
-            display: flex;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 8px 12px;
-        }
-
-        .filter-item i {
-            color: #0071A8;
-        }
-
-        .filter-item span {
-            font-weight: 500;
-            font-size: 20px;
-            font-family: Inter;
-            line-height: 100%;
-        }
-
-        .filter-list {
-            display: none;
-            list-style: none;
-            padding-left: 15px;
-        }
-
-        .filter-list li {
-            padding: 4px 0;
-            font-weight: 400;
-            font-size: 16px;
-            font-family: Inter;
-            line-height: 100%;
-        }
-
-        .apply-product {
-            display: flex;
-            gap: 10px;
-        }
-
-        .apply-product img {
-            width: 80px;
-            height: 80px;
-        }
-
-
-
-        /* ============== price range ========== */
-        .range-slider {
-            width: 100%;
-            max-width: 300px;
-            position: relative;
-            padding-top: 25px;
-            /* slider se space */
-            border-bottom: 1px solid #6a6767;
-        }
-
-        .range-slider .rangeValues {
-            display: block;
-            margin-top: 60px;
-            /* ✅ yahan margin-top kaam karega */
-            font-weight: 600;
-            color: #000;
-            text-align: center;
-        }
-
-
-
-        input[type=range] {
-            -webkit-appearance: none;
-            border: 1px solid white;
-            width: 100%;
-            max-width: 260px;
+             /* Clear Search Button */
+        .btn-clear-search {
             position: absolute;
-            left: 0;
-        }
-
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 300px;
-            height: 8px;
-            background: #0071A8;
-            border: none;
-            border-radius: 3px;
-
-        }
-
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            border: none;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            background: #000000;
-            margin-top: -4px;
-            cursor: pointer;
-            position: relative;
-            z-index: 1;
-        }
-
-        input[type=range]:focus {
-            outline: none;
-        }
-
-        input[type=range]:focus::-webkit-slider-runnable-track {
-            background: #ccc;
-        }
-
-        input[type=range]::-moz-range-track {
-            width: 100%;
-            max-width: 260px;
-            height: 5px;
-            background: #ddd;
-            border: none;
-            border-radius: 3px;
-        }
-
-        input[type=range]::-moz-range-thumb {
-            border: none;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            background: #21c1ff;
-
-        }
-
-
-        /*hide the outline behind the border*/
-
-        input[type=range]:-moz-focusring {
-            outline: 1px solid white;
-            outline-offset: -1px;
-        }
-
-        input[type=range]::-ms-track {
-            width: 100%;
-            max-width: 300px;
-            height: 5px;
-            /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+            right: 85px;
+            top: 50%;
+            transform: translateY(-50%);
             background: transparent;
-            /*leave room for the larger thumb to overflow with a transparent border */
-            border-color: transparent;
-            border-width: 6px 0;
-            /*remove default tick marks*/
-            color: transparent;
-            z-index: -4;
-
-        }
-
-        input[type=range]::-ms-fill-lower {
-            background: #777;
-            border-radius: 10px;
-        }
-
-        input[type=range]::-ms-fill-upper {
-            background: #ddd;
-            border-radius: 10px;
-        }
-
-        input[type=range]::-ms-thumb {
             border: none;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            background: #21c1ff;
+            color: #666;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 10;
+            transition: color 0.3s ease;
         }
-
-        input[type=range]:focus::-ms-fill-lower {
-            background: #888;
+        .btn-clear-search:hover {
+            color: #EF1616;
         }
-
-        input[type=range]:focus::-ms-fill-upper {
-            background: #ccc;
-        }
-
-        .recent-pro {
-            width: 121px;
-            height: 121px;
-            object-fit: cover;
-        }
-
-        .recent-title {
-            font-weight: 600;
+        .btn-clear-search i {
             font-size: 18px;
-            font-family: Inter;
-            line-height: 140%;
-            color: #0D0D0D;
         }
 
-        .productt-cardd h6 {
-            font-weight: 500;
-            font-size: 20px;
-            font-family: Inter;
-            line-height: 140%;
-            color: #0D0D0D;
-        }
+            /* Wishlist */
+            .wishlist {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding-right: 15px;
+                border-right: 1px solid rgba(255, 255, 255, 0.5);
+                margin-left: 80px;
+                height: 40px;
+                width: 170px;
+            }
 
-        .old-price {
-            display: inline-block;
-            /* important for flex/grid parents */
-            text-decoration: line-through !important;
-            /* override any conflicting styles */
-            color: #7A7A7A;
-            font-weight: 500;
-            font-size: 18px;
-            font-family: Inter, sans-serif;
-            line-height: 160%;
-            vertical-align: middle;
-            /* optional for alignment with new price */
-            margin-right: 8px;
-            /* spacing from new price */
-        }
+            .wishlist span {
+                font-family: Ubuntu, sans-serif;
+                font-weight: 500;
+                color: #000000;
+                line-height: 24px;
+                letter-spacing: 0;
+                font-size: 16px;
+                /* max-width: 111px; */
+            }
+
+            .wishlist-icon {
+                cursor: pointer;
+                color: #EF1616;
+                transition: transform 0.3s, color 0.3s;
+                margin-right: 5px;
+            }
+
+            .wishlist-icon:hover {
+                transform: scale(1.2);
+            }
+
+            .wishlist-icon.active {
+                color: #a00202;
+            }
 
 
 
-        .new-price {
-            color: #0071A8 !important;
-            font-weight: 500;
-            font-size: 18px;
-            font-family: Inter;
-            line-height: 160%;
-            margin-left: 20px;
-        }
+            /* Shop Icon */
+            .shop-icon img.list-icon-img {
+                width: 50px;
+                height: 50px;
+                transition: all 0.3s ease;
+            }
+
+            .shop-icon img.list-icon-img:hover {
+                transform: scale(1.1);
+                box-shadow: 0 0 15px #ffffff70;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .search-bar {
+                    flex: 1 1 100%;
+                    margin-bottom: 10px;
+                }
+
+                .wishlist,
+                .shop-icon {
+                    flex: 1 1 auto;
+                    text-align: center;
+                    border-right: none;
+                    padding-right: 0;
+                    margin-top: 10px;
+                }
+            }
+
+            .list-wraper {
+                max-width: 960px;
+            }
+
+            /* ===================== product list ===================== */
+            .filter-main-title {
+                background: #F1564F;
+                color: #ffffff;
+                padding: 18px;
+                font-weight: 600;
+                font-size: 24px;
+                font-family: Inter;
+                line-height: 100%;
+                height: 58px;
+
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+
+            }
+
+            .filter-range-title {
+                background: #F1564F;
+                color: #fff;
+                padding: 18px;
+                font-weight: 700;
+                font-size: 19px;
+                font-family: Inter;
+                line-height: 100%;
+                height: 58px;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+            }
+
+            .filter-recent-title {
+                background: #F1564F;
+                color: #fff;
+                padding: 18px;
+                font-weight: 700;
+                font-size: 19px;
+                font-family: Inter;
+                line-height: 100%;
+                height: 58px;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+            }
+
+            .filter-title {
+                background: #F1564F;
+                color: #fff;
+                padding: 18px;
+                font-weight: 700;
+                font-size: 19px;
+                font-family: Inter;
+                line-height: 100%;
+                height: 58px;
 
 
-        /* ====================== end ================================ */
-    </style>
-@endpush
+            }
+
+            .filter-main-box {
+                border: 1px solid #0000001A;
+                box-shadow: 0px 1px 4px #00000040;
+                border-radius: 10px;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                margin-bottom: 50px;
+            }
+
+            .filter-range-box {
+                border: 1px solid #0000001A;
+                box-shadow: 0px 1px 4px #00000040;
+                border-radius: 10px;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                margin-bottom: 50px;
+            }
+
+            .filter-box {
+                /* border: 1px solid #eee; */
+                margin-bottom: 20px;
+                /* padding: 10px; */
+
+            }
+
+            .filter-item {
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+                padding: 8px 12px;
+            }
+
+            .filter-item i {
+                color: #0071A8;
+            }
+
+            .filter-item span {
+                font-weight: 500;
+                font-size: 20px;
+                font-family: Inter;
+                line-height: 100%;
+            }
+
+            .filter-list {
+                display: none;
+                list-style: none;
+                padding-left: 15px;
+            }
+
+            .filter-list li {
+                padding: 4px 0;
+                font-weight: 400;
+                font-size: 16px;
+                font-family: Inter;
+                line-height: 100%;
+            }
+
+            .apply-product {
+                display: flex;
+                gap: 10px;
+            }
+
+            .apply-product img {
+                width: 80px;
+                height: 80px;
+            }
+
+
+
+            /* ============== price range ========== */
+            .range-slider {
+                width: 100%;
+                max-width: 300px;
+                position: relative;
+                padding-top: 25px;
+                /* slider se space */
+                border-bottom: 1px solid #6a6767;
+            }
+
+            .range-slider .rangeValues {
+                display: block;
+                margin-top: 60px;
+                /* ✅ yahan margin-top kaam karega */
+                font-weight: 600;
+                color: #000;
+                text-align: center;
+            }
+
+
+
+            input[type=range] {
+                -webkit-appearance: none;
+                border: 1px solid white;
+                width: 100%;
+                max-width: 260px;
+                position: absolute;
+                left: 0;
+            }
+
+            input[type=range]::-webkit-slider-runnable-track {
+                width: 300px;
+                height: 8px;
+                background: #0071A8;
+                border: none;
+                border-radius: 3px;
+
+            }
+
+            input[type=range]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                border: none;
+                height: 16px;
+                width: 16px;
+                border-radius: 50%;
+                background: #000000;
+                margin-top: -4px;
+                cursor: pointer;
+                position: relative;
+                z-index: 1;
+            }
+
+            input[type=range]:focus {
+                outline: none;
+            }
+
+            input[type=range]:focus::-webkit-slider-runnable-track {
+                background: #ccc;
+            }
+
+            input[type=range]::-moz-range-track {
+                width: 100%;
+                max-width: 260px;
+                height: 5px;
+                background: #ddd;
+                border: none;
+                border-radius: 3px;
+            }
+
+            input[type=range]::-moz-range-thumb {
+                border: none;
+                height: 16px;
+                width: 16px;
+                border-radius: 50%;
+                background: #21c1ff;
+
+            }
+
+
+            /*hide the outline behind the border*/
+
+            input[type=range]:-moz-focusring {
+                outline: 1px solid white;
+                outline-offset: -1px;
+            }
+
+            input[type=range]::-ms-track {
+                width: 100%;
+                max-width: 300px;
+                height: 5px;
+                /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+                background: transparent;
+                /*leave room for the larger thumb to overflow with a transparent border */
+                border-color: transparent;
+                border-width: 6px 0;
+                /*remove default tick marks*/
+                color: transparent;
+                z-index: -4;
+
+            }
+
+            input[type=range]::-ms-fill-lower {
+                background: #777;
+                border-radius: 10px;
+            }
+
+            input[type=range]::-ms-fill-upper {
+                background: #ddd;
+                border-radius: 10px;
+            }
+
+            input[type=range]::-ms-thumb {
+                border: none;
+                height: 16px;
+                width: 16px;
+                border-radius: 50%;
+                background: #21c1ff;
+            }
+
+            input[type=range]:focus::-ms-fill-lower {
+                background: #888;
+            }
+
+            input[type=range]:focus::-ms-fill-upper {
+                background: #ccc;
+            }
+
+            .recent-pro {
+                width: 121px;
+                height: 121px;
+                object-fit: cover;
+            }
+
+            .recent-title {
+                font-weight: 600;
+                font-size: 18px;
+                font-family: Inter;
+                line-height: 140%;
+                color: #0D0D0D;
+            }
+
+            .productt-cardd h6 {
+                font-weight: 500;
+                font-size: 20px;
+                font-family: Inter;
+                line-height: 140%;
+                color: #0D0D0D;
+            }
+
+            .old-price {
+                display: inline-block;
+                text-decoration: line-through !important;
+                color: #7A7A7A;
+                font-weight: 500;
+                font-size: 18px;
+                font-family: Inter, sans-serif;
+                line-height: 160%;
+                vertical-align: middle;
+                /* margin-right: 8px; */
+            }
+
+            .recent-price {
+                display: flex;
+                gap: 12px;
+            }
+
+            .new-price {
+                color: #0071A8 !important;
+                font-weight: 500;
+                font-size: 18px;
+                font-family: Inter;
+                line-height: 160%;
+                /* margin-left: 20px; */
+            }
+
+
+            /* ====================== end ================================ */
+        </style>
+    @endpush
 
 @section('frontend-content')
     <section class="search-wishlist-section py-5">
         <div class="container mt-4">
             <div class="row justify-content-center align-items-center g-3">
-                <div class="list-wraper d-flex align-items-center gap-3 flex-wrap mt-4">
+                <div class="list-wraper d-flex align-items-center gap-3 flex-wra mt-4">
 
                     <!-- Search Input + Button -->
-                    <div class="search-bar d-flex gap-2">
+                    <div class="search-bar d-flex gap-2 position-relative">
                         <input type="text" id="searchInput" class="form-control me-2" placeholder="Search products...">
+                        <button type="button" id="clearSearchBtn" class="btn-clear-search" style="display: none;">
+                            <i class="fa fa-times"></i>
+                        </button>
                         <button id="searchBtn">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
 
-                    <!-- Wishlist -->
-                    <div class="wishlist d-flex align-items-center gap-2 pe-3 border-end">
-                        {{-- <i class="fa-regular fa-heart fa-lg mt-1 wishlist-icon"></i>
-                        <span class=" ">Add to Wishlist</span> --}}
-                    </div>
+
 
                     <!-- Shop Icon -->
                     <div class="shop-icon ms-1">
@@ -536,42 +563,53 @@
                         </div> --}}
                         <div class="row g-4 p-2">
                             @foreach ($recentProducts as $recentProduct)
-                                <!-- Wrap the entire product in a link -->
-                                <a href="{{ route('product-detail', $recentProduct->slug) }}"
-                                    class="d-flex text-decoration-none text-dark">
-                                    <div class="col-lg-5 col-md-12 col-5">
-                                        <img src="{{ $recentProduct->thumbnail ? asset('storage/products/thumbnails/' . $recentProduct->thumbnail) : '' }}"
-                                            alt="{{ $recentProduct->image_alt ?? $recentProduct->name }}"
-                                            class="recent-pro">
+                                <div class="col-12">
+                                    <a href="{{ route('product-detail', $recentProduct->slug) }}"
+                                        class="text-decoration-none text-dark">
 
-                                    </div>
-                                    <div class="col-lg-7 col-md-12 col-7">
-                                        <div>
-                                            <h6 class="recent-title">
-                                                {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
-                                            </h6>
-                                            <p class="recent-price">
-                                                @if ($recentProduct->price && $recentProduct->price > 0)
-                                                    <span
-                                                        class="old-price">${{ number_format($recentProduct->price, 2) }}</span>
-                                                @endif
-                                                <span
-                                                    class="new-price">${{ number_format($recentProduct->sale_price, 2) }}</span>
-                                            </p>
-                                            <div class="stars">
-                                                @php
-                                                    $rating = getProductRating($recentProduct);
-                                                @endphp
+                                        <div class="row align-items-center">
 
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    <i class="fa-solid fa-star {{ $i <= $rating ? 'active' : '' }}"></i>
-                                                @endfor
+                                            <!-- Image -->
+                                            <div class="col-lg-5 col-md-12 col-5">
+                                                <img src="{{ $recentProduct->thumbnail ? asset('storage/products/thumbnails/' . $recentProduct->thumbnail) : '' }}"
+                                                    alt="{{ $recentProduct->image_alt ?? $recentProduct->name }}"
+                                                    class="recent-pro img-fluid">
                                             </div>
+
+                                            <!-- Content -->
+                                            <div class="col-lg-7 col-md-12 col-7">
+                                                <div class="px-2">
+                                                    <h6 class="recent-title">
+                                                        {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
+                                                    </h6>
+
+                                                    <div class="recent-price">
+                                                        @if ($recentProduct->price && $recentProduct->price > 0)
+                                                            <span class="old-price">
+                                                                ${{ number_format($recentProduct->price, 2) }}
+                                                            </span>
+                                                        @endif
+                                                        <span class="new-price">
+                                                            ${{ number_format($recentProduct->sale_price, 2) }}
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="stars">
+                                                        @php $rating = getProductRating($recentProduct); @endphp
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            <i
+                                                                class="fa-solid fa-star {{ $i <= $rating ? 'active' : '' }}"></i>
+                                                        @endfor
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                             @endforeach
                         </div>
+
                     </div>
 
                 </div>
@@ -660,11 +698,32 @@
             const productsContainer = document.getElementById('productsContainer');
             const paginationContainer = document.getElementById('products-pagination-container');
             const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
 
             const rangeMin = document.querySelector('.range-min');
             const rangeMax = document.querySelector('.range-max');
             const priceFrom = document.getElementById('priceFrom');
             const priceTo = document.getElementById('priceTo');
+
+            // Show/hide clear button based on input value
+            function toggleClearButton() {
+                if (searchInput.value.trim() !== '') {
+                    clearSearchBtn.style.display = 'block';
+                } else {
+                    clearSearchBtn.style.display = 'none';
+                }
+            }
+
+            // Clear search input
+            clearSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                searchText = '';
+                clearSearchBtn.style.display = 'none';
+                fetchProducts();
+            });
+
+            // Monitor input changes
+            searchInput.addEventListener('input', toggleClearButton);
 
             function showLoader() {
                 loader.style.display = 'block';

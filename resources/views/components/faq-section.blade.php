@@ -50,7 +50,11 @@
 
                 <!-- Right Column: Image -->
                 <div class="col-lg-6 text-center">
-                    <img src="{{ asset($image) }}" alt="FAQ Image" class="faq-img img-fluid">
+                    {{-- <img src="{{ asset($image) }}" alt="FAQ Image" class="faq-img img-fluid"> --}}
+                    <img src="{{ asset('frontend/images/faqs-img.jpg') }}" alt="FAQ Image" class="faq-img img-fluid">
+
+
+
                 </div>
             </div>
         </div>

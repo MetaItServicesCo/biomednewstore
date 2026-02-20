@@ -11,7 +11,7 @@
 
 @push('frontend-styles')
     <style>
-        .product-title {
+        .product-titlee {
             font-size: 28px;
             font-weight: 600;
             font-family: Inter;
@@ -295,6 +295,178 @@
             color: #FFD700;
             /* Gold color for selected stars */
         }
+
+                /* No Image Placeholder */
+        .no-image-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            min-height: 400px;
+            color: #999;
+        }
+        .no-image-placeholder i {
+            font-size: 80px;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        .no-image-placeholder p {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0;
+            color: #999;
+        }
+        .main-img {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .main-img:hover {
+            opacity: 0.9;
+        }
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .image-modal-content {
+            max-width: 100%;
+            max-height: 70%;
+            margin-top: 130px;
+            object-fit: contain;
+            animation: zoomIn 0.3s;
+        }
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .image-modal-close {
+            position: absolute;
+            top: 153px;
+            right: 33%;
+            width: 45px;
+            height: 45px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 10000;
+        }
+        .image-modal-close::before,
+        .image-modal-close::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background-color: #000;
+        }
+        .image-modal-close::before {
+            transform: rotate(45deg);
+        }
+        .image-modal-close::after {
+            transform: rotate(-45deg);
+        }
+        .image-modal-close:hover {
+            background-color: #f44336;
+        }
+        .image-modal-close:hover::before,
+        .image-modal-close:hover::after {
+            background-color: #fff;
+        }
+
+        /* =================== related-products-section ============================ */
+
+        .related-title {
+            width: 344px;
+            height: 51px;
+            border: 1px solid #0071A8;
+            border-radius: 15px;
+            color: #0071A8;
+            font-family: Inter;
+            font-weight: 600;
+            font-size: 36px;
+            line-height: 100%;
+            letter-spacing: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        /* Card */
+        .related-card {
+            width: 100%;
+            max-width: 260px;
+            height: 394px;
+            border: 1px solid #0071A8;
+            border-radius: 13px;
+            overflow: hidden;
+            background: #ffffff;
+            margin: 0 auto;
+        }
+
+        .related-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        /* Card Body */
+        .related-card-body {
+            background: #C9E0EB;
+            height: calc(394px - 250px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        /* Product Title */
+        .product-titlee {
+            font-family: Inter;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 100%;
+            letter-spacing: 0;
+            color: #000000;
+            margin-bottom: 10px;
+            max-width: 278px;
+        }
+
+        /* Price */
+        .product-pricee {
+            font-family: Inter;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 100%;
+            color: #A33333;
+        }
     </style>
 @endpush
 
@@ -324,57 +496,81 @@
 
                         <div class="image-slider">
                             <!-- Main Image -->
-                            <img id="mainImage"
-                                src="{{ $product->thumbnail ?? false ? asset('storage/products/thumbnails/' . $product->thumbnail) : asset('frontend/images/offer-img.png') }}"
-                                class="main-img">
+                            @if($product->thumbnail)
+                                <img id="mainImage"
+                                    src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
+                                    alt="{{ $product->image_alt ?? $product->name }}"
+                                    class="main-img">
+                            @else
+                                <div class="no-image-placeholder main-img">
+                                    <i class="fa fa-image"></i>
+                                    <p>No Image Available</p>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="thumb-slider-container">
+                            @php
+                                $hasImages = false;
+                                $galleryImages = [];
 
-                            <!-- Prev Button -->
-                            <button class="thumb-prev">&#10094;</button>
+                                // Check if thumbnail exists
+                                if ($product->thumbnail) {
+                                    $hasImages = true;
+                                }
 
-                            <!-- Thumbnails -->
-                            <div class="thumb-wrapper">
-                                <div class="thumbs-track" id="thumbsTrack">
-                                    {{-- Main thumbnail first --}}
-                                    @if ($product->thumbnail ?? false)
-                                        <img src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
-                                            class="thumb" onclick="thumbClicked(this.src)">
-                                    @endif
-                                    {{-- Then gallery images --}}
-                                    @php
-                                        $galleryImages = [];
+                                // Check gallery images
+                                if (!empty($product->gallery_images)) {
+                                    if (is_array($product->gallery_images)) {
+                                        $galleryImages = $product->gallery_images;
+                                    } else {
+                                        $galleryImages = json_decode($product->gallery_images, true);
+                                    }
+                                    if (!empty($galleryImages)) {
+                                        $hasImages = true;
+                                    }
+                                }
+                            @endphp
 
-                                        if (!empty($product->gallery_images ?? null)) {
-                                            if (is_array($product->gallery_images)) {
-                                                $galleryImages = $product->gallery_images;
-                                            } else {
-                                                $galleryImages = json_decode($product->gallery_images, true); // decode JSON string to array
-                                            }
-                                        }
-                                    @endphp
+                            @if($hasImages)
+                                <!-- Prev Button -->
+                                <button class="thumb-prev">&#10094;</button>
 
-                                    @if (!empty($galleryImages))
-                                        @foreach ($galleryImages as $img)
-                                            @if (!empty($img))
-                                                <img src="{{ asset('storage/products/gallery/' . $img) }}" class="thumb"
-                                                    onclick="thumbClicked(this.src)">
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                <!-- Thumbnails -->
+                                <div class="thumb-wrapper">
+                                    <div class="thumbs-track" id="thumbsTrack">
+                                        {{-- Main thumbnail first --}}
+                                        @if ($product->thumbnail)
+                                            <img src="{{ asset('storage/products/thumbnails/' . $product->thumbnail) }}"
+                                                alt="{{ $product->image_alt ?? $product->name }}"
+                                                class="thumb" onclick="thumbClicked(this.src)">
+                                        @endif
+
+                                        {{-- Then gallery images --}}
+                                        @if (!empty($galleryImages))
+                                            @foreach ($galleryImages as $img)
+                                                @if (!empty($img))
+                                                    <img src="{{ asset('storage/products/gallery/' . $img) }}" 
+                                                        alt="{{ $product->image_alt ?? $product->name }}"
+                                                        class="thumb"
+                                                        onclick="thumbClicked(this.src)">
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
+
+                                <!-- Next Button -->
+                                <button class="thumb-next">&#10095;</button>
+                            @endif
+                        </div>
+
+                        @if($hasImages)
+                            <!-- Pagination -->
+                            <div class="pagination-wrapper">
+                                <div class="pagination-bar" id="paginationBar"></div>
                             </div>
-
-
-                            <!-- Next Button -->
-                            <button class="thumb-next">&#10095;</button>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-bar" id="paginationBar"></div>
-                        </div>
+                        @endif
 
                     </div>
                     <div class="col-lg-6">
@@ -582,10 +778,96 @@
         </div>
     </section>
 
+    {{-- ============================related-products-section=========================== --}}
+    <section class="related-products-section py-5">
+        <div class="container">
+
+            <!-- Heading -->
+            <div class="related-title mb-4">
+                Related Products
+            </div>
+
+            <!-- Cards Row -->
+            <div class="row g-4 mt-5">
+
+                <!-- Card 1 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/medical-img.jpg') }}" alt="product">
+
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+
+                            <div class="product-pricee">
+                                $199.00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/product-img-1.jpg') }}" alt="product">
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+                            <div class="product-pricee">$199.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/product-img-1.jpg') }}" alt="product">
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+                            <div class="product-pricee">$199.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="related-card">
+                        <img src="{{ asset('frontend/images/product-img-1.jpg') }}" alt="product">
+                        <div class="related-card-body">
+                            <p class="product-titlee">
+                                Welch Allyn ECG 10-Lead Banana
+                                Patient Cable for CP50, CP 150
+                                (721328, 901006)
+                            </p>
+                            <div class="product-pricee">$199.00</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
     {{-- ================= pruduct sectiion ============= --}}
     <div class="pro-section">
         <x-our-latest-products />
+    </div>
 
+    {{-- Image Modal --}}
+    <div class="image-modal" id="imageModal">
+        <span class="image-modal-close" id="modalClose"></span>
+        <img class="image-modal-content" id="modalImage" src="" alt="Product Image">
     </div>
 
 @endsection
@@ -594,7 +876,44 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
+            // ============= Image Modal Functionality =============
             const mainImage = document.getElementById("mainImage");
+            const imageModal = document.getElementById("imageModal");
+            const modalImage = document.getElementById("modalImage");
+            const modalClose = document.getElementById("modalClose");
+
+            // Open modal when main image is clicked
+            if (mainImage && imageModal && modalImage) {
+                mainImage.addEventListener("click", function() {
+                    imageModal.classList.add("active");
+                    modalImage.src = this.src;
+                });
+            }
+
+            // Close modal when close button is clicked
+            if (modalClose && imageModal) {
+                modalClose.addEventListener("click", function() {
+                    imageModal.classList.remove("active");
+                });
+            }
+
+            // Close modal when clicking outside the image
+            if (imageModal) {
+                imageModal.addEventListener("click", function(e) {
+                    if (e.target === imageModal) {
+                        imageModal.classList.remove("active");
+                    }
+                });
+            }
+
+            // Close modal with Escape key
+            document.addEventListener("keydown", function(e) {
+                if (e.key === "Escape" && imageModal && imageModal.classList.contains("active")) {
+                    imageModal.classList.remove("active");
+                }
+            });
+
+            // ============= Thumbnail Slider Functionality =============
             const thumbTrack = document.getElementById("thumbsTrack");
             const paginationBar = document.getElementById("paginationBar");
             const prevBtn = document.querySelector(".thumb-prev");
