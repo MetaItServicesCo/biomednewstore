@@ -51,6 +51,27 @@
                 filter: brightness(1.2);
             }
 
+             /* Clear Search Button */
+        .btn-clear-search {
+            position: absolute;
+            right: 85px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+        .btn-clear-search:hover {
+            color: #EF1616;
+        }
+        .btn-clear-search i {
+            font-size: 18px;
+        }
+
             /* Wishlist */
             .wishlist {
                 display: flex;

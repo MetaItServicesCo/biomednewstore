@@ -166,6 +166,27 @@
                 font-size: 18px;
             }
 
+            /* Clear Parts Search Button */
+        .btn-clear-parts-search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+        .btn-clear-parts-search:hover {
+            color: #D43838;
+        }
+        .btn-clear-parts-search i {
+            font-size: 18px;
+        }
+
             /* Buttons */
             .filtter-btn {
                 height: 58px;

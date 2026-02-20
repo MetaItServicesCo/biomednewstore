@@ -1032,15 +1032,18 @@
     <!-- Stripe JS -->
     <script src="https://js.stripe.com/v3/"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    =======
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         $(document).ready(function() {
-                    console.log('Script loaded and document ready'); <
-                    !--Stripe JS-- >
-                    <
-                    script src = "https://js.stripe.com/v3/" >
+            console.log('Script loaded and document ready');
+
+            // Stripe initialize
+            const stripe = Stripe('YOUR_PUBLISHABLE_KEY');
+
+            console.log('Stripe initialized:', stripe);
+        });
     </script>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <script>
@@ -1341,17 +1344,18 @@
                                                             '#street_address_2')
                                                         .val(),
                                                     city: $(
-                                                            '#city_id option:selected')
+                                                            '#city_id option:selected'
+                                                            )
                                                         .text(),
                                                     state: $(
                                                         '#state_id option:selected'
-                                                        ).text(),
+                                                    ).text(),
                                                     postal_code: $(
-                                                        '#postal_code')
-                                                    .val(),
+                                                            '#postal_code')
+                                                        .val(),
                                                     country: $(
                                                         '#country_id option:selected'
-                                                        ).data('code'),
+                                                    ).data('code'),
                                                 }
                                             }
                                         }

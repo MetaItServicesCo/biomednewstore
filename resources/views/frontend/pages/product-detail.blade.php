@@ -296,6 +296,110 @@
             /* Gold color for selected stars */
         }
 
+                /* No Image Placeholder */
+        .no-image-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            min-height: 400px;
+            color: #999;
+        }
+        .no-image-placeholder i {
+            font-size: 80px;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        .no-image-placeholder p {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0;
+            color: #999;
+        }
+        .main-img {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .main-img:hover {
+            opacity: 0.9;
+        }
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .image-modal-content {
+            max-width: 100%;
+            max-height: 70%;
+            margin-top: 130px;
+            object-fit: contain;
+            animation: zoomIn 0.3s;
+        }
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .image-modal-close {
+            position: absolute;
+            top: 153px;
+            right: 33%;
+            width: 45px;
+            height: 45px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 10000;
+        }
+        .image-modal-close::before,
+        .image-modal-close::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background-color: #000;
+        }
+        .image-modal-close::before {
+            transform: rotate(45deg);
+        }
+        .image-modal-close::after {
+            transform: rotate(-45deg);
+        }
+        .image-modal-close:hover {
+            background-color: #f44336;
+        }
+        .image-modal-close:hover::before,
+        .image-modal-close:hover::after {
+            background-color: #fff;
+        }
+
         /* =================== related-products-section ============================ */
 
         .related-title {
