@@ -14,7 +14,7 @@
              <!-- RIGHT COLUMN -->
              <div class="col-lg-8">
                  <p class="mission-text ">
-                     With Mr Biomed Tech, you find a partner who is interested in forging long-lasting relationships
+                     With Mr. Biomed Tech Services, you find a partner who is interested in forging long-lasting relationships
                      with our manufacturers and clients. Our passion for patient care, coupled with the stringency it
                      takes to ensure the reliability of medical rental equipment​, is what makes us so valuable to our
                      clients. We are ever-growing to align with the latest trends in healthcare. We continue to prove

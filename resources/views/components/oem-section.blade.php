@@ -1,6 +1,6 @@
 <section class="oem-trust-section py-5">
     <div class="container">
-        <h2 class="text-center mb-5 section-title fade-left">Why OEMs Trust <span>Mr Biomed Tech</span> </h2>
+        <h2 class="text-center mb-5 section-title fade-left">Why OEMs Trust <span>Mr. Biomed Tech Services</span> </h2>
 
         <div class="row g- justify-content-center mx-5">
             <!-- CARD-->

@@ -2,7 +2,7 @@
      <div class="container">
 
          <!-- Section Title -->
-         <h2 class="choose-title fade-left">Why Choose <span>Mr BioMed Tech</span> </h2>
+         <h2 class="choose-title fade-left">Why Choose <span>Mr. BioMed Tech Services</span> </h2>
 
          <div class="row g-4 justify-content-center mt-4">
 

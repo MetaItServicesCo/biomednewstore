@@ -728,7 +728,7 @@
             </div> --}}
             <hr class="bottom-line">
             <p class="copyright mb-0 t">
-                Copyright © {{ date('Y') }} | {{ setting('site_name', 'Mr Biomed Tech Services') }} ® | All right
+                Copyright © {{ date('Y') }} | {{ setting('site_name', 'Mr. Biomed Tech Services') }} ® | All right
                 reserved
             </p>
         </div>

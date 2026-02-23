@@ -10,7 +10,7 @@
 <section class="products-series-section py-5">
     <div class="container-fluid py-5 product-series-bg">
         <div class="container text-center">
-            <p class="text-center  product-series-para  mb-3 fade-left">New From Mr Biomed Tech</p>
+            <p class="text-center  product-series-para  mb-3 fade-left">New From Mr. Biomed Tech Services</p>
             <h2 class="text-center mb-5  product-section-heading fade-right">Our <span>Latest Products</span> </h2>
 
             <div class="product-filter-tabs mb-5 d-flex justify-content-center flex-wrap gap-2">

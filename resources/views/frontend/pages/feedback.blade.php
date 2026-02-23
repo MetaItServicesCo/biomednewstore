@@ -526,7 +526,7 @@
             <h1 class="hero-title mb-2 fade-left">Real Experiences. Trusted Biomedical Store</h1>
 
             <p class="hero-description mx-auto mb-4 fade-right">
-                Welcome to Mr. Biomed Tech Store (mbmts.com) – your one-stop online shop for biomedical equipment, parts,
+                Welcome to Mr. Biomed Tech Services (mbmts.com) – your one-stop online shop for biomedical equipment, parts,
                 and accessories.
                 Here you can explore real reviews from hospitals, clinics, labs, and technicians who buy from us.
             </p>

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h2 class="cta-contact-heading">
-                        Our Team at Mr-Biomed Tech is Here to Provide Expert Support and Solutions Just for You!
+                        Our Team at Mr. Biomed Tech Services is Here to Provide Expert Support and Solutions Just for You!
                     </h2>
                     <div class="d-flex flex-wra gap-5">
 
@@ -14,7 +14,7 @@
 
                             <a href="{{ route('contact-us') }}">
                                 <span class="cta-contact-text">
-                                    Get in Touch With Mr Biomed Tech Today
+                                    Get in Touch With Mr. Biomed Tech Services Today
                                 </span>
                             </a>
 

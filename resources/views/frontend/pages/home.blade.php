@@ -421,7 +421,7 @@
     <section class="hero-secti py-5">
         <div class="container text-center mb-5">
             <!-- First Heading -->
-            <h2 class="main-heading fade-left">Mr. Biomed Tech</h2>
+            <h2 class="main-heading fade-left">Mr. Biomed Tech Services</h2>
 
             <!-- Second Heading -->
             <h3 class="sub-heading mt-3 fade-right">
@@ -564,7 +564,7 @@
                     </h2>
 
                     <p class="about-short-desc mt-3">
-                        Mr Biomed Tech Services is committed to delivering dependable biomedical solutions for hospitals,
+                        Mr. Biomed Tech Services is committed to delivering dependable biomedical solutions for hospitals,
                         clinics, labs, and home-care settings. We provide a complete range of support—from product sourcing
                         and parts to installation, preventive maintenance, calibration, and repair—so your equipment stays
                         safe, accurate, and ready for use.
