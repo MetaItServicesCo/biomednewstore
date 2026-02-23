@@ -420,6 +420,12 @@
         font-weight: 700;
         color: #ffffff;
         text-decoration: none;
+        transition: all 0.4s ease-in-out;
+        display: inline-block;
+    }
+
+    .review-link:hover {
+        transform: scale(1.04)
     }
 
     .review-link span {
@@ -556,7 +562,7 @@
 
                     @if (setting('twitter'))
                         <a href="{{ setting('twitter') }}" target="_blank">
-                            <i class="fab fa-twitter fa-lg"></i>
+                            <i class="fa-brands fa-yelp"></i>
                         </a>
                     @endif
 

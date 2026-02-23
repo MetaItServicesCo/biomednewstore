@@ -388,6 +388,11 @@
      display: flex;
      align-items: center;
      gap: 5px;
+     transition: all 0.4s ease-in-out;
+ }
+
+ .nav-link:hover {
+     transform: scale(1.05);
  }
 
  .icon-style {
@@ -898,7 +903,6 @@
      .nav-link {
 
          font-size: 13px;
-
          gap: 10px;
      }
 
@@ -3528,6 +3532,10 @@
          min-height: 600px;
      }
 
+     .hero-detail-section {
+         margin-top: 100px !important;
+     }
+
      .hero-main-heading {
          font-size: 26px;
 
@@ -3539,7 +3547,6 @@
 
      }
 
-     /* Circles ko mobile par chota kar dein ya hide kar dein */
      .circle-one {
          width: 800px;
          height: 800px;
