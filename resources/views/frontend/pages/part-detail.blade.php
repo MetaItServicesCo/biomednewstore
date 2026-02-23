@@ -5,6 +5,52 @@
 @section('meta_keywords', $part->meta_keywords ?? '')
 @section('meta_description', $part->meta_description ?? '')
 
+@section('page_schema')
+    @if ($part)
+        @php
+            $schemaImage = $part->thumbnail
+                ? asset('storage/products/thumbnails/' . $part->thumbnail)
+                : null;
+            $schemaDescription = trim(strip_tags($part->description ?? ''));
+            $schemaAvailability = $part->in_stock
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock';
+            $schemaCondition = $part->condition
+                ? 'https://schema.org/' . ucfirst($part->condition) . 'Condition'
+                : 'https://schema.org/NewCondition';
+            $schemaRating = getProductRating($part);
+            $schemaReviewCount = $latestReviews->count() ?? 0;
+        @endphp
+        <script type="application/ld+json">
+            {
+              "@context": "https://schema.org/",
+              "@type": "Product",
+              "name": @json($part->name ?? ''),
+              "image": @json($schemaImage),
+              "description": @json($schemaDescription),
+              "sku": @json($part->sku ?? ''),
+              "brand": {
+                "@type": "Brand",
+                "name": @json(setting('site_name') ?? config('app.name'))
+              },
+              "offers": {
+                "@type": "Offer",
+                "url": @json(url()->current()),
+                "priceCurrency": "USD",
+                "price": @json((string) ($part->sale_price ?? $part->price ?? 0)),
+                "availability": @json($schemaAvailability),
+                "itemCondition": @json($schemaCondition)
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": @json(number_format($schemaRating, 1)),
+                "reviewCount": @json($schemaReviewCount)
+              }
+            }
+        </script>
+    @endif
+@endsection
+
 @push('frontend-styles')
     <style>
         .product-title {
