@@ -1095,6 +1095,14 @@
 
     <script>
         $(document).ready(function() {
+            // Check if order was just completed - prevent back button access
+            if (localStorage.getItem('order_just_completed') === 'true') {
+                localStorage.removeItem('order_just_completed');
+                localStorage.removeItem('cart');
+                window.location.replace("{{ route('products') }}");
+                return;
+            }
+
             const paymentGateway = '{{ $paymentGateway }}';
             const stripeKey = '{{ config('services.stripe.key') }}';
             const squareApplicationId = '{{ config('services.square.application_id') }}';
@@ -1413,8 +1421,16 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            window.location.href = "{{ route('order.details', ':id') }}".replace(':id',
-                                response.order_id);
+                            // Clear cart and set completion flag
+                            localStorage.removeItem('cart');
+                            localStorage.setItem('order_just_completed', 'true');
+                            
+                            // Close modal
+                            closePaymentModal();
+                            
+                            // Redirect with replace to prevent back navigation
+                            window.location.replace("{{ route('order.details', ':id') }}".replace(':id',
+                                response.order_id));
                             return;
                         }
 
@@ -1469,8 +1485,16 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            window.location.href = "{{ route('order.details', ':id') }}".replace(':id',
-                                response.order_id);
+                            // Clear cart and set completion flag
+                            localStorage.removeItem('cart');
+                            localStorage.setItem('order_just_completed', 'true');
+                            
+                            // Close modal
+                            closeSquarePaymentModal();
+                            
+                            // Redirect with replace to prevent back navigation
+                            window.location.replace("{{ route('order.details', ':id') }}".replace(':id',
+                                response.order_id));
                             return;
                         }
 

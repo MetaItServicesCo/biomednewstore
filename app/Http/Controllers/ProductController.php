@@ -629,11 +629,28 @@ class ProductController extends Controller
         try {
             $cart = session('cart', []);
 
+            // Debug logging
+            \Log::info('Order page accessed', [
+                'cart_count' => count($cart),
+                'cart_keys' => array_keys($cart),
+                'session_id' => session()->getId(),
+            ]);
+
             // If cart is empty → redirect to products page
             if (empty($cart)) {
+                \Log::warning('Cart is empty, redirecting to products');
                 return redirect()
                     ->route('products')
                     ->with('error', 'Your cart is empty. Please add products first.');
+            }
+
+            // Check if order was just completed - prevent back button access
+            if (session('order_completed')) {
+                session()->forget('order_completed');
+                \Log::info('Order already completed, redirecting to products');
+                return redirect()
+                    ->route('products')
+                    ->with('info', 'Your order has already been completed.');
             }
 
             $countries = Country::where('is_active', 1)

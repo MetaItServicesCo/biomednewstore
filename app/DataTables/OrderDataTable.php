@@ -25,7 +25,7 @@ class OrderDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addIndexColumn() // Add auto-incrementing row number
             ->editColumn('order_id', fn($order) => '<strong>' . $order->order_id . '</strong>')
-            ->editColumn('user_id', fn($order) => $order->user?->name ?? $order->first_name . ' ' . $order->last_name)
+            ->editColumn('user_id', fn($order) => $order->first_name . ' ' . $order->last_name)
             ->editColumn('email', fn($order) => $order->email)
             ->editColumn('total', fn($order) => '$' . number_format($order->total, 2))
             ->editColumn('shipping_method', function($order) {

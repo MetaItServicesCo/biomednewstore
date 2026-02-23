@@ -503,7 +503,7 @@
                                     <span>$0.00</span>
                                 </div>
 
-                                <a href="{{ route('billing') }}">
+                                <a href="{{ route('billing') }}" id="proceedCheckoutBtn">
                                     <button class="checkout-btn mt-3">Proceed to Checkout</button>
                                 </a>
 
@@ -799,6 +799,29 @@
                         });
                 });
             });
+
+            // Validate cart before proceeding to checkout
+            const checkoutBtn = document.getElementById('proceedCheckoutBtn');
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', function(e) {
+                    const cartRows = document.querySelectorAll('.cart-table tbody tr');
+                    
+                    if (cartRows.length === 0) {
+                        e.preventDefault();
+                        toastr.error('Your cart is empty. Please add products first.');
+                        return false;
+                    }
+                });
+            }
+
+            // Global function to update cart count in navbar
+            window.updateCartCount = function(cart) {
+                const cartCountBadge = document.getElementById('cart-count');
+                if (cartCountBadge) {
+                    const count = Object.keys(cart || {}).length;
+                    cartCountBadge.innerText = count;
+                }
+            };
 
         });
     </script>
