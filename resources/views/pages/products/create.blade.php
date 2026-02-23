@@ -61,7 +61,7 @@
                             </div>
 
                             <!-- Type -->
-                            <div class="col-lg-2 mb-4">
+                            {{-- <div class="col-lg-2 mb-4">
                                 <label for="type"
                                     class="form-label fw-semibold required">{{ __('Product For') }}</label>
                                 <select name="type" id="type"
@@ -80,7 +80,10 @@
                                 @error('type')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
+                            
+                            <!-- Hidden field to set default value -->
+                            <input type="hidden" name="type" value="for_store">
 
                             <div class="col-lg-2 mb-4">
                                 <label for="product_type"

@@ -23,6 +23,7 @@ class ReviewsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addIndexColumn() // Add auto-incrementing row number
             ->addColumn('category', fn($r) => optional($r->category)->name ?? '-')
             ->addColumn('created_by', fn($r) => optional($r->createdBy)->name ?? '-')
             ->addColumn('updated_by', fn($r) => optional($r->updatedBy)->name ?? '-')
@@ -67,7 +68,7 @@ class ReviewsDataTable extends DataTable
             ->minifiedAjax()
             ->processing(true)
             ->serverSide(true)
-            ->orderBy(5, 'desc')
+            ->orderBy(6, 'desc') // Order by created_at column (index 6 after adding # column)
             ->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border rounded text-gray-700 fw-semibold')
             ->setTableHeadClass('text-start text-muted fw-bold fs-7 text-uppercase gs-0')
             ->drawCallback(
@@ -85,6 +86,13 @@ class ReviewsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('DT_RowIndex')
+                ->title('#')
+                ->searchable(false)
+                ->orderable(false)
+                ->width(30)
+                ->addClass('text-center'),
+
             Column::make('name')->title('Name'),
             Column::make('email')->title('Email'),
             Column::make('category')->title('Category'),
