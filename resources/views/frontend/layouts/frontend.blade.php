@@ -133,6 +133,16 @@
     @stack('frontend-scripts')
     <!--end::Javascript-->
 
+    <script>
+        // Toastr global configuration
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "timeOut": "1000",
+            "extendedTimeOut": "1000"
+        };
+    </script>
+
     @if (session('success'))
         <script>
             toastr.success("{{ session('success') }}");
@@ -172,6 +182,17 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        // Global function to update cart count in navbar
+        window.updateCartCount = function(cart) {
+            const cartCountBadge = document.getElementById('cart-count');
+            if (cartCountBadge) {
+                const count = Object.keys(cart || {}).length;
+                cartCountBadge.innerText = count;
+            }
+        };
     </script>
 
     @livewireScripts

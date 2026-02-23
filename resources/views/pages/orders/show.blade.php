@@ -17,11 +17,11 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Order Date:</strong></td>
-                                    <td>{{ $order->created_at->format('d-M-Y H:i') }}</td>
+                                    <td>{{ $order->created_at->format('d-M-Y h:i A') }}</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Payment Date:</strong></td>
-                                    <td>{{ $order->paid_at ? $order->paid_at->format('d-M-Y H:i') : 'Not Paid' }}</td>
+                                    <td>{{ $order->paid_at ? $order->paid_at->format('d-M-Y h:i A') : 'Not Paid' }}</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Shipping Method:</strong></td>

@@ -73,12 +73,12 @@
                     class="navbar-nav blue-block d-flex flex-lg-row flex-column align-items-lg-center align-items-start  ">
 
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                        <a class="nav-link {{ Route::currentRouteName() === 'home' ? 'active' : '' }}"
                             href="{{ route('home') }}">Home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('products') ? 'active' : '' }}"
+                        <a class="nav-link {{ Route::currentRouteName() === 'products' || Route::currentRouteName() === 'product-detail' ? 'active' : '' }}"
                             href="{{ route('products') }}">MrBioMed Store</a>
                     </li>
 
@@ -142,16 +142,16 @@
                         </div>
                     </li>
 
-                  
+
 
                     <li class="nav-item">
-                        <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} "
+                        <a class="nav-link  {{ Route::currentRouteName() === 'parts' || Route::currentRouteName() === 'part-detail' ? 'active' : '' }} "
                             href="{{ route('parts') }}">
                             Parts
                         </a>
                     </li>
-  <li class="nav-item">
-                        <a class="nav-link  {{ request()->routeIs('parts') ? 'active' : '' }} "
+                    <li class="nav-item">
+                        <a class="nav-link  {{ Route::currentRouteName() === 'feedback' || Route::currentRouteName() === 'post.feedback' ? 'active' : '' }} "
                             href="{{ route('feedback') }}">
                             FeedBack
                         </a>
@@ -186,7 +186,8 @@
                         <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/contact"
                             class="btn contact-btn mb-2 px-3 py-">
                             CONTACT
-                        </a> </li>
+                        </a>
+                    </li>
 
                     {{-- <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                         @guest

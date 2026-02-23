@@ -143,3 +143,21 @@
         </div>
     </section>
 @endsection
+
+@push('frontend-scripts')
+    <script>
+        // Clear cart count on order confirmation page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update cart count to 0
+            if (window.updateCartCount) {
+                window.updateCartCount({});
+            }
+            
+            // Also update the badge directly
+            const cartCountBadge = document.getElementById('cart-count');
+            if (cartCountBadge) {
+                cartCountBadge.innerText = '0';
+            }
+        });
+    </script>
+@endpush

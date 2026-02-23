@@ -960,14 +960,8 @@
                     <div class="summary-card mt-4">
                         <div class="summary-toggle mt-3">
                             <span>Estimate Shipping and Tax</span>
-                            <i class="fa fa-chevron-down"></i>
                         </div>
                         <p class="summary-text mt-3">Enter your destination to get a shipping estimate.</p>
-
-                        <div class="summary-toggle mt-3">
-                            <span>Apply Discount Code</span>
-                            <i class="fa fa-chevron-down"></i>
-                        </div>
 
                         <hr>
 
@@ -1101,6 +1095,14 @@
 
     <script>
         $(document).ready(function() {
+            // Check if order was just completed - prevent back button access
+            if (localStorage.getItem('order_just_completed') === 'true') {
+                localStorage.removeItem('order_just_completed');
+                localStorage.removeItem('cart');
+                window.location.replace("{{ route('products') }}");
+                return;
+            }
+
             const paymentGateway = '{{ $paymentGateway }}';
             const stripeKey = '{{ config('services.stripe.key') }}';
             const squareApplicationId = '{{ config('services.square.application_id') }}';
@@ -1152,6 +1154,7 @@
             function validateForm() {
                 let isValid = true;
                 const errors = {};
+                let firstErrorField = null;
 
                 $('.error-message').text('');
 
@@ -1159,33 +1162,39 @@
                 if (!email) {
                     errors.email = 'Email is required';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#email';
                 } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                     errors.email = 'Please enter a valid email address';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#email';
                 }
 
                 const firstName = $('#first_name').val().trim();
                 if (!firstName) {
                     errors.first_name = 'First name is required';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#first_name';
                 }
 
                 const lastName = $('#last_name').val().trim();
                 if (!lastName) {
                     errors.last_name = 'Last name is required';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#last_name';
                 }
 
                 const streetAddress = $('#street_address').val().trim();
                 if (!streetAddress) {
                     errors.street_address = 'Street address is required';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#street_address';
                 }
 
                 const countryId = $('#country_id').val();
                 if (!countryId) {
                     errors.country_id = 'Country is required';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#country_id';
                 }
 
                 if (stateSelect.prop('required')) {
@@ -1193,6 +1202,7 @@
                     if (!stateId) {
                         errors.state_id = 'State/Province is required';
                         isValid = false;
+                        if (!firstErrorField) firstErrorField = '#state_id';
                     }
                 }
 
@@ -1201,6 +1211,7 @@
                     if (!cityId) {
                         errors.city_id = 'City is required';
                         isValid = false;
+                        if (!firstErrorField) firstErrorField = '#city_id';
                     }
                 }
 
@@ -1208,17 +1219,27 @@
                 if (!postalCode) {
                     errors.postal_code = 'Postal code is required';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#postal_code';
                 }
 
                 const phoneNumber = $('#phone_number').val().trim();
                 if (!phoneNumber) {
                     errors.phone_number = 'Phone number is required';
                     isValid = false;
+                    if (!firstErrorField) firstErrorField = '#phone_number';
                 }
 
                 Object.keys(errors).forEach(field => {
                     $(`#${field}_error`).text(errors[field]);
                 });
+
+                // Scroll to first error field
+                if (!isValid && firstErrorField) {
+                    $('html, body').animate({
+                        scrollTop: $(firstErrorField).offset().top - 150
+                    }, 500);
+                    $(firstErrorField).focus();
+                }
 
                 return isValid;
             }
@@ -1400,8 +1421,16 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            window.location.href = "{{ route('order.details', ':id') }}".replace(':id',
-                                response.order_id);
+                            // Clear cart and set completion flag
+                            localStorage.removeItem('cart');
+                            localStorage.setItem('order_just_completed', 'true');
+                            
+                            // Close modal
+                            closePaymentModal();
+                            
+                            // Redirect with replace to prevent back navigation
+                            window.location.replace("{{ route('order.details', ':id') }}".replace(':id',
+                                response.order_id));
                             return;
                         }
 
@@ -1456,8 +1485,16 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            window.location.href = "{{ route('order.details', ':id') }}".replace(':id',
-                                response.order_id);
+                            // Clear cart and set completion flag
+                            localStorage.removeItem('cart');
+                            localStorage.setItem('order_just_completed', 'true');
+                            
+                            // Close modal
+                            closeSquarePaymentModal();
+                            
+                            // Redirect with replace to prevent back navigation
+                            window.location.replace("{{ route('order.details', ':id') }}".replace(':id',
+                                response.order_id));
                             return;
                         }
 

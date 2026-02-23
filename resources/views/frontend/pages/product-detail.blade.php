@@ -372,9 +372,6 @@
         .main-img:hover {
             opacity: 0.9;
         }
-        .thumb {
-            cursor: zoom-in;
-        }
         /* Image Modal */
         .image-modal {
             display: none;

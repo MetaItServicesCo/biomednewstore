@@ -388,6 +388,11 @@
      display: flex;
      align-items: center;
      gap: 5px;
+     transition: all 0.4s ease-in-out;
+ }
+
+ .nav-link:hover {
+     transform: scale(1.05);
  }
 
  .icon-style {
@@ -898,7 +903,6 @@
      .nav-link {
 
          font-size: 13px;
-
          gap: 10px;
      }
 
@@ -1436,14 +1440,14 @@
      text-decoration: line-through;
      color: #d8a036;
 
-     font-size: 20px;
-     font-weight: 500;
+     font-size: 15px;
+     font-weight: 500 !important;
      font-family: Inter, sans-serif;
  }
 
  .new-price {
-     font-size: 20px;
-     font-weight: 500;
+     font-size: 15px !important;
+     font-weight: 500 !important;
      font-family: Inter, sans-serif;
  }
 
@@ -1454,7 +1458,7 @@
      border-radius: 8px;
      border: none;
      font-weight: 600;
-     font-size: 12px;
+     font-size: 10px;
      transition: all 0.4s ease-in-out;
  }
 
@@ -3412,11 +3416,10 @@
 
  .hero-detail-section {
      background: linear-gradient(to right, #006A9E 60%, #A5CDE0);
-     /* padding-top: 50px;
-     padding-bottom: 80px; */
-     padding-top: 20px;
+     padding-top: 50px;
+     /* padding-bottom: 80px; */
      height: 100%;
-     margin-top: 120px;
+     margin-top: 140px;
  }
 
  .hero-detail-section .hero-title {
@@ -3425,6 +3428,7 @@
      font-weight: 700;
      color: white;
      line-height: 120%;
+
  }
 
  .hero-title span {
@@ -3528,6 +3532,10 @@
          min-height: 600px;
      }
 
+     .hero-detail-section {
+         margin-top: 100px !important;
+     }
+
      .hero-main-heading {
          font-size: 26px;
 
@@ -3539,7 +3547,6 @@
 
      }
 
-     /* Circles ko mobile par chota kar dein ya hide kar dein */
      .circle-one {
          width: 800px;
          height: 800px;
