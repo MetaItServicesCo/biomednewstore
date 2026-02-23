@@ -133,6 +133,16 @@
     @stack('frontend-scripts')
     <!--end::Javascript-->
 
+    <script>
+        // Toastr global configuration
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "timeOut": "1000",
+            "extendedTimeOut": "1000"
+        };
+    </script>
+
     @if (session('success'))
         <script>
             toastr.success("{{ session('success') }}");
