@@ -183,8 +183,7 @@
 
                         </div>
 
-                        <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/contact"
-                            class="btn contact-btn mb-2 px-3 py-">
+                        <a href="#footerSection" class="btn contact-btn mb-2 px-3 py-">
                             CONTACT
                         </a>
                     </li>
