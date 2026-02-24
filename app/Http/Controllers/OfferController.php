@@ -42,8 +42,8 @@ class OfferController extends Controller
             'content_title'     => 'required|string|max:255',
             'description'       => 'nullable|string',
             'is_active'         => 'required|in:0,1',
-            'thumbnail'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
-            'gallery_images.*'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'thumbnail'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
+            'gallery_images.*'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'image_alt'         => 'nullable|string',
 
             'serve_heading'       => 'nullable|string',
@@ -52,11 +52,11 @@ class OfferController extends Controller
             'benefits_heading'    => 'nullable|string',
             'benefits_description' => 'nullable|string',
 
-            'challenges_image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'challenges_image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'challenges_image_alt'    => 'nullable|string|max:255',
             'challenges_description'  => 'nullable|string',
 
-            'cta_thumbnail'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'cta_thumbnail'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'cta_image_alt'       => 'nullable|string|max:255',
             'cta_description'     => 'nullable|string',
 
@@ -177,8 +177,8 @@ class OfferController extends Controller
             'description'       => 'nullable|string',
             'content_title'     => 'required|string|max:255',
             'is_active'         => 'required|in:0,1',
-            'thumbnail'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
-            'gallery_images.*'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'thumbnail'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
+            'gallery_images.*'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'image_alt'         => 'nullable|string',
 
             'serve_heading' => 'nullable|string',
@@ -186,11 +186,11 @@ class OfferController extends Controller
             'benefits_heading' => 'nullable|string',
             'benefits_description' => 'nullable|string',
 
-            'challenges_image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'challenges_image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'challenges_image_alt'    => 'nullable|string|max:255',
             'challenges_description'  => 'nullable|string',
 
-            'cta_thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'cta_thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'cta_image_alt' => 'nullable|string|max:255',
             'cta_description' => 'nullable|string',
 

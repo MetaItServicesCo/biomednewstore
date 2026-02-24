@@ -52,7 +52,7 @@ class WhatWeDoController extends Controller
                 'sections.*.title' => 'required|string|max:255',
                 'sections.*.slug' => 'required|string|max:255',
                 'sections.*.description' => 'nullable|string',
-                'bg_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+                'bg_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
                 'bg_image_alt' => 'nullable|string|max:255',
             ];
 

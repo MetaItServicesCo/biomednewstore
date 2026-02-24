@@ -48,7 +48,7 @@ class CompanyCertificationController extends Controller
 
             $rules = [
                 'title'            => 'required|string|max:255',
-                'certificate'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+                'certificate'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
                 'certificate_alt'  => 'nullable|string|max:255',
             ];
 

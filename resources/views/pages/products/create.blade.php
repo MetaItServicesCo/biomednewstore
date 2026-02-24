@@ -529,7 +529,7 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const MAX_FILE_SIZE = 300 * 1024; // 300KB in bytes
+                const MAX_FILE_SIZE = 10000 * 1024; // 10MB in bytes
                 let selectedGalleryFiles = []; // Store selected gallery files
 
                 // Thumbnail validation and preview
@@ -557,7 +557,7 @@
                                         File too large!
                                     </small>
                                     <small class="text-dark d-block" style="font-size: 0.65rem;">
-                                        ${(file.size / 1024).toFixed(2)} KB (Max: 300 KB)
+                                        ${(file.size / 1024).toFixed(2)} KB (Max: 10 MB)
                                     </small>
                                     <span class="text-danger d-block mt-1" style="cursor:pointer; font-size:0.75rem;" onclick="document.getElementById('thumbnail').value=''; document.getElementById('thumbnail-preview-container').innerHTML='';">
                                         Remove
@@ -618,7 +618,7 @@
                                             File too large!
                                         </small>
                                         <small class="text-dark d-block" style="font-size: 0.6rem;">
-                                            ${(file.size / 1024).toFixed(2)} KB (Max: 300 KB)
+                                            ${(file.size / 1024).toFixed(2)} KB (Max: 10 MB)
                                         </small>
                                         <span class="text-danger d-block mt-1" style="cursor:pointer; font-size:0.7rem;" onclick="removeGalleryPreview(${index})">
                                             Remove
@@ -694,7 +694,7 @@
                         
                         if (hasInvalidFiles) {
                             e.preventDefault();
-                            toastr.error('Please remove all invalid images (files larger than 300 KB) before submitting.');
+                            toastr.error('Please remove all invalid images (files larger than 10 MB) before submitting.');
                             return false;
                         }
                     });
