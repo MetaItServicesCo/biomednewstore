@@ -113,7 +113,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown has-mega">
+                    {{-- <li class="nav-item dropdown has-mega">
                         <a class="nav-link mega-toggle" href="javascript:void(0)">Accessories<i
                                 class="bi bi-chevron-down dropdown-icon"></i></a>
                         <div class="mega-menu">
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
 
 
 
@@ -163,7 +163,7 @@
                     </li> --}}
 
 
-                    <li class="nav-item ms-auto d-flex flex-column align-items-center mt-2 mt-lg-0">
+                    <li class="nav-item ms-auto d-flex gap-4 align-items-center mt-2 mt-lg-0">
                         <div class="d-flex align-items-center gap-3  contact-icons-wrapper me-2 mt-4">
 
                             {{-- <a href="{{ route('login') }}" target="_blank" class="">
@@ -172,7 +172,7 @@
                             </a> --}}
 
 
-                            <a href="{{ route('cart') }}" class="cart-icon-wrapper position-relative">
+                            <a href="{{ route('cart') }}" class="cart-icon-wrapper mb-4 position-relative">
                                 <img src="{{ asset('frontend/images/nav-ico.png') }}" class="icon-shop">
 
                                 <span id="cart-count" class="cart-count-badge">
@@ -183,7 +183,7 @@
 
                         </div>
 
-                        <a href="javascript:void(0)" class="btn contact-btn mb-2 px-3 py-" data-open-get-quote
+                        <a href="javascript:void(0)" class="btn contact-btn mb-3 px-3 py-" data-open-get-quote
                             data-modal-title="Contact Us">
                             CONTACT
                         </a>

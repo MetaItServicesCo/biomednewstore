@@ -557,7 +557,7 @@
                 <div class="col-lg-6">
 
                     <h2 class="review-headingg mb-3 fade-right">
-                        Mr. Biomed Tech Reviews <span>What It’s Like To Shop With Us</span>
+                        MBMTS Reviews <span>What It’s Like To Shop With Us</span>
                     </h2>
 
                     <div class="review-desc mb-4 fade-left">

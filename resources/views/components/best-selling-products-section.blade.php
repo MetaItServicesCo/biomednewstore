@@ -83,6 +83,37 @@
             margin: 0 auto;
         }
     }
+
+    /* Search Reset Button */
+    .search-wrapper .search-input {
+        padding-right: 40px;
+    }
+
+    .search-reset-btn {
+        position: absolute;
+        right: 70px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: #999;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 5px 8px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.3s ease;
+        z-index: 10;
+    }
+
+    .search-reset-btn:hover {
+        color: #dc3545;
+    }
+
+    .search-reset-btn i {
+        pointer-events: none;
+    }
 </style>
 
 <section class="best-selling-section mt-5 py-3">
@@ -94,10 +125,13 @@
         </h2>
 
         <!-- Search -->
-        <div class="search-wrapper mb-4">
+        <div class="search-wrapper mb-4 position-relative">
             <input type="text" id="bestSearchInput" class="search-input" placeholder="Search the store">
             <button class="search-btn">
                 <i class="bi bi-search"></i>
+            </button>
+            <button class="search-reset-btn" id="bestSearchReset" style="display: none;">
+                <i class="bi bi-x-circle-fill"></i>
             </button>
         </div>
 
@@ -162,6 +196,28 @@
         const filterUrl = "{{ route('best.products.filter') }}";
         const container = document.getElementById('best-products-container');
         const searchInput = document.getElementById('bestSearchInput');
+        const resetBtn = document.getElementById('bestSearchReset');
+
+        // Show/hide reset button based on input
+        searchInput.addEventListener('input', function() {
+            if (this.value.trim().length > 0) {
+                resetBtn.style.display = 'flex';
+            } else {
+                resetBtn.style.display = 'none';
+            }
+        });
+
+        // Reset button click
+        resetBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            resetBtn.style.display = 'none';
+            
+            const activeCat = document.querySelector('.cat-btn.active')?.dataset.slug || 'all';
+            loadProducts({
+                category: activeCat,
+                search: ''
+            });
+        });
 
         function loadProducts(params = {}) {
 

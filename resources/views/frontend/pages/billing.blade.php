@@ -800,10 +800,10 @@
                             <input type="email" class="form-control form-input" id="email" name="email"
                                 value="{{ old('email') }}" required>
                             <div class="text-danger error-message" id="email_error"></div>
-                            <small class="helper-text mt-3">You can create an account after checkout.</small>
+                            {{-- <small class="helper-text mt-3">You can create an account after checkout.</small> --}}
                         </div>
 
-                        <hr class="form-divider my-4">
+                        {{-- <hr class="form-divider my-4"> --}}
 
                         <!-- First Name -->
                         <div class="mb-3">

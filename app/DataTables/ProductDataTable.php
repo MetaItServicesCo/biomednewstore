@@ -26,28 +26,14 @@ class ProductDataTable extends DataTable
             ->addIndexColumn() // Add auto-incrementing row number
 
             ->editColumn('type', function ($product) {
-
-                // Type badge
-                if ($product->type === 'for_store') {
-                    $typeBadge = '<span class="badge badge-info me-1">For Store</span>';
-                } elseif ($product->type === 'for_rent') {
-                    $typeBadge = '<span class="badge badge-warning me-1">For Rent</span>';
-                } elseif ($product->type === 'both') {
-                    $typeBadge = '<span class="badge badge-primary me-1">Both</span>';
-                } else {
-                    $typeBadge = '-';
-                }
-
-                // Product Type badge
+                // Product Type badge only (removed For Store/For Rent/Both badges)
                 if ($product->product_type === 'product') {
-                    $productTypeBadge = '<span class="badge badge-success">Product</span>';
+                    return '<span class="badge badge-success">Product</span>';
                 } elseif ($product->product_type === 'part') {
-                    $productTypeBadge = '<span class="badge badge-dark">Part</span>';
+                    return '<span class="badge badge-dark">Part</span>';
                 } else {
-                    $productTypeBadge = '';
+                    return '-';
                 }
-
-                return $typeBadge . $productTypeBadge;
             })
 
 
@@ -113,7 +99,7 @@ class ProductDataTable extends DataTable
             ->minifiedAjax()
             ->processing(true)
             ->serverSide(true)
-            ->orderBy(8, 'desc') // Order by created_at column (index 8 after adding # column)
+            ->orderBy(0, 'desc') // Order by ID (newest first)
             ->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border rounded text-gray-700 fw-semibold')
             ->setTableHeadClass('text-start text-muted fw-bold fs-7 text-uppercase gs-0')
             ->parameters([
@@ -135,6 +121,11 @@ class ProductDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('id')
+                ->title('ID')
+                ->name('products.id')
+                ->visible(false), // Hidden but used for sorting
+
             Column::make('DT_RowIndex')
                 ->title('#')
                 ->searchable(false)

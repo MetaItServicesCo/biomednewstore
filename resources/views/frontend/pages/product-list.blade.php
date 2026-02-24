@@ -26,6 +26,7 @@
                 height: 58px;
                 background-color: #DEE9FF;
                 max-width: 526px;
+                padding-right: 50px; /* Space for cancel button inside */
             }
 
             @media(max-width:768px) {
@@ -34,7 +35,7 @@
                 }
             }
 
-            .search-bar button {
+            .search-bar #searchBtn {
                 border-radius: 4px;
                 width: 70px;
                 height: 58px;
@@ -51,26 +52,32 @@
                 filter: brightness(1.2);
             }
 
-             /* Clear Search Button */
-        .btn-clear-search {
-            position: absolute;
-            right: 85px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            padding: 5px 10px;
-            z-index: 10;
-            transition: color 0.3s ease;
-        }
-        .btn-clear-search:hover {
-            color: #EF1616;
-        }
-        .btn-clear-search i {
-            font-size: 18px;
-        }
+            /* Clear Search Button - Inside Input Field */
+            .btn-clear-search-inside {
+                position: absolute;
+                top: 50%;
+                left: 55%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                color: #999;
+                cursor: pointer;
+                padding: 5px 8px;
+                z-index: 10;
+                transition: color 0.3s ease;
+                font-size: 20px;
+                display: none;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .btn-clear-search-inside:hover {
+                color: #dc3545;
+            }
+
+            .btn-clear-search-inside i {
+                pointer-events: none;
+            }
 
             /* Wishlist */
             .wishlist {
@@ -457,8 +464,8 @@
                     <!-- Search Input + Button -->
                     <div class="search-bar d-flex gap-2 position-relative">
                         <input type="text" id="searchInput" class="form-control me-2" placeholder="Search products...">
-                        <button type="button" id="clearSearchBtn" class="btn-clear-search" style="display: none;">
-                            <i class="fa fa-times"></i>
+                        <button type="button" id="clearSearchBtn" class="btn-clear-search-inside" style="display: none;">
+                            <i class="fa fa-times-circle"></i>
                         </button>
                         <button id="searchBtn">
                             <i class="fa fa-search"></i>
@@ -708,7 +715,7 @@
             // Show/hide clear button based on input value
             function toggleClearButton() {
                 if (searchInput.value.trim() !== '') {
-                    clearSearchBtn.style.display = 'block';
+                    clearSearchBtn.style.display = 'flex';
                 } else {
                     clearSearchBtn.style.display = 'none';
                 }
