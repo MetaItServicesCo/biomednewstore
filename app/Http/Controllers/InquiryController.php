@@ -144,6 +144,29 @@ class InquiryController extends Controller
         }
     }
 
+    public function contactFormView(int $id)
+    {
+        try {
+            $inquiry = ContactUsFormInquiry::with(['state', 'city'])->findOrFail($id);
+            
+            return view('pages.contact_us.view', compact('inquiry'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()
+                ->route('admin.contact-us.form.list')
+                ->with('error', 'Contact inquiry not found.');
+        } catch (\Throwable $e) {
+            Log::error('Contact View Failed', [
+                'inquiry_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return redirect()
+                ->route('admin.contact-us.form.list')
+                ->with('error', 'Unable to view contact inquiry.');
+        }
+    }
+
     // ===========================
     // Service Request
     // ===========================

@@ -1,0 +1,60 @@
+/* Toastr Close Button Styling - Force Visible */
+.toast-close-button {
+    position: relative !important;
+    right: -0.3em !important;
+    top: -0.3em !important;
+    float: right !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+    opacity: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.toast-close-button:hover,
+.toast-close-button:focus {
+    color: #000000 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    opacity: 0.8 !important;
+}
+
+/* Make close button more visible */
+#toast-container > div {
+    padding: 15px 50px 15px 15px !important;
+    position: relative !important;
+}
+
+#toast-container .toast-close-button {
+    position: absolute !important;
+    right: 10px !important;
+    top: 10px !important;
+    font-size: 20px !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    display: block !important;
+    visibility: visible !important;
+    z-index: 999 !important;
+}
+
+#toast-container .toast-close-button:hover {
+    opacity: 0.7 !important;
+    color: #ffffff !important;
+}
+
+/* Ensure button is visible on all toast types */
+#toast-container > .toast-success .toast-close-button,
+#toast-container > .toast-error .toast-close-button,
+#toast-container > .toast-info .toast-close-button,
+#toast-container > .toast-warning .toast-close-button {
+    display: block !important;
+    visibility: visible !important;
+    color: #ffffff !important;
+}

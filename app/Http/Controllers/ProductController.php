@@ -424,7 +424,7 @@ class ProductController extends Controller
             $allProducts = Product::where('is_active', true)
                 ->where('product_type', 'product')
                 ->whereIn('type', ['for_store', 'both'])
-                ->orderBy('name', 'asc')
+                ->orderBy('created_at', 'desc') // Newest first
                 ->paginate(15); // 15 products per page
 
             $recentProducts = Product::where('is_active', true)
@@ -475,7 +475,7 @@ class ProductController extends Controller
                 $query->whereBetween('sale_price', [$min, $max]);
             }
 
-            $products = $query->orderBy('name', 'asc')->paginate(15);
+            $products = $query->orderBy('created_at', 'desc')->paginate(15); // Newest first
 
             return response()->json([
                 'html' => view('partials._products', compact('products'))->render(),

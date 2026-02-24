@@ -410,9 +410,9 @@
     }
 
     .Rate {
-        font-size: 20px !important;
+        font-size: 30px !important;
         font-weight: 700 !important;
-        color: #000000 !important;
+        color: #fff !important;
     }
 
     .review-link {
@@ -663,8 +663,8 @@
             </div>
 
             <div class="col-lg-4 ps-5">
-                <h4 class="Field mb-3 pb-2">Field Service Location</h4>
-                <div class="row location-list mb-4">
+                {{-- <h4 class="Field mb-3 pb-2">Field Service Location</h4> --}}
+                {{-- <div class="row location-list mb-4">
                     @php
                         // Areas ko 2 columns me divide kar rahe hain
                         $chunks = ($servingAreas ?? collect())->chunk(ceil(($servingAreas?->count() ?? 0) / 2));
@@ -682,7 +682,7 @@
                             @endforeach
                         </div>
                     @endforeach
-                </div>
+                </div> --}}
 
                 <h4 class="Rate mb-3 pb-2 ">Rate The Company</h4>
                 <div class="d-flex align-items-center mb-2 ">
@@ -695,7 +695,7 @@
                     </div>
                     <span class="text-white fw-bold fs-5">4.3</span>
                 </div>
-                <a href="#" class="review-link ">Leave Us a Review On
+                <a href="https://maps.app.goo.gl/XNoeessFxAAwFx3v8" target="_blank" class="review-link ">Leave Us a Review On
                     <span>Google</span> </a>
             </div>
         </div>

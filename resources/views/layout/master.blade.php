@@ -86,6 +86,10 @@
     <!--begin::DataTable Page Length Persistence-->
     <script src="{{ asset('assets/js/custom/datatable-page-length.js') }}"></script>
     <!--end::DataTable Page Length Persistence-->
+    
+    <!--begin::Scroll Position Persistence-->
+    <script src="{{ asset('assets/js/custom/scroll-position.js') }}"></script>
+    <!--end::Scroll Position Persistence-->
 
     @stack('scripts')
     <!--end::Javascript--> 
@@ -94,8 +98,8 @@
         toastr.options = {
             "closeButton": true,
             "progressBar": true,
-            "timeOut": "1000",
-            "extendedTimeOut": "1000"
+            "timeOut": "5000",
+            "extendedTimeOut": "2000"
         };
     </script>
 

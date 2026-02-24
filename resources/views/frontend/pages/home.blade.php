@@ -315,7 +315,7 @@
 
         /* Short desc */
         .about-short-desc {
-            color: #0071A8;
+            color: #000000;
             font-weight: 400;
             letter-spacing: 0;
             font-size: 20px;
@@ -444,7 +444,7 @@
                     <!-- Card 1 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
                         <div class="service-card text-center">
-                            <img src="{{ asset('frontend/images/first-card-img.png') }}"
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
                                 class="first-card-img img-fluid mb-3" alt="service">
 
                             <h4 class="cardd-title">Rent New and Refurbished Patient-Ready Medical Equipment</h4>
@@ -460,7 +460,7 @@
                     <!-- Card 2 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
                         <div class="service-card text-center">
-                            <img src="{{ asset('frontend/images/2nd-card-img.png') }}" class="s-card-img img-fluid mb-3"
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/2.svg') }}" class="s-card-img img-fluid mb-3"
                                 alt="service">
                             <h4 class="cardd-title">Reliable Medical Equipment Repairs</h4>
                             <hr>
@@ -474,7 +474,7 @@
                     <!-- Card 3 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
                         <div class="service-card text-center">
-                            <img src="{{ asset('frontend/images/3rd-card-img.png') }}" class="ss-card-img img-fluid mb-3"
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Disposition & Retired Assets Services.svg') }}" class="ss-card-img img-fluid mb-3"
                                 alt="service">
                             <h4 class="cardd-title">Disposition & Retired Assets Services</h4>
                             <hr>
