@@ -183,7 +183,8 @@
 
                         </div>
 
-                        <a href="#footerSection" class="btn contact-btn mb-2 px-3 py-">
+                        <a href="javascript:void(0)" class="btn contact-btn mb-2 px-3 py-" data-open-get-quote
+                            data-modal-title="Contact Us">
                             CONTACT
                         </a>
                     </li>

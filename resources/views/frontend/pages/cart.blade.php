@@ -1,6 +1,6 @@
 @extends('frontend.layouts.frontend')
 
-@section('title', 'Cart')
+@section('meta_title', 'Cart')
 
 @push('frontend-styles')
     <style>

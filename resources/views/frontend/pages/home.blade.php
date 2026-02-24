@@ -547,9 +547,15 @@
         </div>
     </section>
 
-    <x-best-selling-products-section />
+    @php
+        $hasProducts = ($products ?? collect())->isNotEmpty();
+    @endphp
 
-    <x-offers-section />
+    @if ($hasProducts)
+        <x-best-selling-products-section />
+
+        <x-offers-section />
+    @endif
 
     <section class="about-section py-5 mt-4">
         <div class="container">
@@ -625,10 +631,12 @@
     <x-contact-us-section :footer-states="$footerStates" />
 
     {{-- ================= pruduct sectiion ============= --}}
-    <div class="pro-section">
-        <x-our-latest-products />
+    @if ($hasProducts)
+        <div class="pro-section">
+            <x-our-latest-products />
 
-    </div>
+        </div>
+    @endif
 
     {{-- ================faqs section ================ --}}
     <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""

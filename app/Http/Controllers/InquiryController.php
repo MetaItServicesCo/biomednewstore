@@ -44,6 +44,7 @@ class InquiryController extends Controller
             $validated = $request->validate([
                 'name'    => 'required|string|max:255',
                 'email'   => 'required|email|max:255',
+                'phone'   => 'required|string|max:50',
                 'state'   => 'required|exists:states,id',
                 'city'    => 'nullable|string|max:255',
                 'service' => 'required|string|max:255',
@@ -77,6 +78,7 @@ class InquiryController extends Controller
             ContactUsFormInquiry::create([
                 'name'     => $validated['name'],
                 'email'    => $validated['email'],
+                'phone'    => $validated['phone'],
                 'state_id' => $validated['state'],
                 'city_id'  => $validated['city'] ?? null,
                 'service'  => $validated['service'],

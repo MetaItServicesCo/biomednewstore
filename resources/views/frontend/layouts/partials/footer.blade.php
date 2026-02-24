@@ -507,7 +507,7 @@
             </div>
             <div class="contact-right">
                 <p class="mb-0">Click Here To <a href="javascript:void(0)" class="btn quote-button ms-2"
-                        data-open-get-quote>Get A Quote</a></p>
+                        data-open-get-quote data-modal-title="Get A Quote">Get A Quote</a></p>
             </div>
         </div>
     </div>
@@ -615,6 +615,12 @@
                         <input type="email" name="email" class="form-control footer-input"
                             placeholder="Email Address" value="{{ old('email') }}">
                         <span class="text-danger error-text email_error"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <input type="tel" name="phone" class="form-control footer-input" placeholder="Phone"
+                            value="{{ old('phone') }}">
+                        <span class="text-danger error-text phone_error"></span>
                     </div>
 
                     <div class="d-flex gap-1 mb-2">

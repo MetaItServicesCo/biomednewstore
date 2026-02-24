@@ -307,6 +307,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const openBtn = e.target.closest('[data-open-get-quote]');
         if (openBtn) {
             e.preventDefault();
+            const titleEl = document.getElementById('getAQuoteFormTitle');
+            if (titleEl) {
+                titleEl.textContent = openBtn.dataset.modalTitle || 'Get A Quote';
+            }
             modal.classList.add('active');
             resetCaptcha();
             return;

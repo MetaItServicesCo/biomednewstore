@@ -1,6 +1,6 @@
 @extends('frontend.layouts.frontend')
 
-{{-- @section('title', 'Home') --}}
+@section('meta_title', 'Address Billing') 
 
 @push('frontend-styles')
     <style>
