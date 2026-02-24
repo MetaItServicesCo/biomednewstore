@@ -82,6 +82,10 @@
     <!--begin::Search Clear Button Handler-->
     <script src="{{ asset('assets/js/custom/search-clear.js') }}"></script>
     <!--end::Search Clear Button Handler-->
+    
+    <!--begin::DataTable Page Length Persistence-->
+    <script src="{{ asset('assets/js/custom/datatable-page-length.js') }}"></script>
+    <!--end::DataTable Page Length Persistence-->
 
     @stack('scripts')
     <!--end::Javascript--> 
