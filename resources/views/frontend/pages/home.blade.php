@@ -164,20 +164,20 @@
 
         /* Service Card */
         /* .service-card {
-                                                                                width: 100%;
-                                                                                max-width: 347px;
-                                                                                height: 486px;
-                                                                                border: 3px solid #076FA1;
-                                                                                padding: 20px;
-                                                                                background: #fff;
-                                                                                display: flex;
-                                                                                flex-direction: column;
-                                                                                justify-content: flex-start;
-                                                                                border-radius: 30px;
-                                                                                box-shadow: 0px 4px 14.8px #5BC3C4;
-                                                                                position: relative;
-                                                                                margin: 0 auto;
-                                                                            } */
+                                                                                        width: 100%;
+                                                                                        max-width: 347px;
+                                                                                        height: 486px;
+                                                                                        border: 3px solid #076FA1;
+                                                                                        padding: 20px;
+                                                                                        background: #fff;
+                                                                                        display: flex;
+                                                                                        flex-direction: column;
+                                                                                        justify-content: flex-start;
+                                                                                        border-radius: 30px;
+                                                                                        box-shadow: 0px 4px 14.8px #5BC3C4;
+                                                                                        position: relative;
+                                                                                        margin: 0 auto;
+                                                                                    } */
 
         .service-card {
             width: 100%;
@@ -218,8 +218,8 @@
         }
 
         /* =========================
-                                                   FLOAT COMBO ANIMATION
-                                                ========================= */
+                                                           FLOAT COMBO ANIMATION
+                                                        ========================= */
         @keyframes floatUpDown {
             0% {
                 transform: translateY(0);
@@ -243,8 +243,8 @@
         }
 
         /* =========================
-                                                   HOVER EFFECT
-                                                ========================= */
+                                                           HOVER EFFECT
+                                                        ========================= */
         .service-card:hover {
             transform: translateY(-20px) scale(1.05);
             box-shadow: 0px 20px 40px rgba(91, 195, 196, 0.85);
@@ -252,8 +252,8 @@
         }
 
         /* =========================
-                                                   RESPONSIVE
-                                                ========================= */
+                                                           RESPONSIVE
+                                                        ========================= */
         @media (max-width: 768px) {
             .service-card {
                 height: auto;
@@ -526,45 +526,50 @@
                     <!-- Card 1 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
                         <div class="service-card text-center delay-1">
-                    <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
-
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
                                 class="first-card-img img-fluid mb-3" alt="service">
 
                             <h4 class="cardd-title">Rent New and Refurbished Patient-Ready Medical Equipment</h4>
                             <hr>
                             <p class="card-desc">
-                       Renting with us saves you from initial large investment fees, the unnecessary storage costs for housing idle machines, and expensive maintenance bills.
+                                Renting with us saves you from initial large investment fees, the unnecessary storage costs
+                                for housing idle machines, and expensive maintenance bills.
                             </p>
 
-                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/rental-services" class="btn btn-primary mt-3">Read More</a>
+                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/rental-services"
+                                class="btn btn-primary mt-3">Read More</a>
                         </div>
                     </div>
 
                     <!-- Card 2 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
                         <div class="service-card text-center delay-2">
-                            <img src="{{ asset('frontend/images/mrbiomed store services icons/2.svg') }}" class="s-card-img img-fluid mb-3"
-                                alt="service">
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/2.svg') }}"
+                                class="s-card-img img-fluid mb-3" alt="service">
                             <h4 class="cardd-title">Reliable Medical Equipment Repairs</h4>
                             <hr>
                             <p class="card-desc">
-                                MBMTS offers reliable medical equipment calibration and repair services to ensure accuracy, safety, and compliance with healthcare standards.</p>
+                                MBMTS offers reliable medical equipment calibration and repair services to ensure accuracy,
+                                safety, and compliance with healthcare standards.</p>
 
-                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/medical-equipment-repair" class="btn btn-primary mt-3">Read More</a>
+                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/medical-equipment-repair"
+                                class="btn btn-primary mt-3">Read More</a>
                         </div>
                     </div>
 
                     <!-- Card 3 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
                         <div class="service-card text-center delay-3">
-                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Disposition & Retired Assets Services.svg') }}" class="ss-card-img img-fluid mb-3"
-                                alt="service">
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Disposition & Retired Assets Services.svg') }}"
+                                class="ss-card-img img-fluid mb-3" alt="service">
                             <h4 class="cardd-title">Disposition & Retired Assets Services</h4>
                             <hr>
                             <p class="card-desc">
-                                MBMTS takes over the full lifecycle of retired assets, from evaluation and secure removal to environmentally responsible disposal, donation, or resale..</p>
+                                MBMTS takes over the full lifecycle of retired assets, from evaluation and secure removal to
+                                environmentally responsible disposal, donation, or resale..</p>
 
-                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/retired-assets-services" class="btn btn-primary mt-3">Read More</a>
+                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/retired-assets-services"
+                                class="btn btn-primary mt-3">Read More</a>
                         </div>
                     </div>
 
