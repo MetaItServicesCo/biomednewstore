@@ -1062,7 +1062,7 @@
                 <label for="square-card-element">Card Information</label>
                 <div id="square-card-element"></div>
                 <div id="square-card-loading" class="square-card-loading">
-                    LOADING SECURE CARD FORM SQUARE...
+                    LOADING SQUAREUP SECURE CARD FORM...
                 </div>
                 <div id="square-card-errors"></div>
             </div>
