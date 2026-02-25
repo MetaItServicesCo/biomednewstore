@@ -128,7 +128,7 @@
 
         /* Headings */
         .main-heading {
-            font-size: 55px;
+            font-size: 50px;
             font-weight: 900;
             font-family: Arial;
             letter-spacing: 0;
@@ -137,7 +137,7 @@
         }
 
         .sub-heading {
-            font-size: 50px;
+            font-size: 37px;
             font-weight: 900;
             font-family: Arial;
             letter-spacing: 0;
@@ -149,7 +149,7 @@
         .section-desc {
             max-width: 1124px;
             margin: 0 auto;
-            font-size: 20px;
+            font-size: 18px;
             color: #555;
             font-weight: 600;
             font-family: Inter;
@@ -163,6 +163,22 @@
         }
 
         /* Service Card */
+        /* .service-card {
+                                                                                width: 100%;
+                                                                                max-width: 347px;
+                                                                                height: 486px;
+                                                                                border: 3px solid #076FA1;
+                                                                                padding: 20px;
+                                                                                background: #fff;
+                                                                                display: flex;
+                                                                                flex-direction: column;
+                                                                                justify-content: flex-start;
+                                                                                border-radius: 30px;
+                                                                                box-shadow: 0px 4px 14.8px #5BC3C4;
+                                                                                position: relative;
+                                                                                margin: 0 auto;
+                                                                            } */
+
         .service-card {
             width: 100%;
             max-width: 347px;
@@ -177,6 +193,72 @@
             box-shadow: 0px 4px 14.8px #5BC3C4;
             position: relative;
             margin: 0 auto;
+
+            animation-name: floatUpDown;
+            animation-duration: 4s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+
+            /* smooth hover */
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+
+
+        }
+
+        .delay-1 {
+            animation-delay: 0s;
+        }
+
+        .delay-2 {
+            animation-delay: 1s;
+        }
+
+        .delay-3 {
+            animation-delay: 1.9s;
+        }
+
+        /* =========================
+                                                   FLOAT COMBO ANIMATION
+                                                ========================= */
+        @keyframes floatUpDown {
+            0% {
+                transform: translateY(0);
+            }
+
+            25% {
+                transform: translateY(-10px);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+
+            75% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+                                                   HOVER EFFECT
+                                                ========================= */
+        .service-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0px 20px 40px rgba(91, 195, 196, 0.85);
+            animation-play-state: paused;
+        }
+
+        /* =========================
+                                                   RESPONSIVE
+                                                ========================= */
+        @media (max-width: 768px) {
+            .service-card {
+                height: auto;
+                min-height: 420px;
+            }
         }
 
         /* Card Title */
@@ -421,12 +503,12 @@
     <section class="hero-secti py-5">
         <div class="container text-center mb-5">
             <!-- First Heading -->
-            <h2 class="main-heading fade-left">Mr. Biomed Tech Services</h2>
+            <h1 class="main-heading fade-left">Mr. Biomed Tech Services</h1>
 
             <!-- Second Heading -->
-            <h3 class="sub-heading mt-3 fade-right">
+            <h2 class="sub-heading mt-3 fade-right">
                 Medical Equipment, Supplies & Parts — One Place, Hassle-Free
-            </h3>
+            </h2>
 
             <!-- Paragraph -->
             <p class="section-desc mt-3 fade-left">
@@ -443,8 +525,9 @@
 
                     <!-- Card 1 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
-                        <div class="service-card text-center">
-                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
+                        <div class="service-card text-center delay-1">
+                    <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
+
                                 class="first-card-img img-fluid mb-3" alt="service">
 
                             <h4 class="cardd-title">Rent New and Refurbished Patient-Ready Medical Equipment</h4>
@@ -459,7 +542,7 @@
 
                     <!-- Card 2 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
-                        <div class="service-card text-center">
+                        <div class="service-card text-center delay-2">
                             <img src="{{ asset('frontend/images/mrbiomed store services icons/2.svg') }}" class="s-card-img img-fluid mb-3"
                                 alt="service">
                             <h4 class="cardd-title">Reliable Medical Equipment Repairs</h4>
@@ -473,7 +556,7 @@
 
                     <!-- Card 3 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
-                        <div class="service-card text-center">
+                        <div class="service-card text-center delay-3">
                             <img src="{{ asset('frontend/images/mrbiomed store services icons/Disposition & Retired Assets Services.svg') }}" class="ss-card-img img-fluid mb-3"
                                 alt="service">
                             <h4 class="cardd-title">Disposition & Retired Assets Services</h4>
@@ -581,9 +664,9 @@
                         {{-- <i class="fa-solid fa-heart-pulse about-icon me-3"></i> --}}
                         <img src="{{ asset('frontend/images/heading-icon.png') }}" class="about-icon" alt="about image">
                         <div>
-                            <h5 class="icon-heading">
+                            <h3 class="icon-heading">
                                 Better Quality
-                            </h5>
+                            </h3>
                             <p class="about-long-desc mt-2">
                                 We supply carefully selected biomedical equipment and accessories that meet practical
                                 clinical needs—balancing performance, durability, and value.
@@ -595,9 +678,9 @@
                         <img src="{{ asset('frontend/images/heading-icon.png') }}" class="about-icon" alt="about image">
 
                         <div>
-                            <h5 class="icon-heading">
+                            <h3 class="icon-heading">
                                 Technical Expertise
-                            </h5>
+                            </h3>
                             <p class="about-long-desc mt-2">
                                 Our service approach is built on structured diagnostics, careful repairs, and final
                                 verification—so you get solutions that last, not quick fixes.
