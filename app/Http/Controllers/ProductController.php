@@ -412,7 +412,7 @@ class ProductController extends Controller
                 ->whereNotIn('slug', $excluded)          // exclude specific slugs
                 ->with(['products' => function ($query) {
                     $query->where('is_active', true)
-                        ->where('product_type', 'product')
+                        // ->where('product_type', 'product')
                         ->whereIn('type', ['for_store', 'both'])
                         ->orderBy('name', 'asc'); // order products by name
                 }])

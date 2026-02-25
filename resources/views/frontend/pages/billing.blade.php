@@ -640,6 +640,13 @@
             display: block;
         }
 
+        .square-card-loading {
+            font-size: 14px;
+            color: #e74c3c;
+            margin-top: 8px;
+            font-weight: 700;
+        }
+
         .payment-amount {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
@@ -1054,6 +1061,9 @@
             <div class="payment-info-section">
                 <label for="square-card-element">Card Information</label>
                 <div id="square-card-element"></div>
+                <div id="square-card-loading" class="square-card-loading">
+                    LOADING SECURE CARD FORM SQUARE...
+                </div>
                 <div id="square-card-errors"></div>
             </div>
 
@@ -1296,12 +1306,15 @@
                 }
 
                 try {
+                    $('#square-card-loading').show();
                     squarePayments = Square.payments(squareApplicationId, squareLocationId);
                     squareCard = await squarePayments.card();
                     await squareCard.attach('#square-card-element');
+                    $('#square-card-loading').hide();
                 } catch (error) {
                     console.log('Square initialization failed:', error);
                     $('#square-card-errors').text('Unable to initialize Square payment form.').addClass('show');
+                    $('#square-card-loading').hide();
                 }
             }
 
