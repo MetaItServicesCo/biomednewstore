@@ -909,7 +909,7 @@
                                         item size, weight, and destination. Our team will confirm the final shipping charges
                                         before dispatch.</label>
                                 </div>
-                                <p class="fw-semibold" id="standardShippingCost">${{ number_format($total, 2) }}</p>
+                                <p class="fw-semibold" id="standardShippingCost">${{ number_format($shipping, 2) }}</p>
                             </div>
                         </div>
 
@@ -1353,7 +1353,7 @@
                     $('#shippingRow').show();
                     $('#shippingNote').show();
                     $('#shippingAmount').text('$' + shipping.toFixed(2));
-                    $('#standardShippingCost').text('$' + (subtotal + shipping + gst).toFixed(2));
+                    $('#standardShippingCost').text('$' + shipping.toFixed(2));
                 } else {
                     shipping = 0.0;
                     $('#shippingRow').hide();
