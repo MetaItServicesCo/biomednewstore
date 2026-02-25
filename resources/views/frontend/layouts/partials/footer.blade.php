@@ -410,9 +410,9 @@
     }
 
     .Rate {
-        font-size: 20px !important;
+        font-size: 30px !important;
         font-weight: 700 !important;
-        color: #000000 !important;
+        color: #fff !important;
     }
 
     .review-link {
@@ -420,6 +420,12 @@
         font-weight: 700;
         color: #ffffff;
         text-decoration: none;
+        transition: all 0.4s ease-in-out;
+        display: inline-block;
+    }
+
+    .review-link:hover {
+        transform: scale(1.04)
     }
 
     .review-link span {
@@ -472,6 +478,22 @@
             transform: translateY(0);
         }
     }
+
+    .bottom-line {
+        width: 60%;
+        margin: 20px auto;
+
+        border: 0 !important;
+        /* 🔥 remove hr border */
+        height: 2px;
+
+        background-color: #d19421 !important;
+        /* exact color */
+        opacity: 1 !important;
+        /* 🔥 bootstrap fix */
+
+        border-radius: 4px;
+    }
 </style>
 
 
@@ -485,7 +507,7 @@
             </div>
             <div class="contact-right">
                 <p class="mb-0">Click Here To <a href="javascript:void(0)" class="btn quote-button ms-2"
-                        data-open-get-quote>Get A Quote</a></p>
+                        data-open-get-quote data-modal-title="Get A Quote">Get A Quote</a></p>
             </div>
         </div>
     </div>
@@ -540,7 +562,7 @@
 
                     @if (setting('twitter'))
                         <a href="{{ setting('twitter') }}" target="_blank">
-                            <i class="fab fa-twitter fa-lg"></i>
+                            <i class="fa-brands fa-yelp"></i>
                         </a>
                     @endif
 
@@ -595,6 +617,12 @@
                         <span class="text-danger error-text email_error"></span>
                     </div>
 
+                    <div class="mb-2">
+                        <input type="tel" name="phone" class="form-control footer-input" placeholder="Phone"
+                            value="{{ old('phone') }}">
+                        <span class="text-danger error-text phone_error"></span>
+                    </div>
+
                     <div class="d-flex gap-1 mb-2">
                         <div>
                             <select name="state" id="footer_state" class="form-select footer-select">
@@ -641,8 +669,8 @@
             </div>
 
             <div class="col-lg-4 ps-5">
-                <h4 class="Field mb-3 pb-2">Field Service Location</h4>
-                <div class="row location-list mb-4">
+                {{-- <h4 class="Field mb-3 pb-2">Field Service Location</h4> --}}
+                {{-- <div class="row location-list mb-4">
                     @php
                         // Areas ko 2 columns me divide kar rahe hain
                         $chunks = ($servingAreas ?? collect())->chunk(ceil(($servingAreas?->count() ?? 0) / 2));
@@ -660,7 +688,7 @@
                             @endforeach
                         </div>
                     @endforeach
-                </div>
+                </div> --}}
 
                 <h4 class="Rate mb-3 pb-2 ">Rate The Company</h4>
                 <div class="d-flex align-items-center mb-2 ">
@@ -673,7 +701,7 @@
                     </div>
                     <span class="text-white fw-bold fs-5">4.3</span>
                 </div>
-                <a href="#" class="review-link ">Leave Us a Review On
+                <a href="https://maps.app.goo.gl/XNoeessFxAAwFx3v8" target="_blank" class="review-link ">Leave Us a Review On
                     <span>Google</span> </a>
             </div>
         </div>
@@ -681,20 +709,17 @@
 
     <div class="footer-links-copyright">
         <div class="container text-center ">
-            <div class="footer-links-wrapper">
+            {{-- <div class="footer-links-wrapper">
                 <div class="footer-links mb-1">
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/BioMed-Service"
                         class="text-decoration-none mx-2">Mr Biomed
                         Service</a><span class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/locations"
                         class="text-decoration-none mx-2">Locations</a><span class="separator">|</span>
-                    {{-- <a href="#" class="text-decoration-none mx-2">Product Store</a><span
-                        class="separator">|</span> --}}
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/about" class="text-decoration-none mx-2">About
                         Mbmts</a><span class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/blogs"
                         class="text-decoration-none mx-2">Blog</a><span class="separator">|</span>
-                    {{-- <a href="#" class="text-decoration-none mx-2">Career</a><span class="separator">|</span> --}}
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/terms-and-conditions"
                         class="text-decoration-none mx-2">Terms & Conditions</a><span class="separator">|</span>
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/privacy-policy"
@@ -706,9 +731,10 @@
                     <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/faqs"
                         class="text-decoration-none mx-2">FAQs</a>
                 </div>
-            </div>
+            </div> --}}
+            <hr class="bottom-line">
             <p class="copyright mb-0 t">
-                Copyright © {{ date('Y') }} | {{ setting('site_name', 'Mr Biomed Tech Services') }} ® | All right
+                Copyright © {{ date('Y') }} | {{ setting('site_name', 'Mr. Biomed Tech Services') }} ® | All right
                 reserved
             </p>
         </div>

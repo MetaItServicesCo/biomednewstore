@@ -51,7 +51,7 @@ class BrandWeCarryController extends Controller
             $request->validate([
                 'company_name' => 'required|string|max:255',
                 'website' => 'nullable|url|max:255',
-                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:300', // 5MB
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10000', // 5MB
                 'logo_alt' => 'nullable|string|max:255',
             ]);
 

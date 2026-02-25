@@ -123,15 +123,23 @@
     <script src="{{ asset('frontend/js/custom.js') }}?v={{ filemtime(public_path('frontend/js/custom.js')) }}"></script>
 
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
-    <script>
-        // Scroll to top on page load
-        window.addEventListener('load', function() {
-            window.scrollTo(0, 0);
-        });
-    </script>
+    
+    <!--begin::Scroll Position Persistence-->
+    <script src="{{ asset('assets/js/custom/scroll-position.js') }}"></script>
+    <!--end::Scroll Position Persistence-->
 
     @stack('frontend-scripts')
     <!--end::Javascript-->
+
+    <script>
+        // Toastr global configuration
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "timeOut": "1000",
+            "extendedTimeOut": "2000"
+        };
+    </script>
 
     @if (session('success'))
         <script>
@@ -172,6 +180,17 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        // Global function to update cart count in navbar
+        window.updateCartCount = function(cart) {
+            const cartCountBadge = document.getElementById('cart-count');
+            if (cartCountBadge) {
+                const count = Object.keys(cart || {}).length;
+                cartCountBadge.innerText = count;
+            }
+        };
     </script>
 
     @livewireScripts

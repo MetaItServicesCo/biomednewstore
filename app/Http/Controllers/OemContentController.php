@@ -36,14 +36,14 @@ class OemContentController extends Controller
                 'title'             => 'required|string|max:255',
                 'slug'              => 'required|string|max:255|unique:oem_contents,slug',
                 'order'             => 'nullable|integer',
-                'image'             => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:307', // 307 KB ~ 300KB
+                'image'             => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10000', // 307 KB ~ 300KB
                 'image_alt'         => 'nullable|string|max:255',
                 'meta_title'        => 'nullable|string|max:255',
                 'meta_keywords'     => 'nullable|string|max:255',
                 'meta_description'  => 'nullable|string|max:500',
                 'description'       => 'nullable|string',
             ], [
-                'image.max' => 'The image size must not exceed 300 KB.',
+                'image.max' => 'The image size must not exceed 10 MB.',
             ]);
 
             DB::beginTransaction();
@@ -98,14 +98,14 @@ class OemContentController extends Controller
                 'title'             => 'required|string|max:255',
                 'slug'              => 'required|string|max:255|unique:oem_contents,slug,' . $oem->id,
                 'order'             => 'nullable|integer',
-                'image'             => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:307', // ~300KB
+                'image'             => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10000', // ~300KB
                 'image_alt'         => 'nullable|string|max:255',
                 'meta_title'        => 'nullable|string|max:255',
                 'meta_keywords'     => 'nullable|string|max:255',
                 'meta_description'  => 'nullable|string|max:500',
                 'description'       => 'nullable|string',
             ], [
-                'image.max' => 'The image size must not exceed 300 KB.',
+                'image.max' => 'The image size must not exceed 10 MB.',
             ]);
 
             DB::beginTransaction();

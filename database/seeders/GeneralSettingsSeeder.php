@@ -18,7 +18,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'site_name',        'value' => 'Mr. Biomed Tech Services', 'type' => 'string',   'group' => 'general', 'order' => 1],
             ['key' => 'site_logo',        'value' => 'uploads/logo.png',          'type' => 'image',    'group' => 'general', 'order' => 2],
             ['key' => 'favicon',          'value' => 'uploads/favicon.ico',       'type' => 'image',    'group' => 'general', 'order' => 3],
-            ['key' => 'footer_copyright', 'value' => 'Copyright © 2025 Mr Biomed Tech Services', 'type' => 'textarea', 'group' => 'general', 'order' => 10],
+            ['key' => 'footer_copyright', 'value' => 'Copyright © 2025 Mr. Biomed Tech Services', 'type' => 'textarea', 'group' => 'general', 'order' => 10],
 
             // Contact
             ['key' => 'phone',            'value' => '+1 123 456 7890',           'type' => 'string',   'group' => 'contact', 'order' => 1],

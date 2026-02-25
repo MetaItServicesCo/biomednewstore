@@ -51,8 +51,8 @@ class BiomedServicesController extends Controller
             'intro_heading'   => 'nullable|string|max:255',
             'intro_text'      => 'nullable|string',
 
-            'intro_image_1'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
-            'intro_image_2'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'intro_image_1'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
+            'intro_image_2'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'intro_image_1_alt' => 'nullable|string|max:255',
             'intro_image_2_alt' => 'nullable|string|max:255',
 
@@ -69,7 +69,7 @@ class BiomedServicesController extends Controller
             'service_cards.*.description' => 'nullable|string',
 
             'service_images'                    => 'nullable|array',
-            'service_images.*.file'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'service_images.*.file'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'service_images.*.alt'              => 'nullable|string|max:255',
             'service_images.*.existing_path'    => 'nullable|string',
 

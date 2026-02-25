@@ -47,7 +47,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug',
             'sku' => 'nullable|string|unique:products,sku',
-            'type' => 'required|string',
+            // 'type' => 'required|string',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
@@ -66,8 +66,8 @@ class ProductController extends Controller
             'in_stock' => 'required|boolean',
             'is_active' => 'required|boolean',
             'show_on_header' => 'required|boolean',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
-            'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
+            'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'image_alt' => 'nullable|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_keywords' => 'nullable|string|max:255',
@@ -78,7 +78,7 @@ class ProductController extends Controller
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
             'manufacture' => 'nullable|string|max:255',
-            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:10000',
             'product_type' => 'required|in:product,part',
         ]);
 
@@ -192,7 +192,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug,'.$product->id,
             'sku' => 'nullable|string|unique:products,sku,'.$product->id,
-            'type' => 'required|string',
+            // 'type' => 'required|string',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
@@ -211,8 +211,8 @@ class ProductController extends Controller
             'in_stock' => 'required|boolean',
             'is_active' => 'required|boolean',
             'show_on_header' => 'required|boolean',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300', // 300 KB
-            'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300', // 300 KB
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000', // 10 MB
+            'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000', // 10 MB
             'image_alt' => 'nullable|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_keywords' => 'nullable|string|max:255',
@@ -223,7 +223,7 @@ class ProductController extends Controller
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
             'manufacture' => 'nullable|string|max:255',
-            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:10000',
             'product_type' => 'required|in:product,part',
 
         ]);
@@ -424,7 +424,7 @@ class ProductController extends Controller
             $allProducts = Product::where('is_active', true)
                 ->where('product_type', 'product')
                 ->whereIn('type', ['for_store', 'both'])
-                ->orderBy('name', 'asc')
+                ->orderBy('created_at', 'desc') // Newest first
                 ->paginate(15); // 15 products per page
 
             $recentProducts = Product::where('is_active', true)
@@ -475,7 +475,7 @@ class ProductController extends Controller
                 $query->whereBetween('sale_price', [$min, $max]);
             }
 
-            $products = $query->orderBy('name', 'asc')->paginate(15);
+            $products = $query->orderBy('created_at', 'desc')->paginate(15); // Newest first
 
             return response()->json([
                 'html' => view('partials._products', compact('products'))->render(),
@@ -629,11 +629,28 @@ class ProductController extends Controller
         try {
             $cart = session('cart', []);
 
+            // Debug logging
+            \Log::info('Order page accessed', [
+                'cart_count' => count($cart),
+                'cart_keys' => array_keys($cart),
+                'session_id' => session()->getId(),
+            ]);
+
             // If cart is empty → redirect to products page
             if (empty($cart)) {
+                \Log::warning('Cart is empty, redirecting to products');
                 return redirect()
                     ->route('products')
                     ->with('error', 'Your cart is empty. Please add products first.');
+            }
+
+            // Check if order was just completed - prevent back button access
+            if (session('order_completed')) {
+                session()->forget('order_completed');
+                \Log::info('Order already completed, redirecting to products');
+                return redirect()
+                    ->route('products')
+                    ->with('info', 'Your order has already been completed.');
             }
 
             $countries = Country::where('is_active', 1)

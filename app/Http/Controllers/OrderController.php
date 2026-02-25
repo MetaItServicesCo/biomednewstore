@@ -360,6 +360,9 @@ class OrderController extends Controller
                 }
 
                 session()->forget('cart');
+                
+                // Set order completed flag to prevent back button access
+                session(['order_completed' => true]);
 
                 try {
                     Mail::to($order->email)->queue(new OrderConfirmationMail($order->load('items')));
@@ -606,6 +609,9 @@ class OrderController extends Controller
 
                 // Clear cart from session
                 session()->forget('cart');
+                
+                // Set order completed flag to prevent back button access
+                session(['order_completed' => true]);
 
                 // Send order confirmation email
                 try {

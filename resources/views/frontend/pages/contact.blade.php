@@ -1,5 +1,5 @@
 @extends('frontend.layouts.frontend')
-
+@dd("Stopped");
 @section('title', '')
 
 @push('frontend-styles')

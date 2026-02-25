@@ -2,7 +2,7 @@
     <div class="buy-form-box">
         <span class="close-form text-danger">&times;</span>
 
-        <h3>Get A <span>Quote</span></h3>
+        <h3><span id="getAQuoteFormTitle">Get A Quote</span></h3>
 
         <form class="buy-form" id="getAQuoteForm" method="POST" action="{{ route('get-a-quote.submit') }}">
             @csrf

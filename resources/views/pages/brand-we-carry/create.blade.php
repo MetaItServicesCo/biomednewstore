@@ -43,7 +43,7 @@
                             </div>
 
                             <!-- Website -->
-                            <div class="col-lg-12 mb-4">
+                            {{-- <div class="col-lg-12 mb-4">
                                 <label for="website" class="form-label fw-semibold">{{ __('Website') }}</label>
                                 <input type="url" id="website" name="website"
                                     class="form-control form-control-lg @error('website') is-invalid @enderror"
@@ -51,7 +51,7 @@
                                 @error('website')
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Logo -->
                             <div class="col-lg-6 mb-4">

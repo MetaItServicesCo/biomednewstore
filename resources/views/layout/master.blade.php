@@ -82,9 +82,27 @@
     <!--begin::Search Clear Button Handler-->
     <script src="{{ asset('assets/js/custom/search-clear.js') }}"></script>
     <!--end::Search Clear Button Handler-->
+    
+    <!--begin::DataTable Page Length Persistence-->
+    <script src="{{ asset('assets/js/custom/datatable-page-length.js') }}"></script>
+    <!--end::DataTable Page Length Persistence-->
+    
+    <!--begin::Scroll Position Persistence-->
+    <script src="{{ asset('assets/js/custom/scroll-position.js') }}"></script>
+    <!--end::Scroll Position Persistence-->
 
     @stack('scripts')
     <!--end::Javascript--> 
+    <script>
+        // Toastr global configuration
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "timeOut": "5000",
+            "extendedTimeOut": "2000"
+        };
+    </script>
+
     @if (session('success'))
         <script>
             toastr.success("{{ session('success') }}");
@@ -99,7 +117,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const maxSize = 300 * 1024; // 300 KB
+            const maxSize = 10000 * 1024; // 10 MB
 
             // Global function for file validation
             window.validateFile = function(input, errorContainerId) {
@@ -108,7 +126,7 @@
 
                 for (let i = 0; i < files.length; i++) {
                     if (files[i].size > maxSize) {
-                        errorMessage = `File "${files[i].name}" is too large. Maximum allowed size is 300 KB.`;
+                        errorMessage = `File "${files[i].name}" is too large. Maximum allowed size is 10 MB.`;
                         input.value = '';
                         break;
                     }

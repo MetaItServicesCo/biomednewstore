@@ -44,6 +44,7 @@ class InquiryController extends Controller
             $validated = $request->validate([
                 'name'    => 'required|string|max:255',
                 'email'   => 'required|email|max:255',
+                'phone'   => 'required|string|max:50',
                 'state'   => 'required|exists:states,id',
                 'city'    => 'nullable|string|max:255',
                 'service' => 'required|string|max:255',
@@ -77,6 +78,7 @@ class InquiryController extends Controller
             ContactUsFormInquiry::create([
                 'name'     => $validated['name'],
                 'email'    => $validated['email'],
+                'phone'    => $validated['phone'],
                 'state_id' => $validated['state'],
                 'city_id'  => $validated['city'] ?? null,
                 'service'  => $validated['service'],
@@ -141,6 +143,29 @@ class InquiryController extends Controller
             return redirect()
                 ->back()
                 ->with('error', 'Something went wrong. Please try again later.');
+        }
+    }
+
+    public function contactFormView(int $id)
+    {
+        try {
+            $inquiry = ContactUsFormInquiry::with(['state', 'city'])->findOrFail($id);
+            
+            return view('pages.contact_us.view', compact('inquiry'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()
+                ->route('admin.contact-us.form.list')
+                ->with('error', 'Contact inquiry not found.');
+        } catch (\Throwable $e) {
+            Log::error('Contact View Failed', [
+                'inquiry_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return redirect()
+                ->route('admin.contact-us.form.list')
+                ->with('error', 'Unable to view contact inquiry.');
         }
     }
 

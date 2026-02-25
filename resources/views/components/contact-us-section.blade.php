@@ -30,9 +30,9 @@
                     <span class="contact-text">{{ setting('address') }}</span>
                 </div>
 
-                <h5 class="tech-heading mb-3">
+                {{-- <h5 class="tech-heading mb-3">
                     Technicians dispatched from throughout Texas
-                </h5>
+                </h5> --}}
 
             </div>
 

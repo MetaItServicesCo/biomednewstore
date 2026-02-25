@@ -11,97 +11,100 @@
 
 @section('page_schema')
     <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://mbmts.com/#organization",
-      "name": "MBMTS",
-      "url": "https://mbmts.com/",
-      "logo": "https://mbmts.com/logo.png",
-      "sameAs": [
-        "https://www.facebook.com/Mr.BioMed",
-        "https://www.linkedin.com/company/mr-biomed-tech-pt-medical"
-      ],
-      "telephone": "+1-469-767-8853",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "555 N. 5th Street Suite 109B",
-        "addressLocality": "Garland",
-        "addressRegion": "TX",
-        "postalCode": "75040",
-        "addressCountry": "US"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "Customer Service",
-        "telephone": "+1-469-767-8853",
-        "areaServed": "US",
-        "availableLanguage": "English"
-      }
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://mbmts.com/#website",
-      "url": "https://mbmts.com/",
-      "name": "MBMTS",
-      "publisher": {
-        "@id": "https://mbmts.com/#organization"
-      }
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://mbmts.com/#homepage",
-      "url": "https://mbmts.com/",
-      "name": "MBMTS – Biomedical Equipment & Services",
-      "isPartOf": {
-        "@id": "https://mbmts.com/#website"
-      },
-      "about": {
-        "@id": "https://mbmts.com/#organization"
-      }
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://mbmts.com/store/#webpage",
-      "url": "https://mbmts.com/store/",
-      "name": "Mr BioMed Store",
-      "isPartOf": {
-        "@id": "https://mbmts.com/#website"
-      },
-      "about": {
-        "@id": "https://mbmts.com/#organization"
-      }
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://mbmts.com/feedback/#webpage",
-      "url": "https://mbmts.com/feedback/",
-      "name": "Customer Feedback – MBMTS",
-      "isPartOf": {
-        "@id": "https://mbmts.com/#website"
-      },
-      "about": {
-        "@id": "https://mbmts.com/#organization"
-      }
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://mbmts.com/parts/#webpage",
-      "url": "https://mbmts.com/parts/",
-      "name": "Biomedical Parts – MBMTS",
-      "isPartOf": {
-        "@id": "https://mbmts.com/#website"
-      },
-      "about": {
-        "@id": "https://mbmts.com/#organization"
-      }
-    }
-  ]
-}
-</script>
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "MBMTS",
+          "url": "https://mbmts.com/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://mbmts.com/store?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+    </script>
 
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "MedicalBusiness",
+          "@id": "https://mbmts.com/#localbusiness",
+          "name": "MBMTS",
+          "image": "https://www.mrbiomedtechservices.com/storage/uploads/settings/1769617213_mr%20biomed%20tech%20servics.png",
+          "url": "https://mbmts.com/",
+          "telephone": "+1-469-767-8853",
+          "priceRange": "$$",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "555 N. 5th St, Suite 109 B",
+            "addressLocality": "Garland",
+            "addressRegion": "TX",
+            "postalCode": "75040",
+            "addressCountry": "US"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "32.9126",
+            "longitude": "-96.6389"
+          },
+          "areaServed": {
+            "@type": "State",
+            "name": "Texas"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+              ],
+              "opens": "08:00",
+              "closes": "17:00"
+            }
+          ],
+          "sameAs": [
+            "https://www.facebook.com/Mr.BioMed/",
+            "https://www.instagram.com/mr.biomedtechservices/",
+            "https://www.linkedin.com/company/mr-biomed-tech-pt-medical"
+          ]
+        }
+    </script>
+
+    @php
+        $breadcrumbProducts = \App\Models\Product::where('is_active', true)->get();
+    @endphp
+    @if ($breadcrumbProducts->isNotEmpty())
+        <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "{{ url('/') }}"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Store",
+                  "item": "{{ route('products') }}"
+                }@foreach ($breadcrumbProducts as $index => $breadcrumbProduct)
+                ,{
+                  "@type": "ListItem",
+                  "position": {{ $index + 3 }},
+                  "name": @json($breadcrumbProduct->name),
+                  "item": "{{ strtolower($breadcrumbProduct->product_type ?? '') === 'part' ? url('parts/' . $breadcrumbProduct->slug) : url('products/' . $breadcrumbProduct->slug) }}"
+                }
+                @endforeach
+              ]
+            }
+        </script>
+    @endif
 @endsection
 @push('frontend-styles')
     <style>
@@ -125,7 +128,7 @@
 
         /* Headings */
         .main-heading {
-            font-size: 55px;
+            font-size: 50px;
             font-weight: 900;
             font-family: Arial;
             letter-spacing: 0;
@@ -134,7 +137,7 @@
         }
 
         .sub-heading {
-            font-size: 50px;
+            font-size: 37px;
             font-weight: 900;
             font-family: Arial;
             letter-spacing: 0;
@@ -146,7 +149,7 @@
         .section-desc {
             max-width: 1124px;
             margin: 0 auto;
-            font-size: 20px;
+            font-size: 18px;
             color: #555;
             font-weight: 600;
             font-family: Inter;
@@ -160,6 +163,22 @@
         }
 
         /* Service Card */
+        /* .service-card {
+                                                                                        width: 100%;
+                                                                                        max-width: 347px;
+                                                                                        height: 486px;
+                                                                                        border: 3px solid #076FA1;
+                                                                                        padding: 20px;
+                                                                                        background: #fff;
+                                                                                        display: flex;
+                                                                                        flex-direction: column;
+                                                                                        justify-content: flex-start;
+                                                                                        border-radius: 30px;
+                                                                                        box-shadow: 0px 4px 14.8px #5BC3C4;
+                                                                                        position: relative;
+                                                                                        margin: 0 auto;
+                                                                                    } */
+
         .service-card {
             width: 100%;
             max-width: 347px;
@@ -174,6 +193,82 @@
             box-shadow: 0px 4px 14.8px #5BC3C4;
             position: relative;
             margin: 0 auto;
+
+            animation-name: floatUpDown;
+            animation-duration: 4s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+
+            /* smooth hover */
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+
+
+        }
+
+        .delay-1 {
+            animation-delay: 0s;
+        }
+
+        .delay-2 {
+            animation-delay: 1s;
+        }
+
+        .delay-3 {
+            animation-delay: 1.9s;
+        }
+
+        /* =========================
+                                                           FLOAT COMBO ANIMATION
+                                                        ========================= */
+        @keyframes floatUpDown {
+            0% {
+                transform: translateY(0);
+            }
+
+            25% {
+                transform: translateY(-10px);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+
+            75% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+                                                           HOVER EFFECT
+                                                        ========================= */
+        .service-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0px 20px 40px rgba(91, 195, 196, 0.85);
+            animation-play-state: paused;
+        }
+
+        /* =========================
+                                                           RESPONSIVE
+                                                        ========================= */
+        @media (max-width: 768px) {
+            .service-card {
+                height: auto;
+                min-height: 420px;
+            }
+                 .cardd-title {
+      
+            font-size: 20px !important;
+          
+        }
+         .card-desc {
+            margin-top: 10px !important;
+            font-size: 14px !important;
+        
+        }
         }
 
         /* Card Title */
@@ -312,7 +407,7 @@
 
         /* Short desc */
         .about-short-desc {
-            color: #0071A8;
+            color: #000000;
             font-weight: 400;
             letter-spacing: 0;
             font-size: 20px;
@@ -418,12 +513,12 @@
     <section class="hero-secti py-5">
         <div class="container text-center mb-5">
             <!-- First Heading -->
-            <h2 class="main-heading fade-left">Mr. Biomed Tech</h2>
+            <h1 class="main-heading fade-left">Mr. Biomed Tech Services</h1>
 
             <!-- Second Heading -->
-            <h3 class="sub-heading mt-3 fade-right">
+            <h2 class="sub-heading mt-3 fade-right">
                 Medical Equipment, Supplies & Parts — One Place, Hassle-Free
-            </h3>
+            </h2>
 
             <!-- Paragraph -->
             <p class="section-desc mt-3 fade-left">
@@ -440,53 +535,56 @@
 
                     <!-- Card 1 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
-                        <div class="service-card text-center">
-                            <img src="{{ asset('frontend/images/first-card-img.png') }}"
+                        <div class="service-card text-center delay-1">
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
                                 class="first-card-img img-fluid mb-3" alt="service">
 
-                            <h4 class="cardd-title">Preventive Maintenance (PM)</h4>
+                            <h4 class="cardd-title">Rent New and Refurbished Patient-Ready Medical Equipment</h4>
                             <hr>
                             <p class="card-desc">
-                                Keep your equipment performing safely and consistently with scheduled inspections, safety
-                                checks, cleaning, and documentation—helping reduce downtime and unexpected failures.
+                                Renting with us saves you from initial large investment fees, the unnecessary storage costs
+                                for housing idle machines, and expensive maintenance bills.
                             </p>
 
-                            <a href="#" class="btn btn-primary mt-3">Read More</a>
+                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/rental-services"
+                                class="btn btn-primary mt-3">Read More</a>
                         </div>
                     </div>
 
                     <!-- Card 2 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
-                        <div class="service-card text-center">
-                            <img src="{{ asset('frontend/images/2nd-card-img.png') }}" class="s-card-img img-fluid mb-3"
-                                alt="service">
-                            <h4 class="cardd-title">Installation & Calibration</h4>
+                        <div class="service-card text-center delay-2">
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/2.svg') }}"
+                                class="s-card-img img-fluid mb-3" alt="service">
+                            <h4 class="cardd-title">Reliable Medical Equipment Repairs</h4>
                             <hr>
                             <p class="card-desc">
-                                Professional setup, configuration, and calibration to ensure accuracy from day one. We
-                                verify performance, safety, and readiness for clinical use.</p>
+                                MBMTS offers reliable medical equipment calibration and repair services to ensure accuracy,
+                                safety, and compliance with healthcare standards.</p>
 
-                            <a href="#" class="btn btn-primary mt-3">Read More</a>
+                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/medical-equipment-repair"
+                                class="btn btn-primary mt-3">Read More</a>
                         </div>
                     </div>
 
                     <!-- Card 3 -->
                     <div class="col-lg-4 col-md-6 d-flex justify-content-center animate-card">
-                        <div class="service-card text-center">
-                            <img src="{{ asset('frontend/images/3rd-card-img.png') }}" class="ss-card-img img-fluid mb-3"
-                                alt="service">
-                            <h4 class="cardd-title">Repair & Troubleshooting</h4>
+                        <div class="service-card text-center delay-3">
+                            <img src="{{ asset('frontend/images/mrbiomed store services icons/Disposition & Retired Assets Services.svg') }}"
+                                class="ss-card-img img-fluid mb-3" alt="service">
+                            <h4 class="cardd-title">Disposition & Retired Assets Services</h4>
                             <hr>
                             <p class="card-desc">
-                                From diagnosis to final testing, we provide practical repair solutions and parts replacement
-                                to restore performance quickly and reliably.</p>
+                                MBMTS takes over the full lifecycle of retired assets, from evaluation and secure removal to
+                                environmentally responsible disposal, donation, or resale..</p>
 
-                            <a href="#" class="btn btn-primary mt-3">Read More</a>
+                            <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/retired-assets-services"
+                                class="btn btn-primary mt-3">Read More</a>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/medical-equipment-repair">
+                        <a href="{{ rtrim(env('BIO_MED_WEBSITE'), '/') }}/services">
                             <button class="Seemore-btn">See more Service Details</button>
                         </a>
                     </div>
@@ -547,9 +645,15 @@
         </div>
     </section>
 
-    <x-best-selling-products-section />
+    @php
+        $hasProducts = ($products ?? collect())->isNotEmpty();
+    @endphp
 
-    <x-offers-section />
+    @if ($hasProducts)
+        <x-best-selling-products-section />
+
+        <x-offers-section />
+    @endif
 
     <section class="about-section py-5 mt-4">
         <div class="container">
@@ -564,7 +668,7 @@
                     </h2>
 
                     <p class="about-short-desc mt-3">
-                        Mr Biomed Tech Services is committed to delivering dependable biomedical solutions for hospitals,
+                        Mr. Biomed Tech Services is committed to delivering dependable biomedical solutions for hospitals,
                         clinics, labs, and home-care settings. We provide a complete range of support—from product sourcing
                         and parts to installation, preventive maintenance, calibration, and repair—so your equipment stays
                         safe, accurate, and ready for use.
@@ -575,9 +679,9 @@
                         {{-- <i class="fa-solid fa-heart-pulse about-icon me-3"></i> --}}
                         <img src="{{ asset('frontend/images/heading-icon.png') }}" class="about-icon" alt="about image">
                         <div>
-                            <h5 class="icon-heading">
+                            <h3 class="icon-heading">
                                 Better Quality
-                            </h5>
+                            </h3>
                             <p class="about-long-desc mt-2">
                                 We supply carefully selected biomedical equipment and accessories that meet practical
                                 clinical needs—balancing performance, durability, and value.
@@ -589,9 +693,9 @@
                         <img src="{{ asset('frontend/images/heading-icon.png') }}" class="about-icon" alt="about image">
 
                         <div>
-                            <h5 class="icon-heading">
+                            <h3 class="icon-heading">
                                 Technical Expertise
-                            </h5>
+                            </h3>
                             <p class="about-long-desc mt-2">
                                 Our service approach is built on structured diagnostics, careful repairs, and final
                                 verification—so you get solutions that last, not quick fixes.
@@ -625,10 +729,12 @@
     <x-contact-us-section :footer-states="$footerStates" />
 
     {{-- ================= pruduct sectiion ============= --}}
-    <div class="pro-section">
-        <x-our-latest-products />
+    @if ($hasProducts)
+        <div class="pro-section">
+            <x-our-latest-products />
 
-    </div>
+        </div>
+    @endif
 
     {{-- ================faqs section ================ --}}
     <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""

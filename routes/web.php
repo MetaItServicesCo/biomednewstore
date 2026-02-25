@@ -398,6 +398,7 @@ Route::middleware(['admin_or_redirect'])->group(function () {
     // ===========================
     Route::controller(InquiryController::class)->prefix('admin/inquiry/contact-us')->as('admin.contact-us.form.')->group(function () {
         Route::get('/list', 'contactFormData')->name('list');
+        Route::get('/{id}/view', 'contactFormView')->name('view');
         Route::delete('/{id}/destroy', 'contactFormdestroy')->name('destroy');
     });
 

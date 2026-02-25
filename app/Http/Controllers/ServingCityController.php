@@ -62,7 +62,7 @@ class ServingCityController extends Controller
             'city_name'            => 'required|string|max:255',
             'area_name'            => 'required|string|max:255',
             'show_on_header'       => 'required|boolean',
-            'city_image'           => 'required|image|mimes:jpg,jpeg,png,webp|max:300',
+            'city_image'           => 'required|image|mimes:jpg,jpeg,png,webp|max:10000',
             'city_image_alt'       => 'nullable|string|max:255',
 
             // Content
@@ -71,7 +71,7 @@ class ServingCityController extends Controller
             'image_alt'            => 'nullable|string|max:255',
 
             // Gallery
-            'gallery_images.*'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'gallery_images.*'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
 
             // Serve
             'serve_heading'        => 'nullable|string|max:255',
@@ -191,12 +191,12 @@ class ServingCityController extends Controller
             'city_name'            => 'required|string|max:255',
             'area_name'            => 'required|string|max:255',
             'show_on_header'       => 'required|boolean',
-            'city_image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'city_image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'city_image_alt'       => 'nullable|string|max:255',
             'content_title'        => 'nullable|string|max:255',
             'content_description'  => 'nullable|string',
             'image_alt'            => 'nullable|string|max:255',
-            'gallery_images.*'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:300',
+            'gallery_images.*'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'serve_heading'        => 'nullable|string|max:255',
             'serve_description'    => 'nullable|string',
             'meta_title'           => 'nullable|string|max:255',

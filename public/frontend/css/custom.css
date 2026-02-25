@@ -289,9 +289,9 @@
  .navbar-brand {
      display: flex;
      align-items: center;
-     padding-left: 34px;
-     /* justify-content: center;
-     width: 220px; */
+     justify-content: center;
+     padding-left: 0;
+     width: 15%;
  }
 
  .nav-logo {
@@ -299,6 +299,7 @@
      max-width: 200px;
      height: 150px;
      object-fit: contain;
+     margin-top: -10px;
  }
 
  .navbar {
@@ -307,19 +308,24 @@
 
  @media (max-width: 1024px) {
      .navbar-brand {
-         padding-left: 0px;
+         padding-left: 0;
+         justify-content: center;
      }
  }
 
  @media (max-width: 768px) {
      .navbar-brand {
-         padding-left: 10px !important;
+         padding-left: 30px !important;
+         justify-content: center;
      }
  }
 
  @media(max-width:768px) {
      .site-header {
          box-shadow: 0 0 5px #000000;
+     }
+     .nav-link {
+         margin-left: 0px !important;
      }
  }
 
@@ -338,7 +344,7 @@
      } */
 
      .navbar-brand {
-         padding-left: 0px !important;
+         justify-content: center;
      }
 
      .nav-logo {
@@ -388,6 +394,12 @@
      display: flex;
      align-items: center;
      gap: 5px;
+     transition: all 0.4s ease-in-out;
+     margin-left: 50px;
+ }
+
+ .nav-link:hover {
+     transform: scale(1.05);
  }
 
  .icon-style {
@@ -841,9 +853,7 @@
          position: static;
          width: 100%;
          height: auto;
-         /* 🔥 FIX */
          min-height: 100vh;
-         /* full screen menu */
          padding: 20px 15px;
          margin-top: 0;
          z-index: 10000;
@@ -879,13 +889,15 @@
 
      .blue-block {
          height: 127px;
-
+         top: -20px;
          padding-right: 20px;
          width: 86%;
          box-sizing: border-box !important;
 
      }
-
+.nav-link {
+         margin-left: 20px;
+     }
      .container,
      .container-fluid {
          padding-right: 40px !important;
@@ -898,7 +910,6 @@
      .nav-link {
 
          font-size: 13px;
-
          gap: 10px;
      }
 
@@ -1436,14 +1447,14 @@
      text-decoration: line-through;
      color: #d8a036;
 
-     font-size: 20px;
-     font-weight: 500;
+     font-size: 15px;
+     font-weight: 500 !important;
      font-family: Inter, sans-serif;
  }
 
  .new-price {
-     font-size: 20px;
-     font-weight: 500;
+     font-size: 15px !important;
+     font-weight: 500 !important;
      font-family: Inter, sans-serif;
  }
 
@@ -1454,7 +1465,7 @@
      border-radius: 8px;
      border: none;
      font-weight: 600;
-     font-size: 12px;
+     font-size: 10px;
      transition: all 0.4s ease-in-out;
  }
 
@@ -3412,11 +3423,10 @@
 
  .hero-detail-section {
      background: linear-gradient(to right, #006A9E 60%, #A5CDE0);
-     /* padding-top: 50px;
-     padding-bottom: 80px; */
-     padding-top: 20px;
+     padding-top: 50px;
+     /* padding-bottom: 80px; */
      height: 100%;
-     margin-top: 120px;
+     margin-top: 140px;
  }
 
  .hero-detail-section .hero-title {
@@ -3425,6 +3435,7 @@
      font-weight: 700;
      color: white;
      line-height: 120%;
+
  }
 
  .hero-title span {
@@ -3528,6 +3539,10 @@
          min-height: 600px;
      }
 
+     .hero-detail-section {
+         margin-top: 100px !important;
+     }
+
      .hero-main-heading {
          font-size: 26px;
 
@@ -3539,7 +3554,6 @@
 
      }
 
-     /* Circles ko mobile par chota kar dein ya hide kar dein */
      .circle-one {
          width: 800px;
          height: 800px;
@@ -3614,12 +3628,12 @@
      }
 
      .service-card h4 {
-         font-size: 25px !important;
+         font-size: 20px !important;
 
      }
 
      .service-card p {
-         font-size: 14px !important;
+         font-size: 12px !important;
 
      }
 
@@ -4265,7 +4279,7 @@
      width: 100%;
 
      max-width: 427px;
-     height: 28px;
+     height: 32px;
      border-radius: 10px;
      font-size: 14px;
      color: #8B8B8B;
@@ -4279,7 +4293,7 @@
      width: 100%;
 
      max-width: 205px;
-     height: 28px;
+     height: 32px;
      border-radius: 10px;
      font-size: 14px;
      color: #8B8B8B;
@@ -4297,7 +4311,7 @@
      width: 100%;
      max-width: 152px;
 
-     height: 28px;
+     height: 32px;
      border-radius: 10px;
      font-size: 14px;
      color: #8B8B8B;

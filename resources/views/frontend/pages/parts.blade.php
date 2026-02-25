@@ -30,6 +30,15 @@
                 margin: 0;
                 font-family: Arial;
             }
+                .part-banner h2 {
+                font-size: 50px;
+                font-weight: 700;
+                color: #ffffff;
+                line-height: 120%;
+                letter-spacing: 0;
+                margin: 0;
+                font-family: Arial;
+            }
 
             .cart-banner p {
                 font-size: 16px;
@@ -167,25 +176,27 @@
             }
 
             /* Clear Parts Search Button */
-        .btn-clear-parts-search {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            padding: 5px 10px;
-            z-index: 10;
-            transition: color 0.3s ease;
-        }
-        .btn-clear-parts-search:hover {
-            color: #D43838;
-        }
-        .btn-clear-parts-search i {
-            font-size: 18px;
-        }
+            .btn-clear-parts-search {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                color: #666;
+                cursor: pointer;
+                padding: 5px 10px;
+                z-index: 10;
+                transition: color 0.3s ease;
+            }
+
+            .btn-clear-parts-search:hover {
+                color: #D43838;
+            }
+
+            .btn-clear-parts-search i {
+                font-size: 18px;
+            }
 
             /* Buttons */
             .filtter-btn {
@@ -313,7 +324,7 @@
     <section class="part-banner ">
 
         <div class="container  ">
-            <h1>Shop By Device</h1>
+            <h2>Shop By Device</h2>
             <p class="text-white mt-2">Looking for a specific part? Start by selecting your device type, manufacturer, or
                 category. Use the search bar to find parts by name, model, or part number—then filter results to match your
                 equipment.</p>

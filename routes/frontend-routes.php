@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RepairServiceController;
 use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\SiteMapController;
 use Illuminate\Support\Facades\Route;
 
 // ===========================
@@ -62,9 +63,14 @@ Route::prefix('ajax')->group(function () {
     Route::get('/parts/filter', [ProductController::class, 'partsAjax'])->name('parts.filter');
 });
 
+Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('sitemap');
 
 Route::get('/store', [ProductController::class, 'products'])->name('products');
-Route::get('/category/{slug}', [ProductController::class, 'productDetail'])->name('product-detail');
+
+// Route::get('/category/{slug}', [ProductController::class, 'productDetail'])->name('product-detail');
+Route::get('/products/{slug}', [ProductController::class, 'productDetail'])->name('product-detail');
+
+
 Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add');
 
 Route::get('/cart', [ProductController::class, 'cart'])->name('cart');

@@ -5,7 +5,7 @@
         <h2 class="section-title text-center mt-5 fade-left">Everything’s Bigger In <span>Texas </span>-- Including Our
             Reach </h2>
         <p class="section-desc text-center fade-right">
-            Texas-based hospitals and healthcare providers trust Mr Biomed Tech Services for our precise and targeted
+            Texas-based hospitals and healthcare providers trust Mr. Biomed Tech Services for our precise and targeted
             biomedical equipment solutions. We cover it all and at a cost-effective rate: Biomed/Clinical Engineering
             Repair Services, Medical and Surgical Equipment Rental Services, New/Refurbished Medical and Surgical
             Equipment Sales, Disposition Services, and Consultancy Services.
@@ -25,7 +25,7 @@
 
                     <h3 class="box-title">We Are Regional <span>Service Provider</span> </h3>
 
-                    <h4 class="sub-title">Mr Biomed Tech, Primarily Service The Below States:</h4>
+                    <h4 class="sub-title">Mr. Biomed Tech Services, Primarily Service The Below States:</h4>
 
                     <!-- 3 COLUMN LIST -->
                     <div class="row mt-3">
@@ -54,7 +54,7 @@
                     </div>
 
                     <h4 class="sub-title mt-4">
-                        Mr Biomed Tech, Also Services These Additional States Through Our Sister Companies
+                        Mr. Biomed Tech Services, Also Services These Additional States Through Our Sister Companies
                         At The Scientific Safety Alliance.
                     </h4>
 
