@@ -30,6 +30,15 @@
                 margin: 0;
                 font-family: Arial;
             }
+                .part-banner h2 {
+                font-size: 50px;
+                font-weight: 700;
+                color: #ffffff;
+                line-height: 120%;
+                letter-spacing: 0;
+                margin: 0;
+                font-family: Arial;
+            }
 
             .cart-banner p {
                 font-size: 16px;

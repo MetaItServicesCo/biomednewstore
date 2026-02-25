@@ -79,7 +79,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() === 'products' || Route::currentRouteName() === 'product-detail' ? 'active' : '' }}"
-                            href="{{ route('products') }}">MrBioMed Store</a>
+                            href="{{ route('products') }}">Mr. BioMed Store</a>
                     </li>
 
                     <li class="nav-item dropdown  has-mega">

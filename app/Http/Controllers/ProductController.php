@@ -78,7 +78,7 @@ class ProductController extends Controller
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
             'manufacture' => 'nullable|string|max:255',
-            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:10000',
             'product_type' => 'required|in:product,part',
         ]);
 

@@ -87,7 +87,7 @@ class TestimonialController extends Controller
     {
         // ---------------- VALIDATION ----------------
         $validated = $request->validate([
-            'image'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'image_alt'         => 'nullable|string|max:255',
             'rating'            => 'required|integer|min:1|max:5',
             'short_description' => 'nullable|string',
