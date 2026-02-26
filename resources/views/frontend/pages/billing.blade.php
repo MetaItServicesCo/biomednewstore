@@ -763,7 +763,10 @@
 
         $gst_percent = 8.25 / 100; // 8.25%
         $gst = $subtotal * $gst_percent;
-        $total = $subtotal + $shipping + $gst;
+        $transaction_processing_fees = 3.5 / 100; // 3.5% transaction fee
+        $total_without_transaction_charges = $subtotal + $shipping + $gst;
+        $transaction_fee = $total_without_transaction_charges * $transaction_processing_fees;
+        $total = $total_without_transaction_charges + $transaction_fee;
         $paymentGateway = setting('payment_gateway') ?: env('PAYMENT_GATEWAY') ?: 'square';
     @endphp
 
@@ -989,6 +992,11 @@
                         <div class="summary-row mt-3">
                             <span>GST (8.25%)</span>
                             <span id="gstAmount">${{ number_format($gst, 2) }}</span>
+                        </div>
+
+                        <div class="summary-row mt-3">
+                            <span>Transaction Fee (3.5%)</span>
+                            <span id="transactionFeeAmount">${{ number_format($transaction_fee, 2) }}</span>
                         </div>
 
                         <div class="summary-total mt-3">
@@ -1346,23 +1354,28 @@
                 const selectedMethod = $('input[name="shipping_method"]:checked').val();
                 const subtotal = parseFloat({{ $subtotal }});
                 const gst = parseFloat({{ $gst }});
+                const transactionFeeRate = 0.035;
+                const standardShipping = 40.0;
                 let shipping = 0;
 
                 if (selectedMethod === 'standard') {
-                    shipping = 40.0;
+                    shipping = standardShipping;
                     $('#shippingRow').show();
                     $('#shippingNote').show();
                     $('#shippingAmount').text('$' + shipping.toFixed(2));
-                    $('#standardShippingCost').text('$' + shipping.toFixed(2));
+                    $('#standardShippingCost').text('$' + standardShipping.toFixed(2));
                 } else {
                     shipping = 0.0;
                     $('#shippingRow').hide();
                     $('#shippingNote').hide();
                     $('#shippingAmount').text('$0.00');
-                    $('#standardShippingCost').text('$' + (subtotal + 40.0 + gst).toFixed(2));
+                    $('#standardShippingCost').text('$' + standardShipping.toFixed(2));
                 }
 
-                const total = subtotal + shipping + gst;
+                const baseTotal = subtotal + shipping + gst;
+                const transactionFee = baseTotal * transactionFeeRate;
+                const total = baseTotal + transactionFee;
+                $('#transactionFeeAmount').text('$' + transactionFee.toFixed(2));
                 $('#orderTotal').text('$' + total.toFixed(2));
                 $('#modalTotalAmount').text('$' + total.toFixed(2));
                 $('#squareModalTotalAmount').text('$' + total.toFixed(2));
