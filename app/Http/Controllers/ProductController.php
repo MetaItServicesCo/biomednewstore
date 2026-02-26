@@ -681,7 +681,7 @@ class ProductController extends Controller
             $parts = Product::where('is_active', true)
                 ->where('product_type', 'part')
                 // ->whereIn('type', ['for_store', 'both'])
-                ->orderBy('name', 'asc')
+                ->orderBy('created_at', 'desc') // Newest parts first
                 ->paginate(16);
 
             $totalParts = $parts->total();
@@ -748,7 +748,7 @@ class ProductController extends Controller
                 });
             }
 
-            $parts = $query->orderBy('name', 'asc')->paginate(16);
+            $parts = $query->orderBy('created_at', 'desc')->paginate(16); // Newest parts first
             $totalParts = $parts->total(); // total filtered count
 
             return response()->json([
