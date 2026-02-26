@@ -26,7 +26,8 @@
                 height: 58px;
                 background-color: #DEE9FF;
                 max-width: 526px;
-                padding-right: 50px; /* Space for cancel button inside */
+                padding-right: 50px;
+                /* Space for cancel button inside */
             }
 
             @media(max-width:768px) {
@@ -403,14 +404,15 @@
             }
 
             .recent-pro {
-                width: 121px;
-                height: 121px;
+                width: 100%;
+                /* max-width: 100px; */
+                height: 100px;
                 object-fit: cover;
             }
 
             .recent-title {
-                font-weight: 600;
-                font-size: 18px;
+                font-weight: 500;
+                font-size: 16px;
                 font-family: Inter;
                 line-height: 140%;
                 color: #0D0D0D;
@@ -418,10 +420,16 @@
 
             .productt-cardd h6 {
                 font-weight: 500;
-                font-size: 20px;
+                font-size: 16px;
                 font-family: Inter;
                 line-height: 140%;
                 color: #0D0D0D;
+
+                /* 🔥 2 line ellipsis */
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
 
             .old-price {
@@ -429,7 +437,7 @@
                 text-decoration: line-through !important;
                 color: #7A7A7A;
                 font-weight: 500;
-                font-size: 18px;
+                font-size: 15px;
                 font-family: Inter, sans-serif;
                 line-height: 160%;
                 vertical-align: middle;
@@ -444,7 +452,7 @@
             .new-price {
                 color: #0071A8 !important;
                 font-weight: 500;
-                font-size: 18px;
+                font-size: 15px;
                 font-family: Inter;
                 line-height: 160%;
                 /* margin-left: 20px; */
@@ -587,7 +595,7 @@
                                             <div class="col-lg-7 col-md-12 col-7">
                                                 <div class="px-2">
                                                     <h6 class="recent-title">
-                                                        {{ \Illuminate\Support\Str::limit($recentProduct->name, 30) }}
+                                                        {{ \Illuminate\Support\Str::limit($recentProduct->name, 20) }}
                                                     </h6>
 
                                                     <div class="recent-price">
@@ -618,7 +626,6 @@
                         </div>
 
                     </div>
-
                 </div>
 
                 <!-- ================= RIGHT PRODUCTS (col-9) ================= -->

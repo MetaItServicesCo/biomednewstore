@@ -104,7 +104,7 @@
                 <span>${{ number_format($order->shipping, 2) }}</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                <span>GST (10%):</span>
+                <span>GST (8.25%):</span>
                 <span>${{ number_format($order->gst, 2) }}</span>
             </div>
             <hr style="border: none; border-top: 1px solid #ddd; margin: 10px 0;">
