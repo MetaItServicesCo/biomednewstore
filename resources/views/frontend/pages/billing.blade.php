@@ -640,6 +640,13 @@
             display: block;
         }
 
+        .square-card-loading {
+            font-size: 14px;
+            color: #e74c3c;
+            margin-top: 8px;
+            font-weight: 700;
+        }
+
         .payment-amount {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
@@ -756,7 +763,10 @@
 
         $gst_percent = 8.25 / 100; // 8.25%
         $gst = $subtotal * $gst_percent;
-        $total = $subtotal + $shipping + $gst;
+        $transaction_processing_fees = 3.5 / 100; // 3.5% transaction fee
+        $total_without_transaction_charges = $subtotal + $shipping + $gst;
+        $transaction_fee = $total_without_transaction_charges * $transaction_processing_fees;
+        $total = $total_without_transaction_charges + $transaction_fee;
         $paymentGateway = setting('payment_gateway') ?: env('PAYMENT_GATEWAY') ?: 'square';
     @endphp
 
@@ -902,7 +912,7 @@
                                         item size, weight, and destination. Our team will confirm the final shipping charges
                                         before dispatch.</label>
                                 </div>
-                                <p class="fw-semibold" id="standardShippingCost">${{ number_format($total, 2) }}</p>
+                                <p class="fw-semibold" id="standardShippingCost">${{ number_format($shipping, 2) }}</p>
                             </div>
                         </div>
 
@@ -984,6 +994,11 @@
                             <span id="gstAmount">${{ number_format($gst, 2) }}</span>
                         </div>
 
+                        <div class="summary-row mt-3">
+                            <span>Transaction Fee (3.5%)</span>
+                            <span id="transactionFeeAmount">${{ number_format($transaction_fee, 2) }}</span>
+                        </div>
+
                         <div class="summary-total mt-3">
                             <span>Order Total</span>
                             <span id="orderTotal">${{ number_format($total, 2) }}</span>
@@ -1054,6 +1069,9 @@
             <div class="payment-info-section">
                 <label for="square-card-element">Card Information</label>
                 <div id="square-card-element"></div>
+                <div id="square-card-loading" class="square-card-loading">
+                    LOADING SQUAREUP SECURE CARD FORM...
+                </div>
                 <div id="square-card-errors"></div>
             </div>
 
@@ -1296,12 +1314,15 @@
                 }
 
                 try {
+                    $('#square-card-loading').show();
                     squarePayments = Square.payments(squareApplicationId, squareLocationId);
                     squareCard = await squarePayments.card();
                     await squareCard.attach('#square-card-element');
+                    $('#square-card-loading').hide();
                 } catch (error) {
                     console.log('Square initialization failed:', error);
                     $('#square-card-errors').text('Unable to initialize Square payment form.').addClass('show');
+                    $('#square-card-loading').hide();
                 }
             }
 
@@ -1333,23 +1354,28 @@
                 const selectedMethod = $('input[name="shipping_method"]:checked').val();
                 const subtotal = parseFloat({{ $subtotal }});
                 const gst = parseFloat({{ $gst }});
+                const transactionFeeRate = 0.035;
+                const standardShipping = 40.0;
                 let shipping = 0;
 
                 if (selectedMethod === 'standard') {
-                    shipping = 40.0;
+                    shipping = standardShipping;
                     $('#shippingRow').show();
                     $('#shippingNote').show();
                     $('#shippingAmount').text('$' + shipping.toFixed(2));
-                    $('#standardShippingCost').text('$' + (subtotal + shipping + gst).toFixed(2));
+                    $('#standardShippingCost').text('$' + standardShipping.toFixed(2));
                 } else {
                     shipping = 0.0;
                     $('#shippingRow').hide();
                     $('#shippingNote').hide();
                     $('#shippingAmount').text('$0.00');
-                    $('#standardShippingCost').text('$' + (subtotal + 40.0 + gst).toFixed(2));
+                    $('#standardShippingCost').text('$' + standardShipping.toFixed(2));
                 }
 
-                const total = subtotal + shipping + gst;
+                const baseTotal = subtotal + shipping + gst;
+                const transactionFee = baseTotal * transactionFeeRate;
+                const total = baseTotal + transactionFee;
+                $('#transactionFeeAmount').text('$' + transactionFee.toFixed(2));
                 $('#orderTotal').text('$' + total.toFixed(2));
                 $('#modalTotalAmount').text('$' + total.toFixed(2));
                 $('#squareModalTotalAmount').text('$' + total.toFixed(2));

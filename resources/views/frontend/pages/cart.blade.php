@@ -498,6 +498,10 @@
                                     <span>GST (8.25%)</span>
                                     <span>$0.00</span>
                                 </div>
+                                <div class="summary-row  mt-3 summary-transaction-fee">
+                                    <span>Transaction Fee (3.5%)</span>
+                                    <span>$0.00</span>
+                                </div>
                                 <div class="summary-total  mt-3 summary-total-amount">
                                     <span>Order Total</span>
                                     <span>$0.00</span>
@@ -562,6 +566,7 @@
 
             const SHIPPING_COST = 40.00;
             const GST_RATE = 8.25 / 100; // 8.25%
+            const TRANSACTION_FEE_RATE = 3.5 / 100; // 3.5%
 
             // Function to update summary
             function updateSummary() {
@@ -581,17 +586,21 @@
 
                 // Calculations (JS = source of truth)
                 const gst = subtotal * GST_RATE;
-                const total = subtotal + SHIPPING_COST + gst;
+                const baseTotal = subtotal + SHIPPING_COST + gst;
+                const transactionFee = baseTotal * TRANSACTION_FEE_RATE;
+                const total = baseTotal + transactionFee;
 
                 // Update summary card using class names
                 const subtotalElem = document.querySelector('.summary-subtotal span:last-child');
                 const shippingElem = document.querySelector('.summary-shipping span:last-child');
                 const gstElem = document.querySelector('.summary-gst span:last-child');
+                const transactionFeeElem = document.querySelector('.summary-transaction-fee span:last-child');
                 const totalElem = document.querySelector('.summary-total-amount span:last-child');
 
                 if (subtotalElem) subtotalElem.innerText = `$${subtotal.toFixed(2)}`;
                 if (shippingElem) shippingElem.innerText = `$${SHIPPING_COST.toFixed(2)}`;
                 if (gstElem) gstElem.innerText = `$${gst.toFixed(2)}`;
+                if (transactionFeeElem) transactionFeeElem.innerText = `$${transactionFee.toFixed(2)}`;
                 if (totalElem) totalElem.innerText = `$${total.toFixed(2)}`;
             }
 

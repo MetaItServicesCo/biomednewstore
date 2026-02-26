@@ -27,7 +27,7 @@
 
                 <div class="price-row">
                     @if (!empty($item->price) && $item->price > 0)
-                        <span class="old-price">${{ number_format($item->price, 2) }}</span>
+                        <span class="old-price text-decoration-line-through">${{ number_format($item->price, 2) }}</span>
                     @endif
                     <span class="new-price">${{ number_format($item->sale_price, 2) }}</span>
                     <a href="{{ route('part-detail', $item->slug) }}">

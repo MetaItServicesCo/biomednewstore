@@ -33,7 +33,7 @@
                         <h6>{{ $product->name ?? '' }}</h6>
                         <div class="price-row">
                             @if ($product->price && $product->price > 0)
-                                <span class="old-price">${{ number_format($product->price, 2) }}</span>
+                                <span class="old-price text-decoration-line-through">${{ number_format($product->price, 2) }}</span>
                             @endif
                             <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
                             <a href="{{ route('product-detail', $product->slug) }}">

@@ -522,7 +522,7 @@
                                         <li class="mt-2 product-item" data-cat-id="{{ $category->id }}"
                                             data-index="{{ $loop->index }}"
                                             style="{{ $loop->index < 5 ? '' : 'display:none' }}">
-                                            <a href="{{ route('product-detail', $product->slug) }}"
+                                            <a href="{{ $product->product_type === 'part' ? route('part-detail', $product->slug) : route('product-detail', $product->slug) }}"
                                                 class="text-decoration-none text-dark">
                                                 {{ $product->name }}
                                             </a>

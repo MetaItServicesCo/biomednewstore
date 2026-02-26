@@ -72,7 +72,7 @@
                         <span>${{ number_format($order->shipping, 2) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
-                        <span>GST (10%):</span>
+                        <span>GST (8.25%):</span>
                         <span>${{ number_format($order->gst, 2) }}</span>
                     </div>
                     <hr>

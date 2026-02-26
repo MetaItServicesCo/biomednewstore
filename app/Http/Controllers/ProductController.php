@@ -78,7 +78,7 @@ class ProductController extends Controller
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
             'manufacture' => 'nullable|string|max:255',
-            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:10000',
             'product_type' => 'required|in:product,part',
         ]);
 
@@ -412,7 +412,7 @@ class ProductController extends Controller
                 ->whereNotIn('slug', $excluded)          // exclude specific slugs
                 ->with(['products' => function ($query) {
                     $query->where('is_active', true)
-                        ->where('product_type', 'product')
+                        // ->where('product_type', 'product')
                         ->whereIn('type', ['for_store', 'both'])
                         ->orderBy('name', 'asc'); // order products by name
                 }])
@@ -668,6 +668,7 @@ class ProductController extends Controller
                 'user_id' => auth()->id(),
             ]);
 
+            
             // Redirect user safely
             return redirect()
                 ->route('products')
@@ -681,7 +682,7 @@ class ProductController extends Controller
             $parts = Product::where('is_active', true)
                 ->where('product_type', 'part')
                 // ->whereIn('type', ['for_store', 'both'])
-                ->orderBy('name', 'asc')
+                ->orderBy('created_at', 'desc') // Newest parts first
                 ->paginate(16);
 
             $totalParts = $parts->total();
@@ -748,7 +749,7 @@ class ProductController extends Controller
                 });
             }
 
-            $parts = $query->orderBy('name', 'asc')->paginate(16);
+            $parts = $query->orderBy('created_at', 'desc')->paginate(16); // Newest parts first
             $totalParts = $parts->total(); // total filtered count
 
             return response()->json([

@@ -28,7 +28,7 @@ class AddUserModal extends Component
         'name' => 'required|string',
         'email' => 'required|email',
         'role' => 'required|string',
-        'avatar' => 'nullable|sometimes|image|max:1024',
+        'avatar' => 'nullable|sometimes|image|max:10000',
     ];
 
     protected $listeners = [

@@ -259,6 +259,16 @@
                 height: auto;
                 min-height: 420px;
             }
+                 .cardd-title {
+      
+            font-size: 20px !important;
+          
+        }
+         .card-desc {
+            margin-top: 10px !important;
+            font-size: 14px !important;
+        
+        }
         }
 
         /* Card Title */
