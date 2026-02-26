@@ -58,6 +58,33 @@ class OrderController extends Controller
 
         return $orderId;
     }
+
+    private function updateInventory(array $cart): void
+    {
+        $productIds = collect($cart)->pluck('id')->filter()->unique()->values();
+        if ($productIds->isEmpty()) {
+            return;
+        }
+
+        $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
+
+        foreach ($cart as $item) {
+            $productId = $item['id'] ?? null;
+            if (! $productId || ! $products->has($productId)) {
+                continue;
+            }
+
+            $product = $products->get($productId);
+            $qty = (int) ($item['qty'] ?? 0);
+            if ($qty <= 0) {
+                continue;
+            }
+
+            $product->stock_qty = max(0, (int) $product->stock_qty - $qty);
+            $product->in_stock = $product->stock_qty > 0;
+            $product->save();
+        }
+    }
     /**
      * Save order from billing form
      */
@@ -359,6 +386,8 @@ class OrderController extends Controller
                     ]);
                 }
 
+                $this->updateInventory($cart);
+
                 session()->forget('cart');
                 
                 // Set order completed flag to prevent back button access
@@ -419,6 +448,8 @@ class OrderController extends Controller
                     'subtotal' => $itemSubtotal,
                 ]);
             }
+
+                $this->updateInventory($cart);
 
             try {
                 Mail::to($order->email)->queue(new OrderPaymentFailedMail($order->load('items'), 'Payment was not completed'));
