@@ -668,6 +668,7 @@ class ProductController extends Controller
                 'user_id' => auth()->id(),
             ]);
 
+            
             // Redirect user safely
             return redirect()
                 ->route('products')
