@@ -2,8 +2,15 @@
 <div class="app-sidebar-logo px-" id="kt_app_sidebar_logo">
     <!--begin::Logo image-->
     <a href="{{ route('dashboard') }}">
-        <img alt="Logo" src="{{ asset('frontend/images/logo.png') }}" class="h-25px app-sidebar-logo-default" />
-        {{-- <img alt="Logo" src="{{ image('logos/default-small.svg') }}" class="h-20px app-sidebar-logo-minimize" /> --}}
+        <img alt="Logo" src="{{ asset('frontend/images/logo.png') }}" class="app-sidebar-logo-default"
+            style="
+            height: 144px;
+            width: 265px;
+            position: fixed;
+            top: 0;
+            z-index: 2;
+            padding-left: 0px;
+        " />
     </a>
     <!--end::Logo image-->
     <!--begin::Sidebar toggle-->
@@ -18,7 +25,7 @@
     <div id="kt_app_sidebar_toggle"
         class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary h-30px w-30px position-absolute top-50 start-100 translate-middle rotate"
         data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
-        data-kt-toggle-name="app-sidebar-minimize">{!! getIcon('black-left-line', 'fs-3 rotate-180 ms-1') !!}</div>
+        data-kt-toggle-name="app-sidebar-minimize" style="z-index: 3;">{!! getIcon('black-left-line', 'fs-3 rotate-180 ms-1') !!}</div>
     <script type="text/javascript">
         var sidebar_toggle = document.getElementById("kt_app_sidebar_toggle"); // Get the sidebar toggle button element
         @if (isset($_COOKIE['sidebar_minimize_state']) && $_COOKIE['sidebar_minimize_state'] === 'on')
