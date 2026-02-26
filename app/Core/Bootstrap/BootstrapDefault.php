@@ -42,7 +42,7 @@ class BootstrapDefault
         addHtmlAttribute('body', 'data-kt-app-header-fixed', 'true');
         addHtmlAttribute('body', 'data-kt-app-sidebar-enabled', 'true');
         addHtmlAttribute('body', 'data-kt-app-sidebar-fixed', 'true');
-        addHtmlAttribute('body', 'data-kt-app-sidebar-hoverable', 'true');
+        addHtmlAttribute('body', 'data-kt-app-sidebar-hoverable', 'false');
         addHtmlAttribute('body', 'data-kt-app-sidebar-push-header', 'true');
         addHtmlAttribute('body', 'data-kt-app-sidebar-push-toolbar', 'true');
         addHtmlAttribute('body', 'data-kt-app-sidebar-push-footer', 'true');
@@ -57,7 +57,7 @@ class BootstrapDefault
         addHtmlAttribute('body', 'data-kt-app-header-fixed', 'false');
         addHtmlAttribute('body', 'data-kt-app-sidebar-enabled', 'true');
         addHtmlAttribute('body', 'data-kt-app-sidebar-fixed', 'true');
-        addHtmlAttribute('body', 'data-kt-app-sidebar-hoverable', 'true');
+        addHtmlAttribute('body', 'data-kt-app-sidebar-hoverable', 'false');
         addHtmlAttribute('body', 'data-kt-app-sidebar-push-header', 'true');
         addHtmlAttribute('body', 'data-kt-app-sidebar-push-toolbar', 'true');
         addHtmlAttribute('body', 'data-kt-app-sidebar-push-footer', 'true');
