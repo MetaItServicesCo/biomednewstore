@@ -20,7 +20,16 @@
                         @endfor
                     </div>
 
-                    <span class="stock">In Stock</span>
+                    <span class="stock">
+                        @if ($item->in_stock)
+                            In Stock
+                            @if ($item->stock_qty)
+                                ({{ $item->stock_qty }})
+                            @endif
+                        @else
+                            Out of Stock
+                        @endif
+                    </span>
                 </div>
 
                 <h6>{{ $item->name }}</h6>
@@ -31,7 +40,9 @@
                     @endif
                     <span class="new-price">${{ number_format($item->sale_price, 2) }}</span>
                     <a href="{{ route('part-detail', $item->slug) }}">
-                        <button class="btn-buy">Buy Now</button>
+                        <button class="btn-buy" @if (!$item->in_stock) disabled class="disabled-btn" @endif>
+                            {{ $item->in_stock ? 'Buy Now' : 'Out of Stock' }}
+                        </button>
                     </a>
                 </div>
             </div>
