@@ -539,7 +539,7 @@
                             <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
                                 class="first-card-img img-fluid mb-3" alt="service">
 
-                            <h4 class="cardd-title">New & Pre-Owned Medical Equipment Sales</h4>
+                            <h4 class="cardd-title">Medical Equipment Rental</h4>
                             <hr>
                             <p class="card-desc">
                                 Renting with us saves you from initial large investment fees, the unnecessary storage costs
