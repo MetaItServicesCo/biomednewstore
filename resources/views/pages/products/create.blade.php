@@ -361,6 +361,18 @@
                                 @enderror
                             </div>
 
+                            <div class="col-lg-8 mb-4">
+                                <label for="tags" class="form-label fw-semibold">{{ __('Tags') }}</label>
+                                <input type="text" id="tags" name="tags"
+                                    class="form-control form-control-lg @error('tags') is-invalid @enderror"
+                                    value="{{ old('tags', isset($data->tags) ? implode(', ', $data->tags ?? []) : '') }}"
+                                    placeholder="e.g. portable, cardiology, monitor">
+                                <small class="text-muted">Comma-separated</small>
+                                @error('tags')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="col-lg-4 mb-4">
                                 <label for="brochures" class="form-label fw-semibold">{{ __('Brochures') }}</label>
                                 <input type="file" id="brochures" name="brochures"

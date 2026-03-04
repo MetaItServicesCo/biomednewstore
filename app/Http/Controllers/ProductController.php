@@ -78,6 +78,7 @@ class ProductController extends Controller
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
             'manufacture' => 'nullable|string|max:255',
+            'tags' => 'nullable|string',
             'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:10000',
             'product_type' => 'required|in:product,part',
         ]);
@@ -114,6 +115,11 @@ class ProductController extends Controller
             $product->model = $request->model;
             $product->manufacture = $request->manufacture;
             $product->product_type = $request->product_type;
+            $product->tags = collect(explode(',', $request->tags ?? ''))
+                ->map(fn ($tag) => trim($tag))
+                ->filter()
+                ->values()
+                ->all();
 
             $product->brochures = $this->uploadImage($request->file('brochures'), 'products/brochures');
 
@@ -223,6 +229,7 @@ class ProductController extends Controller
             'availability' => 'nullable|string|max:255',
             'model' => 'nullable|string|max:255',
             'manufacture' => 'nullable|string|max:255',
+            'tags' => 'nullable|string',
             'brochures' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:10000',
             'product_type' => 'required|in:product,part',
 
@@ -259,6 +266,11 @@ class ProductController extends Controller
             $product->model = $request->model;
             $product->manufacture = $request->manufacture;
             $product->product_type = $request->product_type;
+            $product->tags = collect(explode(',', $request->tags ?? ''))
+                ->map(fn ($tag) => trim($tag))
+                ->filter()
+                ->values()
+                ->all();
 
             $product->brochures = $this->updateImage($request, 'brochures', 'products/brochures', $product->brochures);
 
@@ -433,10 +445,20 @@ class ProductController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->limit(4)
                 ->get();
+
+        $manufacturers = Product::where('is_active', true)
+            ->where('product_type', 'product')
+            ->whereNotNull('manufacture')
+            ->where('manufacture', '!=', '')
+            ->pluck('manufacture')
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
             $faqs = getFaqs('products');
 
             // Return view with data
-            return view('frontend.pages.product-list', compact('categories', 'allProducts', 'faqs', 'recentProducts'));
+        return view('frontend.pages.product-list', compact('categories', 'allProducts', 'faqs', 'recentProducts', 'manufacturers'));
         } catch (\Illuminate\Database\QueryException $e) {
             // Handle database query errors
             Log::error('Database Query Error in Products Page: '.$e->getMessage());
@@ -457,6 +479,9 @@ class ProductController extends Controller
             $min = (float) ($request->min_price ?? 0);
             $max = (float) ($request->max_price ?? 50000);
             $search = trim($request->search ?? '');
+            $sort = $request->input('sort', 'newest');
+            $manufacturers = array_filter(explode(',', $request->manufacturers ?? ''));
+            $conditions = array_filter(explode(',', $request->conditions ?? ''));
 
             if ($min > $max) {
                 [$min, $max] = [$max, $min];
@@ -468,14 +493,50 @@ class ProductController extends Controller
 
             // 🔍 Search
             if ($search !== '') {
-                $query->where('name', 'like', "%{$search}%");
+                $tags = array_filter(array_map('trim', explode(',', $search)));
+                $query->where(function ($filter) use ($search, $tags) {
+                    $filter->where('name', 'like', "%{$search}%")
+                        ->orWhere('short_description', 'like', "%{$search}%");
+
+                    foreach ($tags as $tag) {
+                        $filter->orWhereJsonContains('tags', $tag);
+                    }
+                });
             }
             // 💰 Filter only when no search
             else {
                 $query->whereBetween('sale_price', [$min, $max]);
             }
 
-            $products = $query->orderBy('created_at', 'desc')->paginate(15); // Newest first
+            if (!empty($manufacturers)) {
+                $query->whereIn('manufacture', $manufacturers);
+            }
+
+            if (!empty($conditions)) {
+                $query->whereIn('condition', $conditions);
+            }
+            switch ($sort) {
+                case 'high_to_low':
+                    $query->orderBy('sale_price', 'desc');
+                    break;
+                case 'low_to_high':
+                    $query->orderBy('sale_price', 'asc');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'newest':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'popularity':
+                    $query->orderBy('rating', 'desc')->orderBy('created_at', 'desc');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+                    break;
+            }
+
+            $products = $query->paginate(15); // 15 products per page
 
             return response()->json([
                 'html' => view('partials._products', compact('products'))->render(),

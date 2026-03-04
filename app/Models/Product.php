@@ -41,11 +41,13 @@ class Product extends Model
         'brochures',
         'model',
         'manufacture',
-        'product_type'
+        'product_type',
+        'tags'
     ];
 
     protected $casts = [
         'gallery_images' => 'array',
+        'tags' => 'array',
         'in_stock' => 'boolean',
         'is_active' => 'boolean',
     ];

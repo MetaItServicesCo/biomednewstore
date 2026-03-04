@@ -506,6 +506,20 @@
                 <!-- ================= LEFT SIDEBAR (col-3) ================= -->
                 <div class="col-lg-3 col-md-4 product">
 
+                    <!-- SORT BY -->
+                    <div class="filter-range-box">
+                        <h5 class="filter-title">SORT BY</h5>
+                        <div class="p-3">
+                            <select id="sortSelect" class="form-select">
+                                <option value="high_to_low">Price: High to Low</option>
+                                <option value="low_to_high">Price: Low to High</option>
+                                <option value="oldest">Oldest</option>
+                                <option value="newest" selected>Newest</option>
+                                <option value="popularity">Popularity</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- CATEGORIES -->
                     <div class="filter-main-box">
                         <h5 class="filter-main-title">CATEGORIES</h5>
@@ -542,6 +556,46 @@
                         @endforeach
                     </div>
 
+                    <!-- BRAND -->
+                    <div class="filter-range-box">
+                        <h5 class="filter-title">BRAND</h5>
+                        <div class="p-3">
+                            @forelse ($manufacturers ?? [] as $manufacturer)
+                                <div class="form-check">
+                                    <input class="form-check-input brand-checkbox" type="checkbox"
+                                        value="{{ $manufacturer }}" id="brand-{{ $loop->index }}">
+                                    <label class="form-check-label" for="brand-{{ $loop->index }}">
+                                        {{ $manufacturer }}
+                                    </label>
+                                </div>
+                            @empty
+                                <p class="text-muted mb-0">No brands available.</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- CONDITION -->
+                    <div class="filter-range-box">
+                        <h5 class="filter-title">CONDITION</h5>
+                        <div class="p-3">
+                            <div class="form-check">
+                                <input class="form-check-input condition-checkbox" type="checkbox" value="new"
+                                    id="condition-new">
+                                <label class="form-check-label" for="condition-new">New</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input condition-checkbox" type="checkbox" value="old"
+                                    id="condition-old">
+                                <label class="form-check-label" for="condition-old">Old</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input condition-checkbox" type="checkbox" value="refurbished"
+                                    id="condition-refurbished">
+                                <label class="form-check-label" for="condition-refurbished">Refurbished</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- PRICE RANGE -->
                     <div class="filter-range-box">
                         <h5 class="filter-range-title">PRICE RANGE</h5>
@@ -568,6 +622,12 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- <div class="filter-range-box">
+                        <div class="p-3">
+                            <button id="applyAllFiltersBtn" class="btn btn-danger w-100">Apply Filters</button>
+                        </div>
+                    </div> --}}
 
                     <!-- APPLY FILTER PRODUCT -->
                     <div class="filter-range-box">
@@ -713,6 +773,10 @@
             const paginationContainer = document.getElementById('products-pagination-container');
             const searchInput = document.getElementById('searchInput');
             const clearSearchBtn = document.getElementById('clearSearchBtn');
+            const sortSelect = document.getElementById('sortSelect');
+            const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+            const conditionCheckboxes = document.querySelectorAll('.condition-checkbox');
+            // const applyAllFiltersBtn = document.getElementById('applyAllFiltersBtn');
 
             const rangeMin = document.querySelector('.range-min');
             const rangeMax = document.querySelector('.range-max');
@@ -733,6 +797,7 @@
                 searchInput.value = '';
                 searchText = '';
                 clearSearchBtn.style.display = 'none';
+                searchText = searchInput.value.trim();
                 fetchProducts();
             });
 
@@ -760,6 +825,14 @@
             function fetchProducts(page = 1) {
                 showLoader();
 
+                const selectedBrands = Array.from(brandCheckboxes)
+                    .filter(box => box.checked)
+                    .map(box => box.value);
+                const selectedConditions = Array.from(conditionCheckboxes)
+                    .filter(box => box.checked)
+                    .map(box => box.value);
+                const sortValue = sortSelect ? sortSelect.value : 'newest';
+
                 fetch('/ajax/products/filter', {
                         method: 'POST',
                         headers: {
@@ -770,6 +843,9 @@
                             min_price: minPrice,
                             max_price: maxPrice,
                             search: searchText,
+                            sort: sortValue,
+                            manufacturers: selectedBrands.join(','),
+                            conditions: selectedConditions.join(','),
                             page: page
                         })
                     })
@@ -828,6 +904,24 @@
                     searchText = searchInput.value.trim();
                     fetchProducts();
                 }
+            });
+
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function() {
+                    fetchProducts();
+                });
+            }
+
+            brandCheckboxes.forEach(box => {
+                box.addEventListener('change', function() {
+                    fetchProducts();
+                });
+            });
+
+            conditionCheckboxes.forEach(box => {
+                box.addEventListener('change', function() {
+                    fetchProducts();
+                });
             });
 
             bindPagination();
