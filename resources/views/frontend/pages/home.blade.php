@@ -539,7 +539,7 @@
                             <img src="{{ asset('frontend/images/mrbiomed store services icons/Rent New and Refurbished Patient- Medical Equipment icon.svg') }}"
                                 class="first-card-img img-fluid mb-3" alt="service">
 
-                            <h4 class="cardd-title">Rent New and Refurbished Patient-Ready Medical Equipment</h4>
+                            <h4 class="cardd-title">Medical Equipment Rental</h4>
                             <hr>
                             <p class="card-desc">
                                 Renting with us saves you from initial large investment fees, the unnecessary storage costs
@@ -556,7 +556,7 @@
                         <div class="service-card text-center delay-2">
                             <img src="{{ asset('frontend/images/mrbiomed store services icons/2.svg') }}"
                                 class="s-card-img img-fluid mb-3" alt="service">
-                            <h4 class="cardd-title">Reliable Medical Equipment Repairs</h4>
+                            <h4 class="cardd-title">Inspection, Calibration, & Repair</h4>
                             <hr>
                             <p class="card-desc">
                                 MBMTS offers reliable medical equipment calibration and repair services to ensure accuracy,
@@ -572,7 +572,7 @@
                         <div class="service-card text-center delay-3">
                             <img src="{{ asset('frontend/images/mrbiomed store services icons/Disposition & Retired Assets Services.svg') }}"
                                 class="ss-card-img img-fluid mb-3" alt="service">
-                            <h4 class="cardd-title">Disposition & Retired Assets Services</h4>
+                            <h4 class="cardd-title">Dis-positioning & Retired Assets Services</h4>
                             <hr>
                             <p class="card-desc">
                                 MBMTS takes over the full lifecycle of retired assets, from evaluation and secure removal to
