@@ -978,197 +978,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //==================  navbar mega dropdown toggler  ==========================================
 
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     let closeTimer;
-
-//     document.querySelectorAll('.has-mega').forEach(item => {
-//         const menu = item.querySelector('.mega-menu');
-//         const toggleBtn = item.querySelector('.mega-toggle'); // mobile toggle button
-
-//         const isDesktop = () => window.innerWidth >= 992;
-
-//         // Desktop → hover only
-//         if (isDesktop()) {
-//             item.addEventListener('mouseenter', () => {
-//                 clearTimeout(closeTimer);
-//                 item.classList.add('show');
-//             });
-
-//             item.addEventListener('mouseleave', () => {
-//                 closeTimer = setTimeout(() => {
-//                     item.classList.remove('show');
-//                 }, 250);
-//             });
-
-//             menu.addEventListener('mouseenter', () => clearTimeout(closeTimer));
-//             menu.addEventListener('mouseleave', () => {
-//                 item.classList.remove('show');
-//             });
-//         }
-
-//         // Mobile / MD → click toggle only
-//         if (toggleBtn) {
-//             toggleBtn.addEventListener('click', (e) => {
-//                 e.preventDefault();
-//                 if (!isDesktop()) {
-//                     item.classList.toggle('show');
-//                 }
-//             });
-//         }
-//     });
-
-//     // Click outside → close mobile menu
-//     document.addEventListener('click', (e) => {
-//         document.querySelectorAll('.has-mega.show').forEach(item => {
-//             const toggleBtn = item.querySelector('.mega-toggle');
-//             if (!window.innerWidth >= 992 && toggleBtn && !item.contains(e.target)) {
-//                 item.classList.remove('show');
-//             }
-//         });
-//     });
-
-//     // Window resize → remove show on desktop
-//     window.addEventListener('resize', () => {
-//         if (window.innerWidth >= 992) {
-//             document.querySelectorAll('.has-mega.show').forEach(item => {
-//                 item.classList.remove('show');
-//             });
-//         }
-//     });
-
-// });
-
-// Dilawar JS for mega menu
-
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     let closeTimer;
-//     const DESKTOP_WIDTH = 992;
-//     const isDesktop = () => window.innerWidth >= DESKTOP_WIDTH;
-
-//     const forceCloseAll = () => {
-//         document.querySelectorAll('.has-mega').forEach(item => {
-//             item.classList.remove('show');
-//             item.classList.add('mega-force-hide');
-//         });
-//         clearTimeout(closeTimer);
-//     };
-
-//     const allowOpenAgain = () => {
-//         document.querySelectorAll('.has-mega').forEach(item => {
-//             item.classList.remove('mega-force-hide');
-//         });
-//     };
-
-//     document.querySelectorAll('.has-mega').forEach(item => {
-
-//         const menu = item.querySelector('.mega-menu');
-//         const toggleBtn = item.querySelector('.mega-toggle');
-
-//         /* ================= DESKTOP HOVER ================= */
-//         item.addEventListener('mouseenter', () => {
-//             if (!isDesktop() || item.classList.contains('mega-force-hide')) return;
-
-//             // 🔥 CLOSE ALL FIRST
-//             forceCloseAll();
-//             allowOpenAgain();
-
-//             item.classList.add('show');
-//         });
-
-//         item.addEventListener('mouseleave', () => {
-//             if (!isDesktop()) return;
-//             closeTimer = setTimeout(() => {
-//                 item.classList.remove('show');
-//             }, 250);
-//         });
-
-//         if (menu) {
-//             menu.addEventListener('mouseleave', () => {
-//                 if (!isDesktop()) return;
-//                 item.classList.remove('show');
-//             });
-//         }
-
-//         /* ================= MOBILE CLICK ================= */
-//         if (toggleBtn) {
-//             toggleBtn.addEventListener('click', (e) => {
-//                 e.preventDefault();
-//                 if (isDesktop()) return;
-
-//                 const isOpen = item.classList.contains('show');
-//                 forceCloseAll();
-//                 allowOpenAgain();
-
-//                 if (!isOpen) item.classList.add('show');
-//             });
-//         }
-//     });
-
-//     /* ================= CLICK OUTSIDE ================= */
-//     document.addEventListener('click', (e) => {
-//         document.querySelectorAll('.has-mega.show').forEach(item => {
-//             if (!item.contains(e.target)) {
-//                 item.classList.remove('show');
-//             }
-//         });
-//     });
-
-//     /* ================= SCROLL ================= */
-//     window.addEventListener('scroll', () => {
-//         forceCloseAll();
-//         setTimeout(allowOpenAgain, 200);
-//     }, { passive: true });
-
-//     /* ================= RESIZE ================= */
-//     window.addEventListener('resize', () => {
-//         forceCloseAll();
-//         setTimeout(allowOpenAgain, 200);
-//     });
-
-// });
-
 // My JS for mega menu
 document.addEventListener('DOMContentLoaded', function () {
 
-    let closeTimer;
     const DESKTOP_WIDTH = 992;
     const isDesktop = () => window.innerWidth >= DESKTOP_WIDTH;
 
-    const forceCloseAll = () => {
+    const closeAll = () => {
         document.querySelectorAll('.has-mega').forEach(item => {
             item.classList.remove('show');
-            item.classList.add('mega-force-hide');
-        });
-        clearTimeout(closeTimer);
-    };
-
-    const allowOpenAgain = () => {
-        document.querySelectorAll('.has-mega').forEach(item => {
-            item.classList.remove('mega-force-hide');
         });
     };
 
     document.querySelectorAll('.has-mega').forEach(item => {
 
         const menu = item.querySelector('.mega-menu');
-        const toggleBtn = item.querySelector('.mega-toggle');
+        const icon = item.querySelector('.dropdown-icon');
+        const link = item.querySelector('.nav-main-link');
 
-        /* ================= DESKTOP HOVER ================= */
-        item.addEventListener('mouseenter', () => {
-            if (!isDesktop() || item.classList.contains('mega-force-hide')) return;
-            forceCloseAll();
-            allowOpenAgain();
-            item.classList.add('show');
-        });
+        /* ================= DESKTOP ICON HOVER ================= */
 
-        item.addEventListener('mouseleave', () => {
-            if (!isDesktop()) return;
-            closeTimer = setTimeout(() => {
-                item.classList.remove('show');
-            }, 250);
-        });
+        if (icon) {
+            icon.addEventListener('mouseenter', () => {
+                if (!isDesktop()) return;
+
+                closeAll();
+                item.classList.add('show');
+            });
+        }
 
         if (menu) {
             menu.addEventListener('mouseleave', () => {
@@ -1177,35 +1014,49 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        /* ================= MOBILE CLICK (TOGGLE BUTTON) ================= */
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', (e) => {
-                if (isDesktop()) return; // desktop clicks not blocked
-                e.preventDefault();       // only prevent default on mobile
+        /* ================= MOBILE ICON CLICK ================= */
+
+        if (icon) {
+            icon.addEventListener('click', (e) => {
+
+                if (isDesktop()) return;
+
+                e.preventDefault();
+                e.stopPropagation();
+
                 const isOpen = item.classList.contains('show');
-                forceCloseAll();
-                allowOpenAgain();
-                if (!isOpen) item.classList.add('show');
+
+                closeAll();
+
+                if (!isOpen) {
+                    item.classList.add('show');
+                }
+
+            });
+        }
+
+        /* ================= LINK CLICK ================= */
+
+        if (link) {
+            link.addEventListener('click', () => {
+                // link normally route par jayega
             });
         }
 
     });
 
     /* ================= CLICK OUTSIDE ================= */
+
     document.addEventListener('click', (e) => {
+
         document.querySelectorAll('.has-mega.show').forEach(item => {
+
             if (!item.contains(e.target)) {
                 item.classList.remove('show');
             }
-        });
-    });
 
-    /* ================= SCROLL / RESIZE ================= */
-    ['scroll', 'resize'].forEach(evt => {
-        window.addEventListener(evt, () => {
-            forceCloseAll();
-            setTimeout(allowOpenAgain, 200);
-        }, { passive: true });
+        });
+
     });
 
 });

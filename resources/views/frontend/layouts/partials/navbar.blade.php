@@ -37,6 +37,7 @@
         width: 100%;
         z-index: 10000;
         transition: transform 0.3s ease-in-out;
+        box-shadow: 0 0 5px #000000;
     }
 
     .site-header.hide-header {
@@ -110,7 +111,7 @@
                     </li> --}}
 
                     <li class="nav-item dropdown  has-mega">
-                        <a class="nav-link mega-toggle" href="{{ route('products') }}">
+                        <a class="nav-link nav-main-link" href="{{ route('products') }}">
                             Mr. BioMed Store
                             <i class="bi bi-chevron-down dropdown-icon"></i>
                         </a>
