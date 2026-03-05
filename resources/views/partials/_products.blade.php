@@ -2,11 +2,12 @@
     @if ($products->count())
         @foreach ($products as $product)
             <div class="col-lg-4 col-md-6">
-                <div class="productt-cardd">
-                    <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
-                        alt="{{ $product->image_alt ?? $product->name }}">
+                <div class="productt-cardd position-relative">
+                    <a href="{{ ($product->product_type ?? 'product') === 'part' ? route('part-detail', $product->slug) : route('product-detail', $product->slug) }}" class="stretched-link"></a>
+                        <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
+                            alt="{{ $product->image_alt ?? $product->name }}">
 
-                    <div class="card-body p-2">
+                        <div class="card-body p-2">
                         <div class="product-meta">
                             <div class="stars">
                                 @php $rating = $product->rating ?? 0; @endphp
@@ -36,14 +37,15 @@
                                 <span class="old-price text-decoration-line-through">${{ number_format($product->price, 2) }}</span>
                             @endif
                             <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
-                            <a href="{{ route('product-detail', $product->slug) }}">
+                            {{-- <a href="{{ route('product-detail', $product->slug) }}"> --}}
                                 <button class="btn-buy" data-slug="{{ $product->slug ?? '' }}"
                                     @if (!$product->in_stock) disabled class="disabled-btn" @endif>{{ $product->in_stock ? 'Buy Now' : 'Out of Stock' }}</button>
-                            </a>
+                            {{-- </a> --}}
                         </div>
                     </div>
                 </div>
             </div>
+
         @endforeach
     @else
         <div class="col-12 text-center text-muted">No Products Found</div>

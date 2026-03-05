@@ -214,6 +214,7 @@
                     <div class="swiper-wrapper pb-3">
 
                         @foreach ($p as $product)
+                        <a href="{{ route('product-detail', $product->slug ?? '') }}">
                             <div class="swiper-slide">
                                 <div class="offer-card">
                                     <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
@@ -231,6 +232,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </a>
                         @endforeach
 
                     </div>

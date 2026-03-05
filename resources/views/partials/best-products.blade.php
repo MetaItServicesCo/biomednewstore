@@ -7,6 +7,8 @@
 @if ($products->count())
     @foreach ($products as $product)
         <div class="col-lg-3 col-md-6 animate-card">
+            <a href="{{ route('product-detail', $product->slug ?? '') }}">
+
             <div class="product-card">
 
                 @if ($product->discount_percent > 0)
@@ -43,11 +45,12 @@
                         <span class="old-price text-decoration-line-through">${{ number_format($product->price, 2) }}</span>
                     @endif
                     <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
-                    <a href="{{ route('product-detail', $product->slug) }}">
+                    {{-- <a href="{{ route('product-detail', $product->slug) }}"> --}}
                         <button class="buy-btn" data-slug="{{ $product->slug ?? '' }}">Buy Now</button>
-                    </a>
+                    {{-- </a> --}}
                 </div>
             </div>
+        </a>
         </div>
     @endforeach
 @else

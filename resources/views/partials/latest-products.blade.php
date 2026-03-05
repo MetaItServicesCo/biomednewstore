@@ -1,6 +1,8 @@
  @if ($products->count())
      @foreach ($products as $product)
+     
          <div class="col-lg-3 col-md-6 col-sm-12 animate-card">
+            <a href="{{ route('product-detail', $product->slug ?? '') }}">
              <div class="custom-card shadow-sm position-relative">
                  @if ($product->discount_percent > 0)
                      <span class="discount-badge">{{ $product->discount_percent }}% OFF</span>
@@ -40,12 +42,14 @@
                              <span
                                  class="new-price fw-bolder fs-5 text-primary">${{ number_format($product->sale_price, 2) }}</span>
                          @endif
-                         <a href="{{ route('product-detail', $product->slug ?? '') }}" class="btn buy-now-btn btn-sm">Buy Now</a>
+                         Buy Now
                      </div>
                  </div>
              </div>
+        </a>
+
          </div>
-     @endforeach
+         @endforeach
  @else
      <div class="col-12 text-center py-5">
          <p class="text-muted">No products found.</p>

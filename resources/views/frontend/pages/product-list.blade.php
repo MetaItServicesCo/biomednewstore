@@ -729,6 +729,16 @@
             }
         });
 
+        document.addEventListener('click', function(e) {
+            const card = e.target.closest('.productt-cardd');
+            if (!card) return;
+
+            if (e.target.closest('a, button')) return;
+
+            const url = card.dataset.url;
+            if (url) window.location.href = url;
+        });
+
         function getVals() {
             let parent = this.parentNode;
             let slides = parent.getElementsByTagName("input");
