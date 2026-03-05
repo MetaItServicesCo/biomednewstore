@@ -286,24 +286,25 @@
      padding: 0;
  } */
 
+
  .navbar-brand {
      display: flex;
      align-items: center;
      justify-content: center;
      padding-left: 0;
      width: 15%;
+     margin-top: -10px;
  }
 
  .nav-logo {
      width: 100%;
      max-width: 200px;
-     height: 150px;
+     height: 110px;
      object-fit: contain;
-     margin-top: -10px;
  }
 
  .navbar {
-     height: 150px;
+     height: 110px;
  }
 
  @media (max-width: 1024px) {
@@ -367,7 +368,8 @@
      top: 0;
      right: 0;
      background: #0071A8;
-     height: 127px;
+     height: 100px;
+     ;
      display: flex;
      align-items: center;
      padding-right: 20px;
@@ -380,6 +382,7 @@
      margin-left: 30px;
      gap: 10px;
  }
+
  /* @media(max-width:2560px) {
      .blue-block li {
          margin-left: 50px;
@@ -451,7 +454,7 @@
 
  .mega-menu {
      position: fixed;
-     top: 119px;
+     top: 102px;
      left: 50.5%;
      transform: translateX(-50%);
      width: 85vw;
@@ -817,7 +820,7 @@
          overflow: hidden !important;
 
          position: absolute;
-         top: 99px;
+         top: 94px;
          left: 0;
          width: 100%;
          z-index: 1040;
