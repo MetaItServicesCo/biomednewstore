@@ -261,6 +261,26 @@
                                 @enderror
                             </div>
 
+                            <!-- Is Featured -->
+                            <div class="col-lg-3 mb-4">
+                                <label for="is_featured"
+                                    class="form-label fw-semibold">{{ __('Is Featured') }}</label>
+                                <select name="is_featured" id="is_featured"
+                                    class="form-select form-select-lg @error('is_featured') is-invalid @enderror">
+                                    <option value="yes"
+                                        {{ old('is_featured', $data->is_featured ?? 'no') == 'yes' ? 'selected' : '' }}>
+                                        {{ __('Yes') }}
+                                    </option>
+                                    <option value="no"
+                                        {{ old('is_featured', $data->is_featured ?? 'no') == 'no' ? 'selected' : '' }}>
+                                        {{ __('No') }}
+                                    </option>
+                                </select>
+                                @error('is_featured')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="col-lg-3 mb-4">
                                 <label for="condition" class="form-label fw-semibold">{{ __('Condition') }}</label>
 

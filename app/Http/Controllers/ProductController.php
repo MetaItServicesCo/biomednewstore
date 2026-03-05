@@ -66,6 +66,7 @@ class ProductController extends Controller
             'in_stock' => 'required|boolean',
             'is_active' => 'required|boolean',
             'show_on_header' => 'required|boolean',
+            'is_featured' => 'required|in:yes,no',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000',
             'image_alt' => 'nullable|string',
@@ -108,6 +109,7 @@ class ProductController extends Controller
             $product->in_stock = $request->in_stock;
             $product->is_active = $request->is_active;
             $product->show_on_header = $request->show_on_header;
+            $product->is_featured = $request->is_featured;
 
             $product->condition = $request->condition;
             $product->rating = $request->rating;
@@ -217,6 +219,7 @@ class ProductController extends Controller
             'in_stock' => 'required|boolean',
             'is_active' => 'required|boolean',
             'show_on_header' => 'required|boolean',
+            'is_featured' => 'required|in:yes,no',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000', // 10 MB
             'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10000', // 10 MB
             'image_alt' => 'nullable|string',
@@ -259,6 +262,7 @@ class ProductController extends Controller
             $product->in_stock = $request->in_stock;
             $product->is_active = $request->is_active;
             $product->show_on_header = $request->show_on_header;
+            $product->is_featured = $request->is_featured;
 
             $product->condition = $request->condition;
             $product->rating = $request->rating;

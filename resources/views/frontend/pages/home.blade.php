@@ -510,7 +510,7 @@
 @section('frontend-content')
 
 
-    <section class="hero-secti py-5">
+    <section class="hero-secti pt-5">
         <div class="container text-center mb-5">
             <!-- First Heading -->
             <h1 class="main-heading fade-left">Mr. Biomed Tech Services</h1>
@@ -529,7 +529,7 @@
         </div>
 
         <!-- Container Fluid with background -->
-        <div class="container-fluid cards-wrapper py-5">
+        {{-- <div class="container-fluid cards-wrapper py-5">
             <div class="container">
                 <div class="row justify-content-center g-4">
 
@@ -591,12 +591,12 @@
 
                 </div>
             </div>
-        </div>
+        </div> --}}
     </section>
 
 
 
-    <section class="features-section py-5">
+    {{-- <section class="features-section py-5">
         <div class="container">
             <div class="row text-white">
 
@@ -643,17 +643,12 @@
 
             </div>
         </div>
-    </section>
+    </section> --}}
 
-    @php
-        $hasProducts = ($products ?? collect())->isNotEmpty();
-    @endphp
+    <x-best-selling-products-section />
 
-    @if ($hasProducts)
-        <x-best-selling-products-section />
-
-        <x-offers-section />
-    @endif
+    
+    <x-featured-products-section />
 
     <section class="about-section py-5 mt-4">
         <div class="container">
@@ -729,12 +724,10 @@
     <x-contact-us-section :footer-states="$footerStates" />
 
     {{-- ================= pruduct sectiion ============= --}}
-    @if ($hasProducts)
-        <div class="pro-section">
-            <x-our-latest-products />
+    <div class="pro-section">
+        <x-our-latest-products />
 
-        </div>
-    @endif
+    </div>
 
     {{-- ================faqs section ================ --}}
     <x-faq-section :faqs="$faqs" heading="Frequently Asked Questions" subheading="" subtext=""
@@ -819,13 +812,19 @@
 
             const dots = document.querySelectorAll(".image-dots .dot");
 
+            if (!imageTrack || totalSlides === 0 || dots.length === 0) {
+                return;
+            }
+
             const slideDuration = 3000;
             let slider;
 
             // Update dots
             function updateDots() {
                 dots.forEach(dot => dot.classList.remove("active"));
-                dots[currentImageIndex].classList.add("active");
+                if (dots[currentImageIndex]) {
+                    dots[currentImageIndex].classList.add("active");
+                }
             }
 
             // Jump to slide

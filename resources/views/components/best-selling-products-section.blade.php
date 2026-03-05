@@ -116,7 +116,7 @@
     }
 </style>
 
-<section class="best-selling-section mt-5 py-3">
+<section class="best-selling-section ">
 
     <div class="container">
 

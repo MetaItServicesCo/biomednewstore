@@ -28,6 +28,7 @@ class Product extends Model
         'image_alt',
         'is_active',
         'show_on_header',
+        'is_featured',
         'meta_title',
         'meta_keywords',
         'meta_description',

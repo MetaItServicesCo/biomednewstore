@@ -77,14 +77,41 @@
                             href="{{ route('home') }}">Home</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() === 'products' || Route::currentRouteName() === 'product-detail' ? 'active' : '' }}"
+                    {{-- <li class="nav-item dropdown has-mega">
+                        <a class="nav-link nav-main-link {{ Route::currentRouteName() === 'products' || Route::currentRouteName() === 'product-detail' ? 'active' : '' }}"
                             href="{{ route('products') }}">Mr. BioMed Store</a>
-                    </li>
+                         <span class="mega-toggle">
+                        <i class="bi bi-chevron-down dropdown-icon"></i>
+                    </span>
+                             <div class="mega-menu">
+                            <div class="container-fluid nav-product">
+                                <div class="row">
+                                    @foreach ($headerCategories as $category)
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <h6 class="city-repair-title text-white">
+                                                {{ $category->name }}
+                                                <i class="fa-solid fa-angle-right"></i>
+                                            </h6>
+                                            @if ($category->products && $category->products->count() > 0)
+                                                @foreach ($category->products as $product)
+                                                    <p class="mt-3">
+                                                        <a href="{{ route('product-detail', $product->slug) }}"
+                                                            class="bottomm">
+                                                            {{ $product->name }}
+                                                        </a>
+                                                    </p>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </li> --}}
 
                     <li class="nav-item dropdown  has-mega">
-                        <a class="nav-link mega-toggle" href="javascript:void(0)">
-                            Categories List
+                        <a class="nav-link mega-toggle" href="{{ route('products') }}">
+                            Mr. BioMed Store
                             <i class="bi bi-chevron-down dropdown-icon"></i>
                         </a>
                         <div class="mega-menu">

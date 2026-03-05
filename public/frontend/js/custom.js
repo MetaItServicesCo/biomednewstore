@@ -549,6 +549,10 @@ document.querySelectorAll(".offer-slider-wrapper").forEach(wrapper => {
     const offerNext = wrapper.querySelector(".offer-next");
     const pagination = wrapper.querySelector(".offer-pagination");
 
+    if (!offerTrack || !pagination || !offerPrev || !offerNext || offerCards.length === 0) {
+        return;
+    }
+
     let offerIndex = 0;
     let offerVisibleCards = 4;
 
@@ -569,7 +573,7 @@ document.querySelectorAll(".offer-slider-wrapper").forEach(wrapper => {
     updateVisibleCards();
     window.addEventListener("resize", updateVisibleCards);
 
-    const totalCards = offerCards.length / 2;
+    const totalCards = Math.max(offerCards.length / 2, 1);
 
     /* ------------------ Pagination Dots Create -------------------- */
     pagination.innerHTML = "";

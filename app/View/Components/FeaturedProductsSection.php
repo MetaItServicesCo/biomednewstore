@@ -2,19 +2,18 @@
 
 namespace App\View\Components;
 
-use App\Models\Offer;
 use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class OffersSection extends Component
+class FeaturedProductsSection extends Component
 {
     public $p;
+
     /**
      * Create a new component instance.
      */
-
     public function __construct()
     {
         $this->p = Product::select([
@@ -31,6 +30,7 @@ class OffersSection extends Component
         ])
             ->where('is_active', true)
             ->where('product_type', 'product')
+            ->where('is_featured', 'yes')
             ->whereIn('type', ['for_store', 'both'])
             ->latest()
             ->take(16)
@@ -42,6 +42,6 @@ class OffersSection extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.offers-section');
+        return view('components.featured-products-section');
     }
 }
