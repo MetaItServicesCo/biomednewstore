@@ -85,11 +85,11 @@
         transition: all 0.3s ease-in-out;
     }
 
-    .icon-shop:hover {
+    /* .icon-shop:hover {
         background: linear-gradient(45deg, #FF6B6B, #E9A426);
         transform: scale(1.1);
-        /* subtle hover effect */
-    }
+        
+    } */
 </style>
 <header class="site-header " id="siteHeader">
     <nav class="navbar navbar-expand-lg navbar-light bg-white p-0 ">
