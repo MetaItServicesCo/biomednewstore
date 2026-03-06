@@ -460,6 +460,45 @@
 
 
             /* ====================== end ================================ */
+
+            @media (max-width: 767px) {
+
+                #filterSidebar {
+                    display: none;
+                    margin-bottom: 20px;
+                }
+
+                #filterSidebar.active {
+                    display: block;
+                }
+
+            }
+
+            .find-btn {
+                height: 50px;
+                background: #F1564F;
+                color: #FFFFFF;
+                border: none;
+                border-radius: 7px;
+                font-weight: 600;
+                font-family: Inter;
+                font-size: 17px;
+                line-height: 100%;
+                width: 150px;
+                transition: all 0.3s ease-in-out;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                /* margin-left: 30px; */
+
+            }
+
+            .find-btn img {
+                width: 24px;
+                height: 25;
+                display: block;
+            }
         </style>
     @endpush
 
@@ -502,9 +541,18 @@
     <section class="product-section py-5">
         <div class="container">
             <div class="row">
-
+                <!-- Mobile Filter Button -->
+                <div class="d-lg-none d-md-none mb-3">
+                    {{-- <button class="btn btn-danger " id="filterToggleBtn">
+                        <i class="fa fa-filter"></i> Filters
+                    </button> --}}
+                    <button class="find-btn" id="filterToggleBtn"> <img src="{{ asset('frontend/images/find-icon.png') }}"
+                            alt="">
+                        Filters</button>
+                </div>
                 <!-- ================= LEFT SIDEBAR (col-3) ================= -->
-                <div class="col-lg-3 col-md-4 product">
+
+                <div class="col-lg-3 col-md-4 product" id="filterSidebar">
 
                     <!-- SORT BY -->
                     <div class="filter-range-box">
@@ -986,5 +1034,25 @@
         // range.addEventListener('input', () => {
         //     value.innerText = range.value;
         // });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const btn = document.getElementById("filterToggleBtn");
+            const sidebar = document.getElementById("filterSidebar");
+
+            btn.addEventListener("click", function() {
+
+                sidebar.classList.toggle("active");
+
+                if (sidebar.classList.contains("active")) {
+                    btn.innerHTML = '<i class="fa fa-times"></i> Close Filters';
+                } else {
+                    btn.innerHTML = '<i class="fa fa-filter"></i> Filters';
+                }
+
+            });
+
+        });
     </script>
 @endpush
