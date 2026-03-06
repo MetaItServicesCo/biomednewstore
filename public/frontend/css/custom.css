@@ -415,7 +415,36 @@
      font-size: 28px;
      color: white;
  }
+.visit-btn {
+     background-color: #D43838;
+     color: white;
+     font-weight: 600;
+     border-radius: 10px;
+     font-size: 20px;
+     height: 41px;
+     box-shadow: 0px 4px 5px #00000040;
 
+     width: 200px;
+     font-family: Inter, sans-serif;
+     clip-path: polygon(0% 0%,
+             100% 0%,
+             100% 100%,
+             0% 100%);
+     transition: all 0.4s ease-in-out;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+
+ .visit-btn:hover {
+     background-color: #c33333;
+     color: white;
+     clip-path: polygon(12% 0%,
+             100% 0%,
+             88% 100%,
+             0% 100%);
+
+ }
  .contact-btn {
      background-color: #D43838;
      color: white;

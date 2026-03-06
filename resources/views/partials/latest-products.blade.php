@@ -1,9 +1,9 @@
  @if ($products->count())
      @foreach ($products as $product)
      
-         <div class="col-lg-3 col-md-6 col-sm-12 animate-card">
-            <a href="{{ route('product-detail', $product->slug ?? '') }}">
-             <div class="custom-card shadow-sm position-relative">
+        <div class="col-lg-3 col-md-6 col-sm-12 animate-card">
+            <div class="custom-card shadow-sm position-relative">
+                <a href="{{ route('product-detail', $product->slug ?? '') }}" class="stretched-link product-card-link"></a>
                  @if ($product->discount_percent > 0)
                      <span class="discount-badge">{{ $product->discount_percent }}% OFF</span>
                  @endif
@@ -32,21 +32,20 @@
                      <p class="card-text small mb-3">
                          {{ \Illuminate\Support\Str::limit($product->short_description ?? '', 35) }}</p>
 
-                     <div class="price-action-row d-flex justify-content-between align-items-center">
+                    <div class="price-action-row d-flex justify-content-between align-items-center">
 
-                         @if (!empty($product->price) && $product->price > 0)
-                             <span
-                                 class="old-price text-decoration-line-through text-muted small">${{ number_format($product->price, 2) }}</span>
-                         @endif
-                         @if (!empty($product->sale_price) && $product->sale_price > 0)
-                             <span
-                                 class="new-price fw-bolder fs-5 text-primary">${{ number_format($product->sale_price, 2) }}</span>
-                         @endif
-                         Buy Now
-                     </div>
+                        @if (!empty($product->price) && $product->price > 0)
+                            <span
+                                class="old-price text-decoration-line-through text-muted small">${{ number_format($product->price, 2) }}</span>
+                        @endif
+                        @if (!empty($product->sale_price) && $product->sale_price > 0)
+                            <span
+                                class="new-price fw-bolder fs-5 text-primary">${{ number_format($product->sale_price, 2) }}</span>
+                        @endif
+                        <button type="button" class="btn buy-now-btn btn-sm">Buy Now</button>
+                    </div>
                  </div>
-             </div>
-        </a>
+            </div>
 
          </div>
          @endforeach

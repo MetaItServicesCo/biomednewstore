@@ -189,7 +189,7 @@
                             About
                         </a>
                     </li> --}}
-
+                    
 
                     <li class="nav-item ms-auto d-flex gap-4 align-items-center mt-2 mt-lg-0">
                         <div class="d-flex align-items-center gap-3  contact-icons-wrapper me-2 mt-4">
@@ -198,7 +198,9 @@
                                 <img src="{{ asset('frontend/images/login-img.png') }}" class="icon-image">
 
                             </a> --}}
-
+                            <a href="{{ env('BIO_MED_WEBSITE') }}" class="btn visit-btn mb-3 px-3 py-" target="_blank">
+                    Visit Our Website
+                    </a>
 
                             <a href="{{ route('cart') }}" class="cart-icon-wrapper mb-4 position-relative">
                                 <img src="{{ asset('frontend/images/nav-ico.png') }}" class="icon-shop">
