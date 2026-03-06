@@ -52,6 +52,44 @@
         position: absolute;
         z-index: 99999;
     }
+
+    .icon-shop {
+        width: 40px;
+        height: 40px;
+        color: #FE0000;
+        font-size: 2rem;
+        /* icon ka size */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /*
+    .icon-shop {
+        width: 40px;
+        height: 40px;
+        color: #E9A426 !important;
+        font-size: 2rem;
+    } */
+    .icon-shop {
+        width: 40px;
+        height: 40px;
+        font-size: 2rem;
+
+        /* Linear gradient color */
+        background: linear-gradient(90deg, #e24848, #E9A426);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        /* Optional: smooth transition on hover */
+        transition: all 0.3s ease-in-out;
+    }
+
+    .icon-shop:hover {
+        background: linear-gradient(45deg, #FF6B6B, #E9A426);
+        transform: scale(1.1);
+        /* subtle hover effect */
+    }
 </style>
 <header class="site-header " id="siteHeader">
     <nav class="navbar navbar-expand-lg navbar-light bg-white p-0 ">
@@ -62,7 +100,10 @@
                 <img src="{{ asset('storage/' . setting('site_logo', 'frontend/images/logo.png')) }}" height=""
                     alt="{{ setting('site_name') }}" class="img-fluid nav-logo">
             </a>
-
+            <a href="{{ route('cart') }}" class="cart-icon-wrapper d-lg-none position-relative ms-auto me-4">
+                <i class="fa-solid fa-cart-shopping icon-shop"></i>
+                <span id="cart-count" class="cart-count-badge">{{ count(session('cart', [])) }}</span>
+            </a>
             <button class="navbar-toggler me-3" type="button" id="customToggler" aria-controls="mainNav"
                 aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -189,34 +230,21 @@
                             About
                         </a>
                     </li> --}}
-                    
-
-                    <li class="nav-item ms-auto d-flex gap-4 align-items-center mt-2 mt-lg-0">
-                        <div class="d-flex align-items-center gap-3  contact-icons-wrapper me-2 mt-4">
-
-                            {{-- <a href="{{ route('login') }}" target="_blank" class="">
-                                <img src="{{ asset('frontend/images/login-img.png') }}" class="icon-image">
-
-                            </a> --}}
-                            <a href="{{ env('BIO_MED_WEBSITE') }}" class="btn visit-btn mb-3 px-3 py-" target="_blank">
-                    Visit Our Website
-                    </a>
-
-                            <a href="{{ route('cart') }}" class="cart-icon-wrapper mb-4 position-relative">
-                                <img src="{{ asset('frontend/images/nav-ico.png') }}" class="icon-shop">
-
-                                <span id="cart-count" class="cart-count-badge">
-                                    {{ count(session('cart', [])) }}
-                                </span>
-                            </a>
 
 
-                        </div>
-
-                        <a href="javascript:void(0)" class="btn contact-btn mb-3 px-3 py-" data-open-get-quote
-                            data-modal-title="Contact Us">
-                            CONTACT
+                    <li class="nav-item ms-auto d-none d-lg-flex align-items-center">
+                        <a href="{{ route('cart') }}" class="cart-icon-wrapper position-relative ">
+                            <img src="{{ asset('frontend/images/nav-ico.png') }}" class="icon-shop">
+                            <span id="cart-count-lg" class="cart-count-badge">{{ count(session('cart', [])) }}</span>
                         </a>
+                    </li>
+
+                    <!-- Visit / Contact buttons -->
+                    <li class="nav-item d-flex flex-column flex-lg-row gap-3  mt-2 mt-lg-0">
+                        <a href="{{ env('BIO_MED_WEBSITE') }}" class="btn visit-btn" target="_blank">Visit Our
+                            Website</a>
+                        <a href="javascript:void(0)" class="btn contact-btn" data-open-get-quote
+                            data-modal-title="Contact Us">CONTACT</a>
                     </li>
 
                     {{-- <li class="nav-item ms-lg-3 mt-2 mt-lg-0">

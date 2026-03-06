@@ -1,5 +1,5 @@
 @php
-    // Fixed tabs: All, Products, Parts
+
     $tabs = [
         ['label' => 'All', 'type' => 'all'],
         ['label' => 'Products', 'type' => 'product'],
@@ -7,15 +7,26 @@
     ];
 @endphp
 
+@php
+    $categories = $latestProductCategories ?? [];
+@endphp
+
 <section class="products-series-section py-5">
-    <div class="container-fluid py-5 product-series-bg">
+    <div class="container-fluid py-4 product-series-bg">
         <div class="container text-center">
             <p class="text-center  product-series-para  mb-3 fade-left">New From Mr. Biomed Tech Services</p>
-            <h2 class="text-center mb-5  product-section-heading fade-right">Our <span>Latest Products</span> </h2>
+            <h2 class="text-center mb-2  product-section-heading fade-right">Our <span>Latest Products</span> </h2>
 
-            <div class="product-filter-tabs mb-5 d-flex justify-content-center flex-wrap gap-2">
-                @foreach ($tabs as $tab)
-                    <button class="filter-btn {{ $loop->first ? 'active' : '' }}" data-type="{{ $tab['type'] }}">
+            <div class="product-filter-tabs mb- d-flex justify-content-center flex-wrap gap-2">
+
+                {{-- <button class="filter-btn active" data-filter="featured">Featured</button>
+
+                <button class="filter-btn" data-filter="equipment">Medical Equipment</button>
+                <button class="filter-btn" data-filter="supplies">Supplies</button>
+                <button class="filter-btn" data-filter="parts">Parts</button> --}}
+
+                @foreach ($categories as $tab)
+                    <button class="filter-btn {{ $loop->first ? 'active' : '' }}" data-slug="{{ $tab['slug'] }}">
                         {{ $tab['label'] }}
                     </button>
                 @endforeach
@@ -23,29 +34,34 @@
         </div>
 
         <div class="container mt-4">
-            <div class="row g-4" id="latest-products-container">
-                {{-- Initially show only first 4 products --}}
-                @php
-                    $displayProducts = $initialProducts->take(4);
-                @endphp
-                @include('partials.latest-products', ['products' => $displayProducts])
+
+            <!-- 🔹 Mobile + MD Slider -->
+            <div class="swiper latestProductSwiper d-lg-none">
+                <div class="swiper-wrapper">
+                    @foreach ($initialProducts as $product)
+                        <div class="swiper-slide">
+                            @include('components.product-card', ['product' => $product])
+                        </div>
+                    @endforeach
+                </div>
             </div>
-            
-            <!-- Show More/Less Button -->
-            <div class="text-center mt-4" id="show-more-container" style="{{ $initialProducts->count() > 4 ? '' : 'display: none;' }}">
-                <button class="btn" id="show-more-btn" style="background: transparent; border: none; color: white; font-size: 2rem;">
-                    <i class="bi bi-chevron-down"></i>
-                </button>
+
+            <!-- 🔹 LG Screen Normal Grid -->
+            <div class="row g-4 d-none d-lg-flex" id="latest-products-containe">
+                @include('partials.latest-products', ['products' => $initialProducts])
             </div>
+
         </div>
+
     </div>
 </section>
+
 
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
-        // prevent double init
+
         if (window.latestProductsInitialized) return;
         window.latestProductsInitialized = true;
 
@@ -65,7 +81,7 @@
         // Function to render products
         function renderProducts(products, limit = null) {
             const productsToShow = limit ? products.slice(0, limit) : products;
-            
+
             if (productsToShow.length === 0) {
                 container.innerHTML = `
                     <div class="col-12 text-center py-5">
@@ -99,29 +115,29 @@
 
         // Function to create product card HTML
         function createProductCard(product) {
-            const discountBadge = product.discount_percent > 0 
-                ? `<span class="discount-badge">${product.discount_percent}% OFF</span>` 
-                : '';
-            
-            const thumbnail = product.thumbnail 
-                ? `{{ asset('storage/products/thumbnails/') }}/${product.thumbnail}`
-                : '';
+            const discountBadge = product.discount_percent > 0 ?
+                `<span class="discount-badge">${product.discount_percent}% OFF</span>` :
+                '';
+
+            const thumbnail = product.thumbnail ?
+                `{{ asset('storage/products/thumbnails/') }}/${product.thumbnail}` :
+                '';
 
             const stars = generateStars(product.rating || 0);
-            
-            const shortDesc = product.short_description 
-                ? (product.short_description.length > 35 
-                    ? product.short_description.substring(0, 35) + '...' 
-                    : product.short_description)
-                : '';
 
-            const oldPrice = product.price > 0 
-                ? `<span class="old-price text-decoration-line-through text-muted small">$${Number(product.price).toFixed(2)}</span>`
-                : '';
-            
-            const newPrice = product.sale_price > 0 
-                ? `<span class="new-price fw-bolder fs-5 text-primary">$${Number(product.sale_price).toFixed(2)}</span>`
-                : '';
+            const shortDesc = product.short_description ?
+                (product.short_description.length > 35 ?
+                    product.short_description.substring(0, 35) + '...' :
+                    product.short_description) :
+                '';
+
+            const oldPrice = product.price > 0 ?
+                `<span class="old-price text-decoration-line-through text-muted small">$${Number(product.price).toFixed(2)}</span>` :
+                '';
+
+            const newPrice = product.sale_price > 0 ?
+                `<span class="new-price fw-bolder fs-5 text-primary">$${Number(product.sale_price).toFixed(2)}</span>` :
+                '';
 
             const productUrl = `{{ url('/category') }}/${product.slug || ''}`;
 
@@ -166,7 +182,7 @@
         // Initial check for show more button
         const initialProducts = @json($initialProducts ?? []);
         allProducts = initialProducts;
-        
+
         if (initialProducts.length > 4) {
             showMoreContainer.style.display = 'block';
             showMoreBtn.innerHTML = '<i class="bi bi-chevron-down"></i>';

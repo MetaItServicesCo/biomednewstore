@@ -1293,24 +1293,35 @@ window.updateCartCount = function (cart) {
 
 // ======================== latestProductSwiper ===================
 // Only initialize on mobile/tablet to avoid conflicts with desktop grid
-document.addEventListener('DOMContentLoaded', () => {
-    let latestSwiper = null;
-    const latestSwiperEl = document.querySelector(".latestProductSwiper");
-    if (latestSwiperEl && window.innerWidth < 992) {
-        const latestSlides = latestSwiperEl.querySelectorAll(".swiper-slide").length;
-        // Loop only when we have more slides than the current slidesPerView
-        const latestSlidesPerView = window.innerWidth >= 768 ? 2 : 1;
-        const shouldLoop = latestSlides > latestSlidesPerView;
+let latestSwiper = null;
 
+function initLatestSwiper() {
+    const latestSwiperEl = document.querySelector(".latestProductSwiper");
+    if (!latestSwiperEl) return;
+
+    const isMobile = window.innerWidth < 992; // MD & mobile
+    const latestSlides = latestSwiperEl.querySelectorAll(".swiper-slide").length;
+    const latestSlidesPerView = window.innerWidth >= 768 ? 2 : 1;
+    const shouldLoop = latestSlides > latestSlidesPerView;
+
+    // Destroy if exists and screen is now LG+
+    if (latestSwiper && !isMobile) {
+        latestSwiper.destroy(true, true);
+        latestSwiper = null;
+        return;
+    }
+
+    // Initialize only if mobile/MD
+    if (isMobile && !latestSwiper) {
         latestSwiper = new Swiper(".latestProductSwiper", {
             loop: shouldLoop,
             spaceBetween: 15,
-            slidesPerView: 1, // default mobile
-            speed: 1000, // slide transition speed
+            slidesPerView: latestSlidesPerView,
+            speed: 1000,
             autoplay: {
-                delay: 3000, // 3 sec per slide
+                delay: 3000,
                 disableOnInteraction: false,
-                pauseOnMouseEnter: true, // hover par pause
+                pauseOnMouseEnter: true,
             },
             navigation: false,
             pagination: {
@@ -1318,15 +1329,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 clickable: true,
             },
             breakpoints: {
-                0: { // mobile
-                    slidesPerView: 1,
-                    spaceBetween: 10,
-                },
-                768: { // tablet / md
-                    slidesPerView: 2,
-                    spaceBetween: 15,
-                }
+                0: { slidesPerView: 1, spaceBetween: 10 },
+                768: { slidesPerView: 2, spaceBetween: 15 }
             },
         });
     }
+}
+
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", initLatestSwiper);
+
+// Re-initialize on window resize
+window.addEventListener("resize", () => {
+    // Throttle for performance
+    clearTimeout(window.latestSwiperResizeTimeout);
+    window.latestSwiperResizeTimeout = setTimeout(initLatestSwiper, 200);
 });

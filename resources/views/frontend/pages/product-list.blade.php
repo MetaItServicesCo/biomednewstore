@@ -158,7 +158,7 @@
                 color: #ffffff;
                 padding: 18px;
                 font-weight: 600;
-                font-size: 24px;
+                font-size: 19px;
                 font-family: Inter;
                 line-height: 100%;
                 height: 58px;
@@ -245,7 +245,7 @@
 
             .filter-item span {
                 font-weight: 500;
-                font-size: 20px;
+                font-size: 17px;
                 font-family: Inter;
                 line-height: 100%;
             }
@@ -259,7 +259,7 @@
             .filter-list li {
                 padding: 4px 0;
                 font-weight: 400;
-                font-size: 16px;
+                font-size: 14px;
                 font-family: Inter;
                 line-height: 100%;
             }
@@ -499,6 +499,40 @@
                 height: 25;
                 display: block;
             }
+
+            .btn-link {
+                background: none;
+                border: none;
+                color: #0071A8;
+                font-weight: 500;
+                font-size: 15px;
+                font-family: Inter, sans-serif;
+                line-height: 160%;
+                cursor: pointer;
+                position: relative;
+                transition: color 0.3s ease;
+                margin-bottom: 10px;
+            }
+
+            /* animated underline */
+            .btn-link::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 2px;
+                width: 0%;
+                height: 2px;
+                background: #0071A8;
+                transition: width 0.3s ease;
+            }
+
+            .btn-link:hover {
+                color: #055f8a;
+            }
+
+            .btn-link:hover::after {
+                width: 98%;
+            }
         </style>
     @endpush
 
@@ -570,38 +604,51 @@
 
                     <!-- CATEGORIES -->
                     <div class="filter-main-box">
+
                         <h5 class="filter-main-title">CATEGORIES</h5>
 
                         @foreach ($categories as $category)
-                            <div class="filter-item" onclick="toggleList(this)">
-                                <span>{{ $category->name }}</span>
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            @php $prodCount = $category->products->count(); @endphp
-                            <ul class="filter-list" data-cat-id="{{ $category->id }}">
-                                @if ($prodCount)
+                            <div class="category-item {{ $loop->index >= 5 ? 'extra-category' : '' }}"
+                                style="{{ $loop->index >= 5 ? 'display:none' : '' }}">
+
+                                <div class="filter-item" onclick="toggleList(this)">
+                                    <span>{{ $category->name }}</span>
+                                    <i class="fa fa-plus"></i>
+                                </div>
+
+                                <ul class="filter-list" style="display:none;">
+
                                     @foreach ($category->products as $product)
-                                        <li class="mt-2 product-item" data-cat-id="{{ $category->id }}"
-                                            data-index="{{ $loop->index }}"
-                                            style="{{ $loop->index < 5 ? '' : 'display:none' }}">
-                                            <a href="{{ $product->product_type === 'part' ? route('part-detail', $product->slug) : route('product-detail', $product->slug) }}"
+                                        <li class="product-item mt-2">
+
+                                            <a href="{{ $product->product_type === 'part'
+                                                ? route('part-detail', $product->slug)
+                                                : route('product-detail', $product->slug) }}"
                                                 class="text-decoration-none text-dark">
+
                                                 {{ $product->name }}
+
                                             </a>
+
                                         </li>
                                     @endforeach
 
-                                    @if ($prodCount > 5)
-                                        <li class="mt-2 text-center">
-                                            <button type="button" class="btn btn-link see-more-btn"
-                                                data-cat-id="{{ $category->id }}" data-next="5">See more</button>
-                                        </li>
-                                    @endif
-                                @else
-                                    <li class="text-muted">No Product Found</li>
-                                @endif
-                            </ul>
+                                </ul>
+
+                            </div>
                         @endforeach
+
+                        <!-- See More Button -->
+                        @if ($categories->count() > 5)
+                            <div class="text-center mt-3">
+
+                                <button class=" btn-link" id="categoryToggleBtn">
+                                    See More
+                                </button>
+
+                            </div>
+                        @endif
+
                     </div>
 
                     <!-- BRAND -->
@@ -1049,6 +1096,43 @@
                     btn.innerHTML = '<i class="fa fa-times"></i> Close Filters';
                 } else {
                     btn.innerHTML = '<i class="fa fa-filter"></i> Filters';
+                }
+
+            });
+
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const btn = document.getElementById("categoryToggleBtn");
+
+            if (!btn) return;
+
+            const extraCategories = document.querySelectorAll(".extra-category");
+
+            let expanded = false;
+
+            btn.addEventListener("click", function() {
+
+                if (!expanded) {
+
+                    extraCategories.forEach(cat => {
+                        cat.style.display = "block";
+                    });
+
+                    btn.innerText = "Show Less";
+                    expanded = true;
+
+                } else {
+
+                    extraCategories.forEach(cat => {
+                        cat.style.display = "none";
+                    });
+
+                    btn.innerText = "See More";
+                    expanded = false;
+
                 }
 
             });

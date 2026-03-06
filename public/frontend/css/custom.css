@@ -415,7 +415,8 @@
      font-size: 28px;
      color: white;
  }
-.visit-btn {
+
+ .visit-btn {
      background-color: #D43838;
      color: white;
      font-weight: 600;
@@ -445,6 +446,7 @@
              0% 100%);
 
  }
+
  .contact-btn {
      background-color: #D43838;
      color: white;
@@ -483,7 +485,7 @@
 
  .mega-menu {
      position: fixed;
-     top: 102px;
+     top: 120px;
      left: 50.5%;
      transform: translateX(-50%);
      width: 85vw;
@@ -3206,16 +3208,54 @@
      font-family: Inter, sans-serif;
  }
 
- .buy-now-btn {
-     background-color: #FFFFFF;
-     /* border-color: ; */
+ .now-btnn {
+     background-color: #ffffff;
      color: #000000;
      font-weight: 600;
-     transition: background-color 0.3s;
      font-size: 12px;
+     border: 1px solid #ccc;
+     border-radius: 6px;
+     padding: 6px 12px;
+     cursor: pointer;
+     transition: all 0.3s ease-in-out;
+     display: inline-block;
+     text-align: center;
+     line-height: 1.5;
  }
 
+ /* Hover effect */
+ .now-btnn:hover,
+ .now-btnn:focus {
+     background-color: #948e8e;
+     color: #ffffff;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+     transform: translateY(-2px);
+     outline: none;
+ }
 
+ .see-more-products-btn i {
+     font-size: 40px;
+     transition: transform 0.3s ease;
+ }
+
+ .see-more-products-btn {
+     background: transparent;
+     border: none;
+     color: #ffffff;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .see-more-products-btn:hover i {
+     transform: scale(1.1);
+     /* hover par thoda enlarge */
+ }
+
+ .see-more-products-btn[data-expanded="true"] i {
+     transform: rotate(180deg);
+ }
 
  .new-price {
      color: #1a1b1b !important;
