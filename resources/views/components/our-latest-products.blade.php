@@ -127,24 +127,26 @@
 
             return `
                 <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="custom-card shadow-sm position-relative">
-                        ${discountBadge}
-                        <div class="card-image-box">
-                            <img src="${thumbnail}" alt="${product.image_alt || ''}" class="img-fluid">
-                        </div>
-                        <div class="card-content-box p-3 pt-2">
-                            <div class="stars p- pt-2 pb-0">
-                                ${stars}
+                    <a href="${productUrl}">
+                        <div class="custom-card shadow-sm position-relative">
+                            ${discountBadge}
+                            <div class="card-image-box">
+                                <img src="${thumbnail}" alt="${product.image_alt || ''}" class="img-fluid">
                             </div>
-                            <h5 class="product-title fw-bold">${product.name || ''}</h5>
-                            <p class="card-text small mb-3">${shortDesc}</p>
-                            <div class="price-action-row d-flex justify-content-between align-items-center">
-                                ${oldPrice}
-                                ${newPrice}
-                                <a href="${productUrl}" class="btn buy-now-btn btn-sm">Buy Now</a>
+                            <div class="card-content-box p-3 pt-2">
+                                <div class="stars p- pt-2 pb-0">
+                                    ${stars}
+                                </div>
+                                <h5 class="product-title fw-bold">${product.name || ''}</h5>
+                                <p class="card-text small mb-3">${shortDesc}</p>
+                                <div class="price-action-row d-flex justify-content-between align-items-center">
+                                    ${oldPrice}
+                                    ${newPrice}
+                                    <span class="buy-now-btn btn-sm">Buy Now</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             `;
         }

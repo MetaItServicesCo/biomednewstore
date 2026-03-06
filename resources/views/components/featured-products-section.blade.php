@@ -1,4 +1,4 @@
-    <style>
+<style>
         .featured-offer-section .see-all-btn {
             width: 157px;
             height: 50px;
@@ -186,7 +186,7 @@
         .featured-offer-section .swiper-button-next::after {
             display: none !important;
         }
-    </style>
+</style>
 
     @if ($p->isNotEmpty())
     <section class="offer-section mt-5 featured-offer-section">
@@ -214,25 +214,25 @@
                     <div class="swiper-wrapper pb-3">
 
                         @foreach ($p as $product)
-                        <a href="{{ route('product-detail', $product->slug ?? '') }}">
                             <div class="swiper-slide">
-                                <div class="offer-card">
-                                    <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
-                                        alt="{{ $product->image_alt ?? $product->name }}" class="card-img img-fluid">
+                                <a href="{{ route('product-detail', $product->slug ?? '') }}">
+                                    <div class="offer-card">
+                                        <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
+                                            alt="{{ $product->image_alt ?? $product->name }}" class="card-img img-fluid">
 
-                                    <div class="card-body border-0">
-                                        <p class="card-desc">{{ $product->name }}</p>
-                                        <p class="price text-danger text-center">
-                                            ${{ number_format($product->sale_price, 2) }}
-                                        </p>
+                                        <div class="card-body border-0">
+                                            <p class="card-desc">{{ $product->name }}</p>
+                                            <p class="price text-danger text-center">
+                                                ${{ number_format($product->sale_price, 2) }}
+                                            </p>
 
-                                        <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">
-                                            Add to Cart
-                                        </button>
+                                            <button class="offer-readd-btn" data-id="{{ $product->id }}" data-qty="1">
+                                                Add to Cart
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
-                        </a>
                         @endforeach
 
                     </div>
@@ -292,7 +292,7 @@
 
             try {
                 new Swiper(featuredSwiper, {
-                    slidesPerView: 4,
+                    slidesPerView: 3,
                     spaceBetween: 22,
                     loop: slides.length > 1,
                     speed: 1200, // smooth luxury motion
