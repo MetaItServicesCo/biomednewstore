@@ -1,5 +1,4 @@
 @php
-
     $tabs = [
         ['label' => 'All', 'type' => 'all'],
         ['label' => 'Products', 'type' => 'product'],
@@ -7,26 +6,15 @@
     ];
 @endphp
 
-@php
-    $categories = $latestProductCategories ?? [];
-@endphp
-
 <section class="products-series-section py-5">
     <div class="container-fluid py-4 product-series-bg">
         <div class="container text-center">
             <p class="text-center  product-series-para  mb-3 fade-left">New From Mr. Biomed Tech Services</p>
-            <h2 class="text-center mb-2  product-section-heading fade-right">Our <span>Latest Products</span> </h2>
+            <h2 class="text-center mb-5  product-section-heading fade-right">Our <span>Latest Products</span> </h2>
 
-            <div class="product-filter-tabs mb- d-flex justify-content-center flex-wrap gap-2">
-
-                {{-- <button class="filter-btn active" data-filter="featured">Featured</button>
-
-                <button class="filter-btn" data-filter="equipment">Medical Equipment</button>
-                <button class="filter-btn" data-filter="supplies">Supplies</button>
-                <button class="filter-btn" data-filter="parts">Parts</button> --}}
-
-                @foreach ($categories as $tab)
-                    <button class="filter-btn {{ $loop->first ? 'active' : '' }}" data-slug="{{ $tab['slug'] }}">
+            <div class="product-filter-tabs mb-5 d-flex justify-content-center flex-wrap gap-2">
+                @foreach ($tabs as $tab)
+                    <button class="filter-btn {{ $loop->first ? 'active' : '' }}" data-type="{{ $tab['type'] }}">
                         {{ $tab['label'] }}
                     </button>
                 @endforeach
@@ -34,23 +22,22 @@
         </div>
 
         <div class="container mt-4">
-
-            <!-- 🔹 Mobile + MD Slider -->
-            <div class="swiper latestProductSwiper d-lg-none">
-                <div class="swiper-wrapper">
-                    @foreach ($initialProducts as $product)
-                        <div class="swiper-slide">
-                            @include('components.product-card', ['product' => $product])
-                        </div>
-                    @endforeach
-                </div>
+            <div class="row g-4" id="latest-products-container">
+                {{-- Initially show only first 4 products --}}
+                @php
+                    $displayProducts = $initialProducts->take(4);
+                @endphp
+                @include('partials.latest-products', ['products' => $displayProducts])
             </div>
 
-            <!-- 🔹 LG Screen Normal Grid -->
-            <div class="row g-4 d-none d-lg-flex" id="latest-products-containe">
-                @include('partials.latest-products', ['products' => $initialProducts])
+            <!-- Show More/Less Button -->
+            <div class="text-center mt-4" id="show-more-container"
+                style="{{ $initialProducts->count() > 4 ? '' : 'display: none;' }}">
+                <button class="btn" id="show-more-btn"
+                    style="background: transparent; border: none; color: white; font-size: 2rem;">
+                    <i class="bi bi-chevron-down"></i>
+                </button>
             </div>
-
         </div>
 
     </div>
@@ -62,10 +49,11 @@
     document.addEventListener('DOMContentLoaded', function() {
 
 
-        if (window.latestProductsInitialized) return;
-        window.latestProductsInitialized = true;
-
         const section = document.querySelector('.products-series-section');
+        if (section?.dataset.latestProductsInitialized === 'true') return;
+        if (section) {
+            section.dataset.latestProductsInitialized = 'true';
+        }
         const tabsWrapper = section?.querySelector('.product-filter-tabs');
         const container = section?.querySelector('#latest-products-container');
         const showMoreContainer = section?.querySelector('#show-more-container');
@@ -139,7 +127,10 @@
                 `<span class="new-price fw-bolder fs-5 text-primary">$${Number(product.sale_price).toFixed(2)}</span>` :
                 '';
 
-            const productUrl = `{{ url('/category') }}/${product.slug || ''}`;
+            const productSlug = product.slug || '';
+            const productUrl = product.product_type === 'part'
+                ? `{{ url('/parts') }}/${productSlug}`
+                : `{{ url('/products') }}/${productSlug}`;
 
             return `
                 <div class="col-lg-3 col-md-6 col-sm-12">

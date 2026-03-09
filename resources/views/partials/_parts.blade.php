@@ -1,6 +1,5 @@
 @foreach ($parts as $item)
     <div class="col-lg-3 col-md-6 animate-card">
-    <a href="{{ route('part-detail', $item->slug) }}">
         <div class="productt-cardd">
             <img src="{{ asset('storage/products/thumbnails/' . $item->thumbnail) }}" alt="{{ $item->image_alt }}"
                 class="img-fluid">
@@ -40,14 +39,14 @@
                         <span class="old-price text-decoration-line-through">${{ number_format($item->price, 2) }}</span>
                     @endif
                     <span class="new-price">${{ number_format($item->sale_price, 2) }}</span>
-                    {{-- <a href="{{ route('part-detail', $item->slug) }}"> --}}
+                    <a href="{{ route('part-detail', $item->slug) }}">
                         <button class="btn-buy" @if (!$item->in_stock) disabled class="disabled-btn" @endif>
                             {{ $item->in_stock ? 'Buy Now' : 'Out of Stock' }}
                         </button>
-                    {{-- </a> --}}
+                    </a>
                 </div>
             </div>
         </div>
-    </a>
+
     </div>
 @endforeach

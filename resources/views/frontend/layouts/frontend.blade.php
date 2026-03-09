@@ -197,10 +197,15 @@
     <script>
         // Global function to update cart count in navbar
         window.updateCartCount = function(cart) {
+            const count = Object.keys(cart || {}).length;
             const cartCountBadge = document.getElementById('cart-count');
             if (cartCountBadge) {
-                const count = Object.keys(cart || {}).length;
                 cartCountBadge.innerText = count;
+            }
+
+            const cartCountBadgeLg = document.getElementById('cart-count-lg');
+            if (cartCountBadgeLg) {
+                cartCountBadgeLg.innerText = count;
             }
         };
     </script>
