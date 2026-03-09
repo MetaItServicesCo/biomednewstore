@@ -22,7 +22,16 @@
         </div>
 
         <div class="container mt-4">
-            <div class="row g-4" id="latest-products-container">
+            <div class="swiper latestProductSwiper d-lg-none" id="latest-products-swiper">
+                <div class="swiper-wrapper" id="latest-products-swiper-wrapper">
+                    @foreach ($initialProducts as $product)
+                        <div class="swiper-slide">
+                            @include('components.product-card', ['product' => $product])
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="row g-4 d-none d-lg-flex" id="latest-products-container">
                 {{-- Initially show only first 4 products --}}
                 @php
                     $displayProducts = $initialProducts->take(4);
@@ -31,7 +40,7 @@
             </div>
 
             <!-- Show More/Less Button -->
-            <div class="text-center mt-4" id="show-more-container"
+            <div class="text-center mt-4 d-none d-lg-block" id="show-more-container"
                 style="{{ $initialProducts->count() > 4 ? '' : 'display: none;' }}">
                 <button class="btn" id="show-more-btn"
                     style="background: transparent; border: none; color: white; font-size: 2rem;">
@@ -56,6 +65,7 @@
         }
         const tabsWrapper = section?.querySelector('.product-filter-tabs');
         const container = section?.querySelector('#latest-products-container');
+        const swiperWrapper = section?.querySelector('#latest-products-swiper-wrapper');
         const showMoreContainer = section?.querySelector('#show-more-container');
         const showMoreBtn = section?.querySelector('#show-more-btn');
         const filterUrl = "{{ route('latest.products.filter') }}";
@@ -66,8 +76,11 @@
         let currentType = 'all'; // Current active type
         let showingAll = false; // Track if showing all or limited
 
-        // Function to render products
+        // Function to render products (desktop only)
         function renderProducts(products, limit = null) {
+            if (window.innerWidth < 992) {
+                return;
+            }
             const productsToShow = limit ? products.slice(0, limit) : products;
 
             if (productsToShow.length === 0) {
@@ -82,7 +95,11 @@
 
             let html = '';
             productsToShow.forEach(product => {
-                html += createProductCard(product);
+                html += `
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        ${createProductCard(product)}
+                    </div>
+                `;
             });
             container.innerHTML = html;
 
@@ -100,6 +117,34 @@
                 showMoreContainer.style.display = 'none';
                 showingAll = true;
             }
+        }
+
+        // Function to render products (mobile only)
+        function renderMobileProducts(products) {
+            if (!swiperWrapper || window.innerWidth >= 992) {
+                return;
+            }
+
+            if (products.length === 0) {
+                swiperWrapper.innerHTML = `
+                    <div class="swiper-slide">
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted">No products found.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            products.forEach(product => {
+                html += `
+                    <div class="swiper-slide">
+                        ${createProductCard(product)}
+                    </div>
+                `;
+            });
+            swiperWrapper.innerHTML = html;
         }
 
         // Function to create product card HTML
@@ -134,24 +179,22 @@
                 : `{{ url('/products') }}/${productSlug}`;
 
             return `
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="custom-card shadow-sm position-relative">
-                        <a href="${productUrl}" class="stretched-link product-card-link"></a>
-                        ${discountBadge}
-                        <div class="card-image-box">
-                            <img src="${thumbnail}" alt="${product.image_alt || ''}" class="img-fluid">
+                <div class="custom-card shadow-sm position-relative">
+                    <a href="${productUrl}" class="stretched-link product-card-link"></a>
+                    ${discountBadge}
+                    <div class="card-image-box">
+                        <img src="${thumbnail}" alt="${product.image_alt || ''}" class="img-fluid">
+                    </div>
+                    <div class="card-content-box p-3 pt-2">
+                        <div class="stars p- pt-2 pb-0">
+                            ${stars}
                         </div>
-                        <div class="card-content-box p-3 pt-2">
-                            <div class="stars p- pt-2 pb-0">
-                                ${stars}
-                            </div>
-                            <h5 class="product-title fw-bold">${product.name || ''}</h5>
-                            <p class="card-text small mb-3">${shortDesc}</p>
-                            <div class="price-action-row d-flex justify-content-between align-items-center">
-                                ${oldPrice}
-                                ${newPrice}
-                                <button type="button" class="now-btnn">Buy Now</button>
-                            </div>
+                        <h5 class="product-title fw-bold">${product.name || ''}</h5>
+                        <p class="card-text small mb-3">${shortDesc}</p>
+                        <div class="price-action-row d-flex justify-content-between align-items-center">
+                            ${oldPrice}
+                            ${newPrice}
+                            <button type="button" class="now-btnn">Buy Now</button>
                         </div>
                     </div>
                 </div>
@@ -175,7 +218,7 @@
         const initialProducts = @json($initialProducts ?? []);
         allProducts = initialProducts;
 
-        if (initialProducts.length > 4) {
+        if (initialProducts.length > 4 && window.innerWidth >= 992) {
             showMoreContainer.style.display = 'block';
             showMoreBtn.innerHTML = '<i class="bi bi-chevron-down"></i>';
             showingAll = false;
@@ -230,6 +273,7 @@
                 .then(data => {
                     allProducts = data.products || [];
                     renderProducts(allProducts, 4);
+                    renderMobileProducts(allProducts);
                 })
                 .catch(() => {
                     container.innerHTML = `
@@ -238,6 +282,7 @@
                         </div>
                     `;
                     showMoreContainer.style.display = 'none';
+                    renderMobileProducts([]);
                 });
         });
 

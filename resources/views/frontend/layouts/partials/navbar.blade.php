@@ -311,6 +311,17 @@
     });
 </script>
 
+<script>
+    window.addEventListener('pageshow', function(event) {
+        const navEntry = performance.getEntriesByType('navigation')[0];
+        const isBackForward = navEntry && navEntry.type === 'back_forward';
+
+        if (event.persisted || isBackForward) {
+            window.location.reload();
+        }
+    });
+</script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

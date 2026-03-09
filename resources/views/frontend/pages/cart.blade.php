@@ -559,6 +559,15 @@
 
 @push('frontend-scripts')
     <script>
+        window.addEventListener('pageshow', function(event) {
+            const navEntry = performance.getEntriesByType('navigation')[0];
+            const isBackForward = navEntry && navEntry.type === 'back_forward';
+
+            if (event.persisted || isBackForward) {
+                window.location.reload();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
 
             // Get cart object from Blade
