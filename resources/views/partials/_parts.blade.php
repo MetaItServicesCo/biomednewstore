@@ -1,6 +1,7 @@
 @foreach ($parts as $item)
     <div class="col-lg-3 col-md-6 animate-card">
-        <div class="productt-cardd">
+        <div class="productt-cardd position-relative">
+            <a href="{{ route('part-detail', $item->slug) }}" class="stretched-link"></a>
             <img src="{{ asset('storage/products/thumbnails/' . $item->thumbnail) }}" alt="{{ $item->image_alt }}"
                 class="img-fluid">
 

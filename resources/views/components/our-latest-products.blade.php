@@ -98,6 +98,7 @@
                 }
             } else {
                 showMoreContainer.style.display = 'none';
+                showingAll = true;
             }
         }
 
@@ -149,7 +150,7 @@
                             <div class="price-action-row d-flex justify-content-between align-items-center">
                                 ${oldPrice}
                                 ${newPrice}
-                                <button type="button" class="btn buy-now-btn btn-sm">Buy Now</button>
+                                <button type="button" class="now-btnn">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -186,7 +187,7 @@
                 if (showingAll) {
                     renderProducts(allProducts, 4);
                 } else {
-                    renderProducts(allProducts, 8);
+                    renderProducts(allProducts);
                 }
             });
         }

@@ -2,7 +2,8 @@
     @if ($products->count())
         @foreach ($products as $product)
             <div class="col-lg-4 col-md-6">
-                <div class="productt-cardd">
+                <div class="productt-cardd position-relative">
+                    <a href="{{ ($product->product_type ?? 'product') === 'part' ? route('part-detail', $product->slug) : route('product-detail', $product->slug) }}" class="stretched-link"></a>
                     <img src="{{ $product->thumbnail ? asset('storage/products/thumbnails/' . $product->thumbnail) : '' }}"
                         alt="{{ $product->image_alt ?? $product->name }}">
 
@@ -36,10 +37,8 @@
                                 <span class="old-price text-decoration-line-through">${{ number_format($product->price, 2) }}</span>
                             @endif
                             <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
-                            <a href="{{ route('product-detail', $product->slug) }}">
-                                <button class="btn-buy" data-slug="{{ $product->slug ?? '' }}"
-                                    @if (!$product->in_stock) disabled class="disabled-btn" @endif>{{ $product->in_stock ? 'Buy Now' : 'Out of Stock' }}</button>
-                            </a>
+                            <button class="btn-buy" data-slug="{{ $product->slug ?? '' }}"
+                                @if (!$product->in_stock) disabled class="disabled-btn" @endif>{{ $product->in_stock ? 'Buy Now' : 'Out of Stock' }}</button>
                         </div>
                     </div>
                 </div>
