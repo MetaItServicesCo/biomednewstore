@@ -485,7 +485,7 @@
 
  .mega-menu {
      position: fixed;
-     top: 120px;
+     top: 102px;
      left: 50.5%;
      transform: translateX(-50%);
      width: 85vw;
@@ -803,6 +803,22 @@
      .city-grid {
          grid-template-columns: repeat(2, 1fr);
      }
+
+     .mega-menu {
+         position: fixed;
+         top: 122px;
+         left: 50.5%;
+         transform: translateX(-50%);
+         width: 85vw;
+         background: linear-gradient(90deg, #006A9E, #658392);
+         color: white;
+         padding: 30px;
+         border-radius: 15px;
+         z-index: 9999;
+
+         display: none;
+         /* 👈 no animation */
+     }
  }
 
  @media (max-width: 576px) {
@@ -856,7 +872,7 @@
          width: 100%;
          z-index: 1040;
          background-color: #0071A8;
-         border-bottom-left-radius: 37px;
+         /* border-bottom-left-radius: 37px; */
      }
 
      .navbar {
