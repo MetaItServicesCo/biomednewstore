@@ -8,13 +8,9 @@
 @section('page_schema')
     @if ($part)
         @php
-            $schemaImage = $part->thumbnail
-                ? asset('storage/products/thumbnails/' . $part->thumbnail)
-                : null;
+            $schemaImage = $part->thumbnail ? asset('storage/products/thumbnails/' . $part->thumbnail) : null;
             $schemaDescription = trim(strip_tags($part->description ?? ''));
-            $schemaAvailability = $part->in_stock
-                ? 'https://schema.org/InStock'
-                : 'https://schema.org/OutOfStock';
+            $schemaAvailability = $part->in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
             $schemaCondition = $part->condition
                 ? 'https://schema.org/' . ucfirst($part->condition) . 'Condition'
                 : 'https://schema.org/NewCondition';
@@ -53,7 +49,7 @@
 
 @push('frontend-styles')
     <style>
-        .product-title {
+        .product-titleee {
             font-size: 28px;
             font-weight: 600;
             font-family: Inter;
@@ -395,11 +391,9 @@
 
                         <div class="image-slider">
                             <!-- Main Image -->
-                            @if($part->thumbnail)
-                                <img id="mainImage"
-                                    src="{{ asset('storage/products/thumbnails/' . $part->thumbnail) }}"
-                                    alt="{{ $part->image_alt ?? $part->name }}"
-                                    class="main-img">
+                            @if ($part->thumbnail)
+                                <img id="mainImage" src="{{ asset('storage/products/thumbnails/' . $part->thumbnail) }}"
+                                    alt="{{ $part->image_alt ?? $part->name }}" class="main-img">
                             @else
                                 <div class="no-image-placeholder main-img">
                                     <i class="fa fa-image"></i>
@@ -431,7 +425,7 @@
                                 }
                             @endphp
 
-                            @if($hasImages)
+                            @if ($hasImages)
                                 <!-- Prev Button -->
                                 <button class="thumb-prev">&#10094;</button>
 
@@ -441,17 +435,16 @@
                                         {{-- Main thumbnail first --}}
                                         @if ($part->thumbnail)
                                             <img src="{{ asset('storage/products/thumbnails/' . $part->thumbnail) }}"
-                                                alt="{{ $part->image_alt ?? $part->name }}"
-                                                class="thumb" onclick="thumbClicked(this.src)">
+                                                alt="{{ $part->image_alt ?? $part->name }}" class="thumb"
+                                                onclick="thumbClicked(this.src)">
                                         @endif
 
                                         {{-- Then gallery images --}}
                                         @if (!empty($galleryImages))
                                             @foreach ($galleryImages as $img)
                                                 @if (!empty($img))
-                                                    <img src="{{ asset('storage/products/gallery/' . $img) }}" 
-                                                        alt="{{ $part->image_alt ?? $part->name }}"
-                                                        class="thumb"
+                                                    <img src="{{ asset('storage/products/gallery/' . $img) }}"
+                                                        alt="{{ $part->image_alt ?? $part->name }}" class="thumb"
                                                         onclick="thumbClicked(this.src)">
                                                 @endif
                                             @endforeach
@@ -464,7 +457,7 @@
                             @endif
                         </div>
 
-                        @if($hasImages)
+                        @if ($hasImages)
                             <!-- Pagination -->
                             <div class="pagination-wrapper">
                                 <div class="pagination-bar" id="paginationBar"></div>
@@ -475,7 +468,7 @@
                     <div class="col-lg-6">
 
                         <!-- Product Title -->
-                        <h2 class="product-title">{{ $part->name ?? '' }}</h2>
+                        <h2 class="product-titleee">{{ $part->name ?? '' }}</h2>
 
                         <!-- SKU / Condition / Availability -->
                         <p class="meta"><strong>SKU:</strong> {{ $part->sku ?? '' }}</p>

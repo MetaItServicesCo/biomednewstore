@@ -450,7 +450,7 @@
                 gap: 12px;
             }
 
-            .new-price {
+            .new-pricee {
                 color: #0071A8 !important;
                 font-weight: 500;
                 font-size: 15px;
@@ -760,7 +760,7 @@
                                                                 ${{ number_format($recentProduct->price, 2) }}
                                                             </span>
                                                         @endif
-                                                        <span class="new-price">
+                                                        <span class="new-pricee">
                                                             ${{ number_format($recentProduct->sale_price, 2) }}
                                                         </span>
                                                     </div>
