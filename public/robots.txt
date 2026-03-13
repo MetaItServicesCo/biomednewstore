@@ -1,2 +1,40 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Allow Important Pages
+Allow: /store
+Allow: /parts
+Allow: /feedback
+Allow: /products/
+Allow: /parts/
+
+# Block System / Non-SEO Pages
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+Disallow: /login
+Disallow: /register
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /ajax
+Disallow: /index.php/
+Disallow: /api/
+Disallow: /storage/
+Disallow: /vendor/
+Disallow: /ajax/
+Disallow: /node_modules/
+
+# Block Search and Filter URLs
+Disallow: /search
+Disallow: /*?*
+Disallow: /filter/
+Disallow: /sort/
+
+# Allow Crawling of Assets
+Allow: /assets/
+Allow: /images/
+Allow: /css/
+Allow: /js/
+
+# Sitemap
+Sitemap: https://mbmts.com/sitemap.xml
